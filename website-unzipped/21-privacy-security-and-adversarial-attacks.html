@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy, Security and Adversarial Attacks · AI Article Hub</title>
+<meta name="description" content="These systems learn from data, which makes them a privacy risk and a target. A tour of memorisation, extraction, poisoning, prompt injection and the attacks that work because the technology is statistical.">
+<link rel="canonical" href="https://example.org/ai-article-hub/index.html">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#2f5bd7">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AI Article Hub">
+<meta property="og:title" content="Privacy, Security and Adversarial Attacks · AI Article Hub">
+<meta property="og:description" content="These systems learn from data, which makes them a privacy risk and a target. A tour of memorisation, extraction, poisoning, prompt injection and the attacks that work because the technology is statistical.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="license" content="CC0 1.0">
+<meta name="dcterms.license" content="https://creativecommons.org/publicdomain/zero/1.0/">
+<link rel="alternate" type="application/rss+xml" title="AI Article Hub" href="feed.xml">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/styles.css">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Privacy, Security and Adversarial Attacks">
+<meta property="og:description" content="These systems learn from data, which makes them a privacy risk and a target. A tour of memorisation, extraction, poisoning, prompt injection and the attacks that work because the technology is statistical.">
+<meta property="og:url" content="https://example.org/ai-article-hub/21-privacy-security-and-adversarial-attacks.html">
+<meta property="article:section" content="Ethics">
+<meta property="article:tag" content="privacy">
+<meta property="article:tag" content="security">
+<meta property="article:tag" content="adversarial">
+<meta property="article:tag" content="prompt injection">
+<meta property="article:tag" content="poisoning">
+<meta property="article:tag" content="memorisation">
+<meta name="author" content="The AI Article Hub Editorial Collective">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Privacy, Security and Adversarial Attacks","description":"These systems learn from data, which makes them a privacy risk and a target. A tour of memorisation, extraction, poisoning, prompt injection and the attacks that work because the technology is statistical.","datePublished":"2024-06-03","dateModified":"2024-06-03","inLanguage":"en","articleSection":"Ethics","keywords":"privacy, security, adversarial, prompt injection, poisoning, memorisation","wordCount":1375,"isAccessibleForFree":true,"license":"https://creativecommons.org/publicdomain/zero/1.0/","creativeWorkStatus":"Public Domain","author":{"@type":"Organization","name":"The AI Article Hub Editorial Collective"},"publisher":{"@type":"Organization","name":"AI Article Hub"},"mainEntityOfPage":"https://example.org/ai-article-hub/21-privacy-security-and-adversarial-attacks.html"}</script>
+</head>
+<body class="">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="index.html">
+      <span class="logo" aria-hidden="true">AI</span>
+      <span>AI Article Hub<small>CC0 1.0 · Public Domain</small></span>
+    </a>
+    <button class="icon-btn menu-btn" data-menu-toggle aria-label="Toggle navigation" aria-controls="site-nav">☰</button>
+    <nav class="nav" id="site-nav" aria-label="Main">
+          <a href="index.html">Home</a>
+          <a href="index.html#articles">Articles</a>
+          <a href="downloads.html">Downloads</a>
+          <a href="publish.html">Publish</a>
+          <a href="license.html">License</a>
+          <a href="about.html">About</a>
+          <a href="security.html">Security</a>
+      <button class="icon-btn theme-toggle" data-theme-toggle type="button" aria-label="Toggle theme">☾</button>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<div class="wrap">
+  <div class="article-shell">
+    <div>
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a> › <a href="index.html#articles">Articles</a> › <span>21 of 27</span>
+      </nav>
+
+      <header class="article-head">
+        <div class="kicker">
+          <span class="tag accent">Part 21 of 27</span>
+          <span class="tag">Ethics</span>
+          <span class="tag">6 min read</span>
+        </div>
+        <h1>Privacy, Security and Adversarial Attacks</h1>
+        <p class="standfirst">These systems learn from data, which makes them a privacy risk and a target. A tour of memorisation, extraction, poisoning, prompt injection and the attacks that work because the technology is statistical.</p>
+        <div class="byline">
+          <span>2024-06-03</span><span class="dot">•</span>
+          <span>Ethics</span><span class="dot">•</span>
+          <span>1,375 words</span><span class="dot">•</span>
+          <span>CC0 1.0 public domain</span>
+        </div>
+      </header>
+
+      <div class="prose">
+<p>Two facts about modern AI create most of its security and privacy problems. It learns from large amounts of data, some of it personal. And it is statistical, not logical, so it has no notion of what it must never say.</p>
+<p>Those two facts generate a long and specific list of vulnerabilities. Most of them are understood, and most of them have partial mitigations.</p>
+<h2 id="privacy-what-models-remember">Privacy: what models remember</h2>
+<p><strong>Training data memorisation.</strong> A sufficiently large model, trained on data that contains an unusual string, can reproduce that string when prompted. This is demonstrated, reproducible, and the reason models have been found to emit phone numbers, addresses and passages of copyrighted text verbatim.</p>
+<p>The severity depends on configuration. Smaller models and shorter training runs memorise less; heavy repetition in the data increases it; and deduplication is effective. Whether a given string is memorised is essentially untestable in advance, which is the practical problem: you cannot audit a model&#39;s memorisation without attempting extraction at scale.</p>
+<p><strong>Membership inference.</strong> If a specific record was in the training set, the model&#39;s behaviour on inputs related to it differs measurably from its behaviour on identical inputs that were not. This turns a model into an oracle that leaks the contents of a database it was never supposed to expose, and it is attackable even against well-regularised models.</p>
+<p><strong>Information leakage through prompts.</strong> Anything placed in a prompt is available to the model&#39;s processing and can, under the right conditions, be induced to come back out. Two implications follow directly: never put secrets in a prompt, and treat prompt contents as potentially exfiltratable by the model or by anything downstream of it.</p>
+<p><strong>Training data provenance.</strong> The privacy question is downstream of the collection question. <a href="08-data-the-raw-material-of-ai.html">Data, the Raw Material of AI </a> covers what is collected, from whom, on what basis — and the answer determines how much of this section applies to you.</p>
+<h2 id="extraction-and-inference-attacks">Extraction and inference attacks</h2>
+<p><strong>Model extraction</strong> reproduces a commercial model by querying it systematically. If a provider&#39;s terms forbid it, the attack is legal grey; if not, it is trivially done, and it moves capability from a licensed service to a local copy.</p>
+<p><strong>Membership and attribute inference</strong> ask what a model can be made to reveal about its training data. Both are practical attacks against deployed models, and both are why &quot;the data is not in the output&quot; is not a sufficient privacy control.</p>
+<p><strong>Data poisoning</strong> inserts malicious examples into the training corpus. Because training corpora are assembled by automated web-scale pipelines, an attacker who can get content indexed can influence the model. Targeted poisoning — making a specific false association — is documented in the literature. Broad poisoning, at a scale sufficient to destabilise training, remains largely theoretical because the required volume is enormous.</p>
+<p><strong>Backdoors and triggers</strong> is the sharper version: a small number of planted examples teaches a model a hidden behaviour, activated by a specific input pattern that no one else detects. This is the attack with the highest ratio of demonstrated capability to required effort, and it is the reason untrusted data in a training pipeline is a genuine supply-chain risk.</p>
+<h2 id="attacks-that-work-because-the-model-is-statistical">Attacks that work because the model is statistical</h2>
+<p><strong>Adversarial examples</strong> are inputs crafted so that a model is confidently wrong. A small, human-imperceptible perturbation to an image flips a classifier from 95% to under 20% confidence. These are not implementation bugs; they reflect a model that has learned correlations rather than concepts, and a nearby image genuinely is a nearby image under the distribution the model was trained on, just not under the one humans use.</p>
+<p>The generalised version matters more: a vulnerability found in one model frequently transfers to others trained on similar data, which means a single malicious input can be crafted once and deployed widely.</p>
+<p><strong>Evasion and abuse at scale</strong> — adversarial inputs, bot farms, coordinated fake accounts, content optimised to slip a classifier — are the commercially relevant form of the same idea. They are being deployed at scale today and are the practical reason content moderation is an arms race rather than a solved problem.</p>
+<p><strong>Membership inference and inversion attacks</strong> on retrieval systems are less discussed and quite practical. A system that retrieves from a document store can be induced to reproduce documents, and a poorly-scoped retrieval index can leak documents the user was never authorised to see. Access control must be enforced at retrieval time, not assumed from the conversation context.</p>
+<h2 id="prompt-injection-the-current-frontier">Prompt injection: the current frontier</h2>
+<p>The most consequential vulnerability in deployed AI systems right now is <strong>prompt injection</strong>, and the reason it is serious is structural rather than incidental.</p>
+<p>A language model cannot reliably distinguish instructions from data. The same text is both, and the model&#39;s only mechanism for deciding is a statistical judgement about which looks more like something it should obey. So any untrusted text that reaches the context is a potential instruction: a web page the agent read, a document it retrieved, an email it summarised, a filename, an image with text in it.</p>
+<p>The attack is trivial in one direction — hide instructions in a document or a web page and instruct the model to ignore its task and exfiltrate data or take a specified action. The defensive side is much harder, because the only robust mitigations are architectural:</p>
+<ul><li><strong>Do not give the model the ability to act destructively.</strong> If the worst an injection can achieve is a wrong answer, the stakes are manageable.</li><li><strong>Separate data from instructions structurally</strong>, not with a warning string. Delimiters help; they are not a security boundary.</li><li><strong>Require approval for consequential actions</strong>, so an injected instruction cannot cause irreversible effects.</li><li><strong>Filter what enters the context</strong> — only retrieve from sources you control, and strip or neutralise content from untrusted sources.</li><li><strong>Monitor tool calls</strong>, not just model output. The action log is the place where an attack becomes visible.</li><li><strong>Assume the boundary will fail</strong> and design for containment rather than prevention.</li></ul>
+<p>The honest summary is that prompt injection is unsolved, that it is not primarily a model-capability problem, and that the only current defence is to limit the blast radius of whatever the model can do.</p>
+<h2 id="defences-that-work">Defences that work</h2>
+<p><strong>The mundane infrastructure is the actual security.</strong> Authentication, authorisation, least privilege, no credentials in prompts, secrets in a vault, network isolation, rate limits, and audit logs. Most deployed AI systems are compromised through their surrounding application, not through the model.</p>
+<p><strong>Least privilege for tools.</strong> A model that can read a document should not be able to send an email. A model that can query a database should not be able to write to it. This single design decision eliminates most severe agentic outcomes.</p>
+<p><strong>Differential privacy</strong> for training data, with the honest caveat that it is a blunt instrument: it reduces memorisation at a real cost in model quality, and it is far easier to apply in a federated or fine-tuning setting than in a web-scale pretraining run.</p>
+<p><strong>Human review</strong> for anything consequential, with the known cost in time and the known risk of rubber-stamping.</p>
+<p><strong>Red-teaming by outsiders.</strong> People who did not build the system, given the objective and the access, will find things the build team has normalised. This is the highest-yield security activity in the field and the most commonly skipped.</p>
+<p><strong>Responsible disclosure.</strong> Almost every serious vulnerability in this space is found by outsiders and disclosed before publication. That ecosystem is a genuine public good and it is worth supporting.</p>
+<h2 id="the-systemic-risk-briefly">The systemic risk, briefly</h2>
+<p>Beyond any single system, the systemic exposure is that a cheap capability to produce convincing text, images, audio and code at scale lowers the cost of every deception, fraud and influence operation. This is not a vulnerability to be patched; it is a change in the environment.</p>
+<p>The realistic response is not detection — detection is a losing game against general-purpose generators — but <strong>provenance, verification and institutional trust</strong>: cryptographic origin metadata, authenticated channels where they exist, and a general shift toward relying on institutions whose authenticity you can check rather than on content that merely looks right. This is the argument developed in <a href="22-hallucination-deepfakes-and-trust.html">Hallucination, Deepfakes and Trust </a>.</p>
+      </div>
+
+      <nav class="pager" aria-label="Article navigation">
+        <a class="prev" href="20-bias-fairness-and-harm.html"><span class="dir">← Previous</span><span class="t">Bias, Fairness and Harm — How Models Reproduce Society's Flaws</span></a>
+        <a class="next" href="22-hallucination-deepfakes-and-trust.html"><span class="dir">Next →</span><span class="t">Hallucination, Deepfakes and Trust</span></a>
+      </nav>
+    </div>
+
+    <aside class="side">
+      <div class="side-box">
+        <h4>Reading progress</h4>
+        <progress class="progress" data-progress max="100" value="0" aria-label="Reading progress">0%</progress>
+      </div>
+
+      <div class="side-box">
+        <h4>Download this article</h4>
+        <div class="actions">
+          <button class="btn" data-dl="md" type="button">Markdown (.md)</button>
+          <button class="btn" data-dl="html" type="button">Web page (.html)</button>
+          <button class="btn" data-dl="pdf" type="button">Print / Save as PDF</button>
+          <button class="btn" data-dl="txt" type="button">Plain text (.txt)</button>
+          <button class="btn" data-dl="json" type="button">Data (.json)</button>
+          <button class="btn" data-dl="copy" type="button">Copy full text</button>
+        </div>
+      </div>
+
+      <div class="side-box">
+        <h4>On this page</h4>
+        <ol><li><a href="#privacy-what-models-remember">Privacy: what models remember</a></li><li><a href="#extraction-and-inference-attacks">Extraction and inference attacks</a></li><li><a href="#attacks-that-work-because-the-model-is-statistical">Attacks that work because the model is statistical</a></li><li><a href="#prompt-injection-the-current-frontier">Prompt injection: the current frontier</a></li><li><a href="#defences-that-work">Defences that work</a></li><li><a href="#the-systemic-risk-briefly">The systemic risk, briefly</a></li></ol>
+      </div>
+
+      <div class="side-box">
+        <h4>Reuse this text</h4>
+        <p class="license-note"><b>Public domain.</b> Copy, translate, adapt, teach from, or republish it anywhere — commercially or not — with no permission and no obligation to credit. <a href="license.html">Read the CC0 terms</a>.</p>
+      </div>
+
+      <div class="side-box">
+        <h4>Related reading</h4>
+        <div class="related"><a href="20-bias-fairness-and-harm.html"><span>20 · Ethics</span>Bias, Fairness and Harm — How Models Reproduce Society's Flaws</a><a href="19-ai-safety-and-alignment.html"><span>19 · Safety</span>AI Safety and Alignment — The Hard Problems, Stated Plainly</a><a href="22-hallucination-deepfakes-and-trust.html"><span>22 · Society</span>Hallucination, Deepfakes and Trust</a><a href="23-ai-and-the-law.html"><span>23 · Society</span>AI and the Law — Regulation, Liability and Intellectual Property</a></div>
+      </div>
+    </aside>
+  </div>
+</div>
+<script type="application/json" id="article-source">{"number":21,"title":"Privacy, Security and Adversarial Attacks","description":"These systems learn from data, which makes them a privacy risk and a target. A tour of memorisation, extraction, poisoning, prompt injection and the attacks that work because the technology is statistical.","category":"Ethics","tags":["privacy","security","adversarial","prompt injection","poisoning","memorisation"],"date":"2024-06-03","author":"The AI Article Hub Editorial Collective","readingTime":"6 min read","markdown":"Two facts about modern AI create most of its security and privacy problems. It learns from large amounts of data, some of it personal. And it is statistical, not logical, so it has no notion of what it must never say.\n\nThose two facts generate a long and specific list of vulnerabilities. Most of them are understood, and most of them have partial mitigations.\n\n## Privacy: what models remember\n\n**Training data memorisation.** A sufficiently large model, trained on data that contains an unusual string, can reproduce that string when prompted. This is demonstrated, reproducible, and the reason models have been found to emit phone numbers, addresses and passages of copyrighted text verbatim.\n\nThe severity depends on configuration. Smaller models and shorter training runs memorise less; heavy repetition in the data increases it; and deduplication is effective. Whether a given string is memorised is essentially untestable in advance, which is the practical problem: you cannot audit a model's memorisation without attempting extraction at scale.\n\n**Membership inference.** If a specific record was in the training set, the model's behaviour on inputs related to it differs measurably from its behaviour on identical inputs that were not. This turns a model into an oracle that leaks the contents of a database it was never supposed to expose, and it is attackable even against well-regularised models.\n\n**Information leakage through prompts.** Anything placed in a prompt is available to the model's processing and can, under the right conditions, be induced to come back out. Two implications follow directly: never put secrets in a prompt, and treat prompt contents as potentially exfiltratable by the model or by anything downstream of it.\n\n**Training data provenance.** The privacy question is downstream of the collection question. [Data, the Raw Material of AI ](08-data-the-raw-material-of-ai.html) covers what is collected, from whom, on what basis — and the answer determines how much of this section applies to you.\n\n## Extraction and inference attacks\n\n**Model extraction** reproduces a commercial model by querying it systematically. If a provider's terms forbid it, the attack is legal grey; if not, it is trivially done, and it moves capability from a licensed service to a local copy.\n\n**Membership and attribute inference** ask what a model can be made to reveal about its training data. Both are practical attacks against deployed models, and both are why \"the data is not in the output\" is not a sufficient privacy control.\n\n**Data poisoning** inserts malicious examples into the training corpus. Because training corpora are assembled by automated web-scale pipelines, an attacker who can get content indexed can influence the model. Targeted poisoning — making a specific false association — is documented in the literature. Broad poisoning, at a scale sufficient to destabilise training, remains largely theoretical because the required volume is enormous.\n\n**Backdoors and triggers** is the sharper version: a small number of planted examples teaches a model a hidden behaviour, activated by a specific input pattern that no one else detects. This is the attack with the highest ratio of demonstrated capability to required effort, and it is the reason untrusted data in a training pipeline is a genuine supply-chain risk.\n\n## Attacks that work because the model is statistical\n\n**Adversarial examples** are inputs crafted so that a model is confidently wrong. A small, human-imperceptible perturbation to an image flips a classifier from 95% to under 20% confidence. These are not implementation bugs; they reflect a model that has learned correlations rather than concepts, and a nearby image genuinely is a nearby image under the distribution the model was trained on, just not under the one humans use.\n\nThe generalised version matters more: a vulnerability found in one model frequently transfers to others trained on similar data, which means a single malicious input can be crafted once and deployed widely.\n\n**Evasion and abuse at scale** — adversarial inputs, bot farms, coordinated fake accounts, content optimised to slip a classifier — are the commercially relevant form of the same idea. They are being deployed at scale today and are the practical reason content moderation is an arms race rather than a solved problem.\n\n**Membership inference and inversion attacks** on retrieval systems are less discussed and quite practical. A system that retrieves from a document store can be induced to reproduce documents, and a poorly-scoped retrieval index can leak documents the user was never authorised to see. Access control must be enforced at retrieval time, not assumed from the conversation context.\n\n## Prompt injection: the current frontier\n\nThe most consequential vulnerability in deployed AI systems right now is **prompt injection**, and the reason it is serious is structural rather than incidental.\n\nA language model cannot reliably distinguish instructions from data. The same text is both, and the model's only mechanism for deciding is a statistical judgement about which looks more like something it should obey. So any untrusted text that reaches the context is a potential instruction: a web page the agent read, a document it retrieved, an email it summarised, a filename, an image with text in it.\n\nThe attack is trivial in one direction — hide instructions in a document or a web page and instruct the model to ignore its task and exfiltrate data or take a specified action. The defensive side is much harder, because the only robust mitigations are architectural:\n\n- **Do not give the model the ability to act destructively.** If the worst an injection can achieve is a wrong answer, the stakes are manageable.\n- **Separate data from instructions structurally**, not with a warning string. Delimiters help; they are not a security boundary.\n- **Require approval for consequential actions**, so an injected instruction cannot cause irreversible effects.\n- **Filter what enters the context** — only retrieve from sources you control, and strip or neutralise content from untrusted sources.\n- **Monitor tool calls**, not just model output. The action log is the place where an attack becomes visible.\n- **Assume the boundary will fail** and design for containment rather than prevention.\n\nThe honest summary is that prompt injection is unsolved, that it is not primarily a model-capability problem, and that the only current defence is to limit the blast radius of whatever the model can do.\n\n## Defences that work\n\n**The mundane infrastructure is the actual security.** Authentication, authorisation, least privilege, no credentials in prompts, secrets in a vault, network isolation, rate limits, and audit logs. Most deployed AI systems are compromised through their surrounding application, not through the model.\n\n**Least privilege for tools.** A model that can read a document should not be able to send an email. A model that can query a database should not be able to write to it. This single design decision eliminates most severe agentic outcomes.\n\n**Differential privacy** for training data, with the honest caveat that it is a blunt instrument: it reduces memorisation at a real cost in model quality, and it is far easier to apply in a federated or fine-tuning setting than in a web-scale pretraining run.\n\n**Human review** for anything consequential, with the known cost in time and the known risk of rubber-stamping.\n\n**Red-teaming by outsiders.** People who did not build the system, given the objective and the access, will find things the build team has normalised. This is the highest-yield security activity in the field and the most commonly skipped.\n\n**Responsible disclosure.** Almost every serious vulnerability in this space is found by outsiders and disclosed before publication. That ecosystem is a genuine public good and it is worth supporting.\n\n## The systemic risk, briefly\n\nBeyond any single system, the systemic exposure is that a cheap capability to produce convincing text, images, audio and code at scale lowers the cost of every deception, fraud and influence operation. This is not a vulnerability to be patched; it is a change in the environment.\n\nThe realistic response is not detection — detection is a losing game against general-purpose generators — but **provenance, verification and institutional trust**: cryptographic origin metadata, authenticated channels where they exist, and a general shift toward relying on institutions whose authenticity you can check rather than on content that merely looks right. This is the argument developed in [Hallucination, Deepfakes and Trust ](22-hallucination-deepfakes-and-trust.html).","html":"\u003cp>Two facts about modern AI create most of its security and privacy problems. It learns from large amounts of data, some of it personal. And it is statistical, not logical, so it has no notion of what it must never say.\u003c/p>\n\u003cp>Those two facts generate a long and specific list of vulnerabilities. Most of them are understood, and most of them have partial mitigations.\u003c/p>\n\u003ch2 id=\"privacy-what-models-remember\">Privacy: what models remember\u003c/h2>\n\u003cp>\u003cstrong>Training data memorisation.\u003c/strong> A sufficiently large model, trained on data that contains an unusual string, can reproduce that string when prompted. This is demonstrated, reproducible, and the reason models have been found to emit phone numbers, addresses and passages of copyrighted text verbatim.\u003c/p>\n\u003cp>The severity depends on configuration. Smaller models and shorter training runs memorise less; heavy repetition in the data increases it; and deduplication is effective. Whether a given string is memorised is essentially untestable in advance, which is the practical problem: you cannot audit a model&#39;s memorisation without attempting extraction at scale.\u003c/p>\n\u003cp>\u003cstrong>Membership inference.\u003c/strong> If a specific record was in the training set, the model&#39;s behaviour on inputs related to it differs measurably from its behaviour on identical inputs that were not. This turns a model into an oracle that leaks the contents of a database it was never supposed to expose, and it is attackable even against well-regularised models.\u003c/p>\n\u003cp>\u003cstrong>Information leakage through prompts.\u003c/strong> Anything placed in a prompt is available to the model&#39;s processing and can, under the right conditions, be induced to come back out. Two implications follow directly: never put secrets in a prompt, and treat prompt contents as potentially exfiltratable by the model or by anything downstream of it.\u003c/p>\n\u003cp>\u003cstrong>Training data provenance.\u003c/strong> The privacy question is downstream of the collection question. \u003ca href=\"08-data-the-raw-material-of-ai.html\">Data, the Raw Material of AI \u003c/a> covers what is collected, from whom, on what basis — and the answer determines how much of this section applies to you.\u003c/p>\n\u003ch2 id=\"extraction-and-inference-attacks\">Extraction and inference attacks\u003c/h2>\n\u003cp>\u003cstrong>Model extraction\u003c/strong> reproduces a commercial model by querying it systematically. If a provider&#39;s terms forbid it, the attack is legal grey; if not, it is trivially done, and it moves capability from a licensed service to a local copy.\u003c/p>\n\u003cp>\u003cstrong>Membership and attribute inference\u003c/strong> ask what a model can be made to reveal about its training data. Both are practical attacks against deployed models, and both are why &quot;the data is not in the output&quot; is not a sufficient privacy control.\u003c/p>\n\u003cp>\u003cstrong>Data poisoning\u003c/strong> inserts malicious examples into the training corpus. Because training corpora are assembled by automated web-scale pipelines, an attacker who can get content indexed can influence the model. Targeted poisoning — making a specific false association — is documented in the literature. Broad poisoning, at a scale sufficient to destabilise training, remains largely theoretical because the required volume is enormous.\u003c/p>\n\u003cp>\u003cstrong>Backdoors and triggers\u003c/strong> is the sharper version: a small number of planted examples teaches a model a hidden behaviour, activated by a specific input pattern that no one else detects. This is the attack with the highest ratio of demonstrated capability to required effort, and it is the reason untrusted data in a training pipeline is a genuine supply-chain risk.\u003c/p>\n\u003ch2 id=\"attacks-that-work-because-the-model-is-statistical\">Attacks that work because the model is statistical\u003c/h2>\n\u003cp>\u003cstrong>Adversarial examples\u003c/strong> are inputs crafted so that a model is confidently wrong. A small, human-imperceptible perturbation to an image flips a classifier from 95% to under 20% confidence. These are not implementation bugs; they reflect a model that has learned correlations rather than concepts, and a nearby image genuinely is a nearby image under the distribution the model was trained on, just not under the one humans use.\u003c/p>\n\u003cp>The generalised version matters more: a vulnerability found in one model frequently transfers to others trained on similar data, which means a single malicious input can be crafted once and deployed widely.\u003c/p>\n\u003cp>\u003cstrong>Evasion and abuse at scale\u003c/strong> — adversarial inputs, bot farms, coordinated fake accounts, content optimised to slip a classifier — are the commercially relevant form of the same idea. They are being deployed at scale today and are the practical reason content moderation is an arms race rather than a solved problem.\u003c/p>\n\u003cp>\u003cstrong>Membership inference and inversion attacks\u003c/strong> on retrieval systems are less discussed and quite practical. A system that retrieves from a document store can be induced to reproduce documents, and a poorly-scoped retrieval index can leak documents the user was never authorised to see. Access control must be enforced at retrieval time, not assumed from the conversation context.\u003c/p>\n\u003ch2 id=\"prompt-injection-the-current-frontier\">Prompt injection: the current frontier\u003c/h2>\n\u003cp>The most consequential vulnerability in deployed AI systems right now is \u003cstrong>prompt injection\u003c/strong>, and the reason it is serious is structural rather than incidental.\u003c/p>\n\u003cp>A language model cannot reliably distinguish instructions from data. The same text is both, and the model&#39;s only mechanism for deciding is a statistical judgement about which looks more like something it should obey. So any untrusted text that reaches the context is a potential instruction: a web page the agent read, a document it retrieved, an email it summarised, a filename, an image with text in it.\u003c/p>\n\u003cp>The attack is trivial in one direction — hide instructions in a document or a web page and instruct the model to ignore its task and exfiltrate data or take a specified action. The defensive side is much harder, because the only robust mitigations are architectural:\u003c/p>\n\u003cul>\u003cli>\u003cstrong>Do not give the model the ability to act destructively.\u003c/strong> If the worst an injection can achieve is a wrong answer, the stakes are manageable.\u003c/li>\u003cli>\u003cstrong>Separate data from instructions structurally\u003c/strong>, not with a warning string. Delimiters help; they are not a security boundary.\u003c/li>\u003cli>\u003cstrong>Require approval for consequential actions\u003c/strong>, so an injected instruction cannot cause irreversible effects.\u003c/li>\u003cli>\u003cstrong>Filter what enters the context\u003c/strong> — only retrieve from sources you control, and strip or neutralise content from untrusted sources.\u003c/li>\u003cli>\u003cstrong>Monitor tool calls\u003c/strong>, not just model output. The action log is the place where an attack becomes visible.\u003c/li>\u003cli>\u003cstrong>Assume the boundary will fail\u003c/strong> and design for containment rather than prevention.\u003c/li>\u003c/ul>\n\u003cp>The honest summary is that prompt injection is unsolved, that it is not primarily a model-capability problem, and that the only current defence is to limit the blast radius of whatever the model can do.\u003c/p>\n\u003ch2 id=\"defences-that-work\">Defences that work\u003c/h2>\n\u003cp>\u003cstrong>The mundane infrastructure is the actual security.\u003c/strong> Authentication, authorisation, least privilege, no credentials in prompts, secrets in a vault, network isolation, rate limits, and audit logs. Most deployed AI systems are compromised through their surrounding application, not through the model.\u003c/p>\n\u003cp>\u003cstrong>Least privilege for tools.\u003c/strong> A model that can read a document should not be able to send an email. A model that can query a database should not be able to write to it. This single design decision eliminates most severe agentic outcomes.\u003c/p>\n\u003cp>\u003cstrong>Differential privacy\u003c/strong> for training data, with the honest caveat that it is a blunt instrument: it reduces memorisation at a real cost in model quality, and it is far easier to apply in a federated or fine-tuning setting than in a web-scale pretraining run.\u003c/p>\n\u003cp>\u003cstrong>Human review\u003c/strong> for anything consequential, with the known cost in time and the known risk of rubber-stamping.\u003c/p>\n\u003cp>\u003cstrong>Red-teaming by outsiders.\u003c/strong> People who did not build the system, given the objective and the access, will find things the build team has normalised. This is the highest-yield security activity in the field and the most commonly skipped.\u003c/p>\n\u003cp>\u003cstrong>Responsible disclosure.\u003c/strong> Almost every serious vulnerability in this space is found by outsiders and disclosed before publication. That ecosystem is a genuine public good and it is worth supporting.\u003c/p>\n\u003ch2 id=\"the-systemic-risk-briefly\">The systemic risk, briefly\u003c/h2>\n\u003cp>Beyond any single system, the systemic exposure is that a cheap capability to produce convincing text, images, audio and code at scale lowers the cost of every deception, fraud and influence operation. This is not a vulnerability to be patched; it is a change in the environment.\u003c/p>\n\u003cp>The realistic response is not detection — detection is a losing game against general-purpose generators — but \u003cstrong>provenance, verification and institutional trust\u003c/strong>: cryptographic origin metadata, authenticated channels where they exist, and a general shift toward relying on institutions whose authenticity you can check rather than on content that merely looks right. This is the argument developed in \u003ca href=\"22-hallucination-deepfakes-and-trust.html\">Hallucination, Deepfakes and Trust \u003c/a>.\u003c/p>"}</script>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h5>AI Article Hub</h5>
+        <p>Twenty-seven original, in-depth articles on artificial intelligence — from neural networks and transformers to AI safety, law and public policy. Free to read, download and reuse: everything here is released into the public domain under CC0 1.0.</p>
+        <p>Written to be read, translated, remixed and taught from without permission or payment.</p>
+      </div>
+      <div>
+        <h5>Read</h5>
+        <ul>
+          <li><a href="index.html#articles">All 27 articles</a></li>
+          <li><a href="downloads.html">Download everything</a></li>
+          <li><a href="feed.xml">RSS feed</a></li>
+          <li><a href="sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Reuse</h5>
+        <ul>
+          <li><a href="license.html">CC0 license terms</a></li>
+          <li><a href="publish.html">Publish this site</a></li>
+          <li><a href="publish.html#attribution">Do I need credit?</a></li>
+          <li><a href="about.html">About the project</a></li>
+          <li><a href="security.html">Security</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="license-line">
+      <span>© 2026 The AI Article Hub Editorial Collective. Text released under CC0 1.0 — dedicated to the public domain, no rights reserved.</span>
+      <a class="badge-cc" href="license.html">CC0 1.0 · Public Domain Dedication</a>
+    </div>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

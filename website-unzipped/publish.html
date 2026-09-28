@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Publish this site · AI Article Hub</title>
+<meta name="description" content="How to host this public-domain AI collection anywhere, how to remix and republish it, and how to dedicate your own work to the public domain under CC0 1.0.">
+<link rel="canonical" href="https://example.org/ai-article-hub/index.html">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#2f5bd7">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AI Article Hub">
+<meta property="og:title" content="Publish this site · AI Article Hub">
+<meta property="og:description" content="How to host this public-domain AI collection anywhere, how to remix and republish it, and how to dedicate your own work to the public domain under CC0 1.0.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="license" content="CC0 1.0">
+<meta name="dcterms.license" content="https://creativecommons.org/publicdomain/zero/1.0/">
+<link rel="alternate" type="application/rss+xml" title="AI Article Hub" href="feed.xml">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/styles.css">
+
+</head>
+<body class="">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="index.html">
+      <span class="logo" aria-hidden="true">AI</span>
+      <span>AI Article Hub<small>CC0 1.0 · Public Domain</small></span>
+    </a>
+    <button class="icon-btn menu-btn" data-menu-toggle aria-label="Toggle navigation" aria-controls="site-nav">☰</button>
+    <nav class="nav" id="site-nav" aria-label="Main">
+          <a href="index.html">Home</a>
+          <a href="index.html#articles">Articles</a>
+          <a href="downloads.html">Downloads</a>
+          <a href="publish.html" aria-current="page">Publish</a>
+          <a href="license.html">License</a>
+          <a href="about.html">About</a>
+          <a href="security.html">Security</a>
+      <button class="icon-btn theme-toggle" data-theme-toggle type="button" aria-label="Toggle theme">☾</button>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<div class="wrap">
+  <div class="page">
+    <h1>Publish this site — or release your own work into the public domain</h1>
+    <p class="lede">The whole publication is a static folder of HTML and Markdown. Put it on any host, any CDN, or no host at all. And because the text is CC0, you are free to fork it, translate it, cut it up, or merge it with your own work and publish that too — without asking anyone.</p>
+
+    <div class="panel" data-tabs>
+      <h2>Step 1 — publish this site as-is</h2>
+      <ol class="steps">
+        <li><strong>Build it.</strong> With Node 18+ installed, run <code>npm install</code> then <code>npm run build</code>. Output lands in <code>dist/</code>. You can also run <code>npm run zip</code> to refresh the downloadable archives.</li>
+        <li><strong>Copy the contents of <code>dist/</code></strong> into a folder you control — or straight into any static host's upload box.</li>
+        <li><strong>Pick a host.</strong> Drag the <code>dist/</code> folder onto <a href="https://app.netlify.com/drop" rel="noopener nofollow">Netlify Drop</a>, or run <code>npm run serve</code> for a local preview at <code>http://localhost:4173</code>.</li>
+        <li><strong>Or connect a repository.</strong> Push to GitHub, then enable Pages (Settings → Pages → deploy from branch). Cloudflare Pages, Vercel, GitLab Pages, S3 + CloudFront and any static host work the same way — the output is pure files, no server runtime.</li>
+        <li><strong>Set your own base URL.</strong> Edit <code>baseUrl</code> in <code>src/templates/layout.mjs</code> so canonical URLs, the sitemap and the RSS feed point at your domain, then rebuild.</li>
+      </ol>
+    </div>
+
+    <div class="panel" data-tabs>
+      <h2>Step 2 — copy it, remix it, translate it</h2>
+      <p>CC0 1.0 removes the legal friction, so the only question left is editorial. Things people commonly do with this collection:</p>
+      <ul>
+        <li><strong>Translate.</strong> Drop translated Markdown into the <code>content/</code> folder, or translate the downloaded <code>.md</code> files and publish them under your own imprint.</li>
+        <li><strong>Curate.</strong> Pull five articles into a syllabus, a newsletter issue, a course reader or a handbook. Because there are no attribution requirements, it stays simple; a credit line is still welcome.</li>
+        <li><strong>Republish as a book.</strong> The Markdown and plain-text bundles feed Pandoc, Asciidoctor, MkDocs, Sphinx or Typst with no cleanup.</li>
+        <li><strong>Use commercially.</strong> Sell a printed compendium, a course, a consulting library. The license permits it and asks for nothing in return.</li>
+        <li><strong>Machine-readable reuse.</strong> The JSON corpus is CC0 data, usable as retrieval-augmented-generation material, a fine-tuning or evaluation set, or a translation-training source.</li>
+      </ul>
+    </div>
+
+    <div class="panel" id="attribution" data-tabs>
+      <h2>Step 3 — do I need to credit you?</h2>
+      <p><strong>No.</strong> CC0 waives all copyright and related rights, so there is no legal requirement to credit. It is good manners, and useful for readers, if you do. If you want to, one of these is plenty:</p>
+      <textarea class="copybox" rows="3" readonly>Adapted from "AI Article Hub" (27 articles on artificial intelligence), dedicated to the public domain under CC0 1.0 Universal. https://creativecommons.org/publicdomain/zero/1.0/</textarea>
+      <div class="btn-row btn-row-tight">
+        <button class="btn" type="button" data-copy="this">Copy this credit line</button>
+        <button class="btn" type="button" data-copy="#short-credit">Copy a short one</button>
+      </div>
+      <p id="short-credit" class="note"><small>“From the AI Article Hub, a CC0 public-domain collection of 27 articles on AI.”</small></p>
+    </div>
+
+    <div class="panel" data-tabs>
+      <h2>Step 4 — put your own work in the public domain</h2>
+      <p>If you maintain a site, a handbook or a documentation set, you can dedicate it to the public domain the same way this one is dedicated.</p>
+      <ol class="steps">
+        <li><strong>Read the CC0 deed</strong> at <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="license noopener nofollow">creativecommons.org/publicdomain/zero/1.0/</a>. The deed is a human-readable summary; the legal code is the official text.</li>
+        <li><strong>Attach the legal code</strong> as <code>LICENSE</code> or <code>LICENSE.md</code> in the root of the work, and add <code>SPDX-License-Identifier: CC0-1.0</code> to source files that benefit from machine-readable licensing.</li>
+        <li><strong>Declare it in metadata</strong> with <code>&lt;meta name="license" content="CC0 1.0"&gt;</code> and <code>&lt;link rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/"&gt;</code>, so scrapers and readers see it without opening the file.</li>
+        <li><strong>Say it in plain language</strong> in a <code>LICENSE</code> file and in the README, in the reader's language. A public domain dedication that people cannot find is a dedication nobody benefits from.</li>
+        <li><strong>Mind the exceptions.</strong> CC0 cannot waive trademark, patent, publicity or moral rights, and it does not cover third-party material you do not own. Clear any embedded assets, quotes or datasets first.</li>
+      </ol>
+      <h3>Ready-to-paste dedication</h3>
+      <textarea class="copybox" rows="6" readonly>CC0 1.0 Universal — Public Domain Dedication
+
+I dedicate this work to the public domain. To the extent possible under law,
+the creator(s) of this work have waived all copyright and related or
+neighboring rights to this work. You may copy, modify, distribute and
+perform this work, even for commercial purposes, without permission and
+without asking for attribution.
+
+Full legal code: https://creativecommons.org/publicdomain/zero/1.0/legalcode
+SPDX-License-Identifier: CC0-1.0</textarea>
+      <div class="btn-row btn-row-tight">
+        <button class="btn" type="button" data-copy="this">Copy the dedication text</button>
+      </div>
+    </div>
+
+    <div class="panel" data-tabs>
+      <h2>Step 5 — where people put sites like this</h2>
+      <ul>
+        <li><strong>GitHub Pages</strong> — free, permanent URLs, easy history and forks. The natural home for a CC0 corpus.</li>
+        <li><strong>Cloudflare Pages / Netlify / Vercel</strong> — instant deploys with previews for every change.</li>
+        <li><strong>IPFS or a plain object store</strong> — content-addressed, hard to take down, good for public-domain archives.</li>
+        <li><strong>Your own server</strong> — the build output is ordinary files; a 5 KB Nginx config is enough.</li>
+        <li><strong>Print and PDF</strong> — the print stylesheet produces clean pages; combine the Markdown with Pandoc for a book.</li>
+        <li><strong>Registries</strong> — the JSON corpus can be deposited on Zenodo or a domain-specific repository with an open license.</li>
+      </ul>
+    </div>
+
+    <div class="panel" data-tabs>
+      <h2>Step 6 — the security headers</h2>
+      <p>The build already writes working configuration into <code>dist/</code>. Keep the file that matches your host and delete the rest, so you are not publishing a config for a server that is not there:</p>
+      <ul>
+        <li><code>_headers</code> — Netlify and Cloudflare Pages.</li>
+        <li><code>vercel.json</code> — Vercel.</li>
+        <li><code>.htaccess</code> — Apache and most shared hosts.</li>
+        <li><code>security-headers.nginx.conf</code> — Nginx; paste the lines into your <code>server{}</code> block.</li>
+        <li><code>.well-known/security.txt</code> — every host, at the path the standard requires.</li>
+      </ul>
+      <p>All of them are generated from one file, <code>src/lib/security.mjs</code>, so they cannot disagree with each other or with what the checker enforces. The policy is strict: nothing loads from another origin, and there is no inline script or inline style anywhere on the site.</p>
+      <p>Before your first deploy, set <code>baseUrl</code> and <code>securityContact</code> in <code>src/templates/layout.mjs</code> and rebuild, so canonical links, the feed, the sitemap and <code>security.txt</code> point at your own domain and your own mailbox.</p>
+      <p><a href="security.html">Read the full security policy</a>, or <code>SECURITY.md</code> in the project source.</p>
+    </div>
+  </div>
+</div>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h5>AI Article Hub</h5>
+        <p>Twenty-seven original, in-depth articles on artificial intelligence — from neural networks and transformers to AI safety, law and public policy. Free to read, download and reuse: everything here is released into the public domain under CC0 1.0.</p>
+        <p>Written to be read, translated, remixed and taught from without permission or payment.</p>
+      </div>
+      <div>
+        <h5>Read</h5>
+        <ul>
+          <li><a href="index.html#articles">All 27 articles</a></li>
+          <li><a href="downloads.html">Download everything</a></li>
+          <li><a href="feed.xml">RSS feed</a></li>
+          <li><a href="sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Reuse</h5>
+        <ul>
+          <li><a href="license.html">CC0 license terms</a></li>
+          <li><a href="publish.html">Publish this site</a></li>
+          <li><a href="publish.html#attribution">Do I need credit?</a></li>
+          <li><a href="about.html">About the project</a></li>
+          <li><a href="security.html">Security</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="license-line">
+      <span>© 2026 The AI Article Hub Editorial Collective. Text released under CC0 1.0 — dedicated to the public domain, no rights reserved.</span>
+      <a class="badge-cc" href="license.html">CC0 1.0 · Public Domain Dedication</a>
+    </div>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

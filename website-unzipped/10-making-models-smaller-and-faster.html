@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Making Models Smaller and Faster — Quantisation, Distillation and Pruning · AI Article Hub</title>
+<meta name="description" content="A frontier model and a model that runs on a laptop are made of the same ideas, compressed. The three compression techniques that matter, how they work, and the trade-offs each one makes.">
+<link rel="canonical" href="https://example.org/ai-article-hub/index.html">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#2f5bd7">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AI Article Hub">
+<meta property="og:title" content="Making Models Smaller and Faster — Quantisation, Distillation and Pruning · AI Article Hub">
+<meta property="og:description" content="A frontier model and a model that runs on a laptop are made of the same ideas, compressed. The three compression techniques that matter, how they work, and the trade-offs each one makes.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="license" content="CC0 1.0">
+<meta name="dcterms.license" content="https://creativecommons.org/publicdomain/zero/1.0/">
+<link rel="alternate" type="application/rss+xml" title="AI Article Hub" href="feed.xml">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/styles.css">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Making Models Smaller and Faster — Quantisation, Distillation and Pruning">
+<meta property="og:description" content="A frontier model and a model that runs on a laptop are made of the same ideas, compressed. The three compression techniques that matter, how they work, and the trade-offs each one makes.">
+<meta property="og:url" content="https://example.org/ai-article-hub/10-making-models-smaller-and-faster.html">
+<meta property="article:section" content="Applied AI">
+<meta property="article:tag" content="efficiency">
+<meta property="article:tag" content="quantisation">
+<meta property="article:tag" content="distillation">
+<meta property="article:tag" content="pruning">
+<meta property="article:tag" content="inference">
+<meta property="article:tag" content="edge ai">
+<meta name="author" content="The AI Article Hub Editorial Collective">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Making Models Smaller and Faster — Quantisation, Distillation and Pruning","description":"A frontier model and a model that runs on a laptop are made of the same ideas, compressed. The three compression techniques that matter, how they work, and the trade-offs each one makes.","datePublished":"2024-03-18","dateModified":"2024-03-18","inLanguage":"en","articleSection":"Applied AI","keywords":"efficiency, quantisation, distillation, pruning, inference, edge ai","wordCount":1186,"isAccessibleForFree":true,"license":"https://creativecommons.org/publicdomain/zero/1.0/","creativeWorkStatus":"Public Domain","author":{"@type":"Organization","name":"The AI Article Hub Editorial Collective"},"publisher":{"@type":"Organization","name":"AI Article Hub"},"mainEntityOfPage":"https://example.org/ai-article-hub/10-making-models-smaller-and-faster.html"}</script>
+</head>
+<body class="">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="index.html">
+      <span class="logo" aria-hidden="true">AI</span>
+      <span>AI Article Hub<small>CC0 1.0 · Public Domain</small></span>
+    </a>
+    <button class="icon-btn menu-btn" data-menu-toggle aria-label="Toggle navigation" aria-controls="site-nav">☰</button>
+    <nav class="nav" id="site-nav" aria-label="Main">
+          <a href="index.html">Home</a>
+          <a href="index.html#articles">Articles</a>
+          <a href="downloads.html">Downloads</a>
+          <a href="publish.html">Publish</a>
+          <a href="license.html">License</a>
+          <a href="about.html">About</a>
+          <a href="security.html">Security</a>
+      <button class="icon-btn theme-toggle" data-theme-toggle type="button" aria-label="Toggle theme">☾</button>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<div class="wrap">
+  <div class="article-shell">
+    <div>
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a> › <a href="index.html#articles">Articles</a> › <span>10 of 27</span>
+      </nav>
+
+      <header class="article-head">
+        <div class="kicker">
+          <span class="tag accent">Part 10 of 27</span>
+          <span class="tag">Applied AI</span>
+          <span class="tag">5 min read</span>
+        </div>
+        <h1>Making Models Smaller and Faster — Quantisation, Distillation and Pruning</h1>
+        <p class="standfirst">A frontier model and a model that runs on a laptop are made of the same ideas, compressed. The three compression techniques that matter, how they work, and the trade-offs each one makes.</p>
+        <div class="byline">
+          <span>2024-03-18</span><span class="dot">•</span>
+          <span>Applied AI</span><span class="dot">•</span>
+          <span>1,186 words</span><span class="dot">•</span>
+          <span>CC0 1.0 public domain</span>
+        </div>
+      </header>
+
+      <div class="prose">
+<p>A frontier model runs in a datacentre. A phone cannot. The gap between them is not a mystery or a matter of engineering taste; it is arithmetic, and it is why compression is one of the most valuable skills in the field.</p>
+<p>The good news is that models are almost always much larger than they need to be. Three techniques account for most of the useful work.</p>
+<h2 id="where-the-money-goes">Where the money goes</h2>
+<p>Serving a model costs money in two ways, and they scale differently.</p>
+<p><strong>Compute cost</strong> grows with the number of parameters involved in each token — the number of arithmetic operations, and therefore the electricity, the accelerator time and the latency.</p>
+<p><strong>Memory cost</strong> grows with the total parameter count, because every weight must live somewhere. At long context lengths and high request volumes, memory is often the real constraint: the accelerator&#39;s memory bandwidth, not its arithmetic, decides how many requests per second you can serve.</p>
+<p>The distinction matters because the three techniques attack it differently, and a technique that halves arithmetic while leaving memory untouched can save less than expected.</p>
+<h2 id="quantisation-fewer-bits-per-number">Quantisation: fewer bits per number</h2>
+<p>Neural networks store every weight as a floating-point number, typically 16 bits. A model with 70 billion parameters needs roughly 140 gigabytes just to hold the weights in memory — four high-end accelerators before you store anything else.</p>
+<p><strong>Quantisation</strong> stores those numbers at lower precision: 8 bits, 4 bits, or occasionally 2. The 4-bit format, which is standard for local deployment, uses about a third of the memory of 16-bit. Because memory is the binding constraint, that translates directly into more concurrent requests, longer contexts, and hardware that was previously out of reach.</p>
+<p>The technique works because the distribution of trained weights is smooth and forgiving: most weights cluster near zero, and a small rounding error in each one barely changes the computation. The gain also comes with a real cost. Quantisation introduces error, and error accumulates differently across tasks. A model that handles general chat acceptably at 4 bits may produce noticeably worse code, worse structured output and worse reasoning, because those tasks depend on precise coordination across many weights.</p>
+<p>The nuance that matters in practice: <strong>error is not evenly distributed</strong>. Some layers and some dimensions are far more sensitive than others, and a good quantisation scheme spends bits where sensitivity is high. Per-channel scaling, mixed precision across layer types, and formats that keep sensitive values at higher precision are all refinements of that one idea. Naive round-to-nearest is the version that gives quantisation its bad reputation.</p>
+<blockquote><p>&quot;The model is 4-bit&quot; is not a fact about quality. It is a fact about a trade-off that varies enormously by task.</p></blockquote>
+<h2 id="distillation-teach-a-small-model-to-imitate-a-big-one">Distillation: teach a small model to imitate a big one</h2>
+<p><strong>Distillation</strong> trains a small model to reproduce the behaviour of a large one. Instead of being shown raw data, the student is shown the large model&#39;s outputs — probabilities across the whole vocabulary, not just the chosen token — and is trained to match them.</p>
+<p>The extra information in those probability distributions is the whole trick. A probability of 0.4 versus 0.35 tells the student something about how the teacher understood the question, and that soft signal carries far more information per example than a hard label. It also tells the student when the teacher was uncertain, which is a genuinely useful thing to learn.</p>
+<p>Distilled models of a few billion parameters routinely match models an order of magnitude larger on focused tasks — a particular domain, a particular style, a particular output format. The catch is that they inherit the teacher&#39;s ceiling. A student cannot reliably exceed its teacher, so for genuinely frontier capability the approach has a limit, and the practical pattern is to distil from the best available model into something that fits your hardware.</p>
+<p>There is a second, cheaper form of the same idea: distil a large model&#39;s <em>answers</em> on your own data, so the student learns your task rather than the general one. This is how most organisation-specific &quot;small model&quot; systems are actually built.</p>
+<h2 id="pruning-remove-what-does-not-matter">Pruning: remove what does not matter</h2>
+<p><strong>Pruning</strong> deletes weights, whole neurons, attention heads, or entire blocks. A well-trained network typically contains far more structure than it uses, and removing the least useful part often changes accuracy very little.</p>
+<p>Structured pruning — removing whole blocks so the remaining model is a genuinely smaller network — matters far more than unstructured pruning for real deployments, because hardware runs dense blocks quickly and sparse structures slowly. A model that is 20% smaller but must be evaluated as a sparse matrix is usually <em>slower</em>, not faster. This is one of the recurring disappointments in the literature.</p>
+<p>Pruning also has a memory cost: a sparse representation needs an index structure, and the index can be larger than the values saved. Modern schemes mitigate this with block-structured sparsity that hardware can exploit, but the basic asymmetry holds.</p>
+<h2 id="what-else-helps">What else helps</h2>
+<p>Three more levers routinely matter as much as the three above:</p>
+<ul><li><strong>Sparse mixture-of-experts</strong> models hold huge total capacity but activate only a fraction of it per token, which raises quality without a proportional rise in compute. They are the most common way a production model is simultaneously large and affordable.</li><li><strong>Caching</strong> exploits the fact that prompts share prefixes. Storing the intermediate states for a common prefix — as a system prompt, a large document, or a shared conversation — removes most of the cost of reprocessing it. This is why prompt design has a real cost dimension.</li><li><strong>Speculative decoding</strong> uses a small draft model to propose several tokens at once, which a larger model then verifies in a single batched pass. For a small model that agrees with the large one most of the time, this delivers a substantial speed-up at essentially unchanged output quality.</li></ul>
+<h2 id="choosing-what-to-do">Choosing what to do</h2>
+<ul><li><strong>Cost per token is dominated by arithmetic?</strong> Quantise aggressively, and check quality on structured output.</li><li><strong>You cannot fit the model in memory at all?</strong> Quantise hard, then distil to a smaller architecture. These are the two techniques that actually move the memory wall.</li><li><strong>A specific narrow task?</strong> Distil. Nothing else comes close.</li><li><strong>Latency is the constraint?</strong> Speculative decoding and caching, before anything that reduces quality.</li><li><strong>You own the training loop?</strong> Structured pruning as a final step, validated carefully, because it is the technique most likely to produce a benchmark win and a production regression.</li></ul>
+<h2 id="the-larger-point">The larger point</h2>
+<p>Efficiency work is what turns capability into a product. A capability that runs only in a datacentre is available to whoever can afford the datacentre. A compressed model that runs on a laptop, a phone or an offline workstation is available to everyone, including the people and institutions the technology was supposed to help.</p>
+<p>That is why the field&#39;s efficiency research is not merely cost reduction. Combined with open weights, discussed in <a href="25-the-open-weights-movement.html">The Open Weights Movement </a>, it is the mechanism by which capability spreads rather than concentrates. And that is a governance question as much as an engineering one.</p>
+      </div>
+
+      <nav class="pager" aria-label="Article navigation">
+        <a class="prev" href="09-evaluating-ai.html"><span class="dir">← Previous</span><span class="t">Evaluating AI — Benchmarks, Hallucinations and How to Measure Quality</span></a>
+        <a class="next" href="11-prompt-engineering-and-retrieval.html"><span class="dir">Next →</span><span class="t">Prompt Engineering and Retrieval — Practical Patterns</span></a>
+      </nav>
+    </div>
+
+    <aside class="side">
+      <div class="side-box">
+        <h4>Reading progress</h4>
+        <progress class="progress" data-progress max="100" value="0" aria-label="Reading progress">0%</progress>
+      </div>
+
+      <div class="side-box">
+        <h4>Download this article</h4>
+        <div class="actions">
+          <button class="btn" data-dl="md" type="button">Markdown (.md)</button>
+          <button class="btn" data-dl="html" type="button">Web page (.html)</button>
+          <button class="btn" data-dl="pdf" type="button">Print / Save as PDF</button>
+          <button class="btn" data-dl="txt" type="button">Plain text (.txt)</button>
+          <button class="btn" data-dl="json" type="button">Data (.json)</button>
+          <button class="btn" data-dl="copy" type="button">Copy full text</button>
+        </div>
+      </div>
+
+      <div class="side-box">
+        <h4>On this page</h4>
+        <ol><li><a href="#where-the-money-goes">Where the money goes</a></li><li><a href="#quantisation-fewer-bits-per-number">Quantisation: fewer bits per number</a></li><li><a href="#distillation-teach-a-small-model-to-imitate-a-big-one">Distillation: teach a small model to imitate a big one</a></li><li><a href="#pruning-remove-what-does-not-matter">Pruning: remove what does not matter</a></li><li><a href="#what-else-helps">What else helps</a></li><li><a href="#choosing-what-to-do">Choosing what to do</a></li><li><a href="#the-larger-point">The larger point</a></li></ol>
+      </div>
+
+      <div class="side-box">
+        <h4>Reuse this text</h4>
+        <p class="license-note"><b>Public domain.</b> Copy, translate, adapt, teach from, or republish it anywhere — commercially or not — with no permission and no obligation to credit. <a href="license.html">Read the CC0 terms</a>.</p>
+      </div>
+
+      <div class="side-box">
+        <h4>Related reading</h4>
+        <div class="related"><a href="11-prompt-engineering-and-retrieval.html"><span>11 · Applied AI</span>Prompt Engineering and Retrieval — Practical Patterns</a><a href="12-agents-and-tool-use.html"><span>12 · Applied AI</span>Agents and Tool Use — When AI Takes Action</a><a href="13-fine-tuning-rlhf-and-alignment.html"><span>13 · Applied AI</span>Fine-Tuning, RLHF and Alignment — Teaching Models to Be Helpful</a><a href="18-the-economics-of-ai-inference.html"><span>18 · Engineering</span>The Economics of AI Inference — Costs, Latency and What Actually Drives Them</a></div>
+      </div>
+    </aside>
+  </div>
+</div>
+<script type="application/json" id="article-source">{"number":10,"title":"Making Models Smaller and Faster — Quantisation, Distillation and Pruning","description":"A frontier model and a model that runs on a laptop are made of the same ideas, compressed. The three compression techniques that matter, how they work, and the trade-offs each one makes.","category":"Applied AI","tags":["efficiency","quantisation","distillation","pruning","inference","edge ai"],"date":"2024-03-18","author":"The AI Article Hub Editorial Collective","readingTime":"5 min read","markdown":"A frontier model runs in a datacentre. A phone cannot. The gap between them is not a mystery or a matter of engineering taste; it is arithmetic, and it is why compression is one of the most valuable skills in the field.\n\nThe good news is that models are almost always much larger than they need to be. Three techniques account for most of the useful work.\n\n## Where the money goes\n\nServing a model costs money in two ways, and they scale differently.\n\n**Compute cost** grows with the number of parameters involved in each token — the number of arithmetic operations, and therefore the electricity, the accelerator time and the latency.\n\n**Memory cost** grows with the total parameter count, because every weight must live somewhere. At long context lengths and high request volumes, memory is often the real constraint: the accelerator's memory bandwidth, not its arithmetic, decides how many requests per second you can serve.\n\nThe distinction matters because the three techniques attack it differently, and a technique that halves arithmetic while leaving memory untouched can save less than expected.\n\n## Quantisation: fewer bits per number\n\nNeural networks store every weight as a floating-point number, typically 16 bits. A model with 70 billion parameters needs roughly 140 gigabytes just to hold the weights in memory — four high-end accelerators before you store anything else.\n\n**Quantisation** stores those numbers at lower precision: 8 bits, 4 bits, or occasionally 2. The 4-bit format, which is standard for local deployment, uses about a third of the memory of 16-bit. Because memory is the binding constraint, that translates directly into more concurrent requests, longer contexts, and hardware that was previously out of reach.\n\nThe technique works because the distribution of trained weights is smooth and forgiving: most weights cluster near zero, and a small rounding error in each one barely changes the computation. The gain also comes with a real cost. Quantisation introduces error, and error accumulates differently across tasks. A model that handles general chat acceptably at 4 bits may produce noticeably worse code, worse structured output and worse reasoning, because those tasks depend on precise coordination across many weights.\n\nThe nuance that matters in practice: **error is not evenly distributed**. Some layers and some dimensions are far more sensitive than others, and a good quantisation scheme spends bits where sensitivity is high. Per-channel scaling, mixed precision across layer types, and formats that keep sensitive values at higher precision are all refinements of that one idea. Naive round-to-nearest is the version that gives quantisation its bad reputation.\n\n> \"The model is 4-bit\" is not a fact about quality. It is a fact about a trade-off that varies enormously by task.\n\n## Distillation: teach a small model to imitate a big one\n\n**Distillation** trains a small model to reproduce the behaviour of a large one. Instead of being shown raw data, the student is shown the large model's outputs — probabilities across the whole vocabulary, not just the chosen token — and is trained to match them.\n\nThe extra information in those probability distributions is the whole trick. A probability of 0.4 versus 0.35 tells the student something about how the teacher understood the question, and that soft signal carries far more information per example than a hard label. It also tells the student when the teacher was uncertain, which is a genuinely useful thing to learn.\n\nDistilled models of a few billion parameters routinely match models an order of magnitude larger on focused tasks — a particular domain, a particular style, a particular output format. The catch is that they inherit the teacher's ceiling. A student cannot reliably exceed its teacher, so for genuinely frontier capability the approach has a limit, and the practical pattern is to distil from the best available model into something that fits your hardware.\n\nThere is a second, cheaper form of the same idea: distil a large model's *answers* on your own data, so the student learns your task rather than the general one. This is how most organisation-specific \"small model\" systems are actually built.\n\n## Pruning: remove what does not matter\n\n**Pruning** deletes weights, whole neurons, attention heads, or entire blocks. A well-trained network typically contains far more structure than it uses, and removing the least useful part often changes accuracy very little.\n\nStructured pruning — removing whole blocks so the remaining model is a genuinely smaller network — matters far more than unstructured pruning for real deployments, because hardware runs dense blocks quickly and sparse structures slowly. A model that is 20% smaller but must be evaluated as a sparse matrix is usually *slower*, not faster. This is one of the recurring disappointments in the literature.\n\nPruning also has a memory cost: a sparse representation needs an index structure, and the index can be larger than the values saved. Modern schemes mitigate this with block-structured sparsity that hardware can exploit, but the basic asymmetry holds.\n\n## What else helps\n\nThree more levers routinely matter as much as the three above:\n\n- **Sparse mixture-of-experts** models hold huge total capacity but activate only a fraction of it per token, which raises quality without a proportional rise in compute. They are the most common way a production model is simultaneously large and affordable.\n- **Caching** exploits the fact that prompts share prefixes. Storing the intermediate states for a common prefix — as a system prompt, a large document, or a shared conversation — removes most of the cost of reprocessing it. This is why prompt design has a real cost dimension.\n- **Speculative decoding** uses a small draft model to propose several tokens at once, which a larger model then verifies in a single batched pass. For a small model that agrees with the large one most of the time, this delivers a substantial speed-up at essentially unchanged output quality.\n\n## Choosing what to do\n\n- **Cost per token is dominated by arithmetic?** Quantise aggressively, and check quality on structured output.\n- **You cannot fit the model in memory at all?** Quantise hard, then distil to a smaller architecture. These are the two techniques that actually move the memory wall.\n- **A specific narrow task?** Distil. Nothing else comes close.\n- **Latency is the constraint?** Speculative decoding and caching, before anything that reduces quality.\n- **You own the training loop?** Structured pruning as a final step, validated carefully, because it is the technique most likely to produce a benchmark win and a production regression.\n\n## The larger point\n\nEfficiency work is what turns capability into a product. A capability that runs only in a datacentre is available to whoever can afford the datacentre. A compressed model that runs on a laptop, a phone or an offline workstation is available to everyone, including the people and institutions the technology was supposed to help.\n\nThat is why the field's efficiency research is not merely cost reduction. Combined with open weights, discussed in [The Open Weights Movement ](25-the-open-weights-movement.html), it is the mechanism by which capability spreads rather than concentrates. And that is a governance question as much as an engineering one.","html":"\u003cp>A frontier model runs in a datacentre. A phone cannot. The gap between them is not a mystery or a matter of engineering taste; it is arithmetic, and it is why compression is one of the most valuable skills in the field.\u003c/p>\n\u003cp>The good news is that models are almost always much larger than they need to be. Three techniques account for most of the useful work.\u003c/p>\n\u003ch2 id=\"where-the-money-goes\">Where the money goes\u003c/h2>\n\u003cp>Serving a model costs money in two ways, and they scale differently.\u003c/p>\n\u003cp>\u003cstrong>Compute cost\u003c/strong> grows with the number of parameters involved in each token — the number of arithmetic operations, and therefore the electricity, the accelerator time and the latency.\u003c/p>\n\u003cp>\u003cstrong>Memory cost\u003c/strong> grows with the total parameter count, because every weight must live somewhere. At long context lengths and high request volumes, memory is often the real constraint: the accelerator&#39;s memory bandwidth, not its arithmetic, decides how many requests per second you can serve.\u003c/p>\n\u003cp>The distinction matters because the three techniques attack it differently, and a technique that halves arithmetic while leaving memory untouched can save less than expected.\u003c/p>\n\u003ch2 id=\"quantisation-fewer-bits-per-number\">Quantisation: fewer bits per number\u003c/h2>\n\u003cp>Neural networks store every weight as a floating-point number, typically 16 bits. A model with 70 billion parameters needs roughly 140 gigabytes just to hold the weights in memory — four high-end accelerators before you store anything else.\u003c/p>\n\u003cp>\u003cstrong>Quantisation\u003c/strong> stores those numbers at lower precision: 8 bits, 4 bits, or occasionally 2. The 4-bit format, which is standard for local deployment, uses about a third of the memory of 16-bit. Because memory is the binding constraint, that translates directly into more concurrent requests, longer contexts, and hardware that was previously out of reach.\u003c/p>\n\u003cp>The technique works because the distribution of trained weights is smooth and forgiving: most weights cluster near zero, and a small rounding error in each one barely changes the computation. The gain also comes with a real cost. Quantisation introduces error, and error accumulates differently across tasks. A model that handles general chat acceptably at 4 bits may produce noticeably worse code, worse structured output and worse reasoning, because those tasks depend on precise coordination across many weights.\u003c/p>\n\u003cp>The nuance that matters in practice: \u003cstrong>error is not evenly distributed\u003c/strong>. Some layers and some dimensions are far more sensitive than others, and a good quantisation scheme spends bits where sensitivity is high. Per-channel scaling, mixed precision across layer types, and formats that keep sensitive values at higher precision are all refinements of that one idea. Naive round-to-nearest is the version that gives quantisation its bad reputation.\u003c/p>\n\u003cblockquote>\u003cp>&quot;The model is 4-bit&quot; is not a fact about quality. It is a fact about a trade-off that varies enormously by task.\u003c/p>\u003c/blockquote>\n\u003ch2 id=\"distillation-teach-a-small-model-to-imitate-a-big-one\">Distillation: teach a small model to imitate a big one\u003c/h2>\n\u003cp>\u003cstrong>Distillation\u003c/strong> trains a small model to reproduce the behaviour of a large one. Instead of being shown raw data, the student is shown the large model&#39;s outputs — probabilities across the whole vocabulary, not just the chosen token — and is trained to match them.\u003c/p>\n\u003cp>The extra information in those probability distributions is the whole trick. A probability of 0.4 versus 0.35 tells the student something about how the teacher understood the question, and that soft signal carries far more information per example than a hard label. It also tells the student when the teacher was uncertain, which is a genuinely useful thing to learn.\u003c/p>\n\u003cp>Distilled models of a few billion parameters routinely match models an order of magnitude larger on focused tasks — a particular domain, a particular style, a particular output format. The catch is that they inherit the teacher&#39;s ceiling. A student cannot reliably exceed its teacher, so for genuinely frontier capability the approach has a limit, and the practical pattern is to distil from the best available model into something that fits your hardware.\u003c/p>\n\u003cp>There is a second, cheaper form of the same idea: distil a large model&#39;s \u003cem>answers\u003c/em> on your own data, so the student learns your task rather than the general one. This is how most organisation-specific &quot;small model&quot; systems are actually built.\u003c/p>\n\u003ch2 id=\"pruning-remove-what-does-not-matter\">Pruning: remove what does not matter\u003c/h2>\n\u003cp>\u003cstrong>Pruning\u003c/strong> deletes weights, whole neurons, attention heads, or entire blocks. A well-trained network typically contains far more structure than it uses, and removing the least useful part often changes accuracy very little.\u003c/p>\n\u003cp>Structured pruning — removing whole blocks so the remaining model is a genuinely smaller network — matters far more than unstructured pruning for real deployments, because hardware runs dense blocks quickly and sparse structures slowly. A model that is 20% smaller but must be evaluated as a sparse matrix is usually \u003cem>slower\u003c/em>, not faster. This is one of the recurring disappointments in the literature.\u003c/p>\n\u003cp>Pruning also has a memory cost: a sparse representation needs an index structure, and the index can be larger than the values saved. Modern schemes mitigate this with block-structured sparsity that hardware can exploit, but the basic asymmetry holds.\u003c/p>\n\u003ch2 id=\"what-else-helps\">What else helps\u003c/h2>\n\u003cp>Three more levers routinely matter as much as the three above:\u003c/p>\n\u003cul>\u003cli>\u003cstrong>Sparse mixture-of-experts\u003c/strong> models hold huge total capacity but activate only a fraction of it per token, which raises quality without a proportional rise in compute. They are the most common way a production model is simultaneously large and affordable.\u003c/li>\u003cli>\u003cstrong>Caching\u003c/strong> exploits the fact that prompts share prefixes. Storing the intermediate states for a common prefix — as a system prompt, a large document, or a shared conversation — removes most of the cost of reprocessing it. This is why prompt design has a real cost dimension.\u003c/li>\u003cli>\u003cstrong>Speculative decoding\u003c/strong> uses a small draft model to propose several tokens at once, which a larger model then verifies in a single batched pass. For a small model that agrees with the large one most of the time, this delivers a substantial speed-up at essentially unchanged output quality.\u003c/li>\u003c/ul>\n\u003ch2 id=\"choosing-what-to-do\">Choosing what to do\u003c/h2>\n\u003cul>\u003cli>\u003cstrong>Cost per token is dominated by arithmetic?\u003c/strong> Quantise aggressively, and check quality on structured output.\u003c/li>\u003cli>\u003cstrong>You cannot fit the model in memory at all?\u003c/strong> Quantise hard, then distil to a smaller architecture. These are the two techniques that actually move the memory wall.\u003c/li>\u003cli>\u003cstrong>A specific narrow task?\u003c/strong> Distil. Nothing else comes close.\u003c/li>\u003cli>\u003cstrong>Latency is the constraint?\u003c/strong> Speculative decoding and caching, before anything that reduces quality.\u003c/li>\u003cli>\u003cstrong>You own the training loop?\u003c/strong> Structured pruning as a final step, validated carefully, because it is the technique most likely to produce a benchmark win and a production regression.\u003c/li>\u003c/ul>\n\u003ch2 id=\"the-larger-point\">The larger point\u003c/h2>\n\u003cp>Efficiency work is what turns capability into a product. A capability that runs only in a datacentre is available to whoever can afford the datacentre. A compressed model that runs on a laptop, a phone or an offline workstation is available to everyone, including the people and institutions the technology was supposed to help.\u003c/p>\n\u003cp>That is why the field&#39;s efficiency research is not merely cost reduction. Combined with open weights, discussed in \u003ca href=\"25-the-open-weights-movement.html\">The Open Weights Movement \u003c/a>, it is the mechanism by which capability spreads rather than concentrates. And that is a governance question as much as an engineering one.\u003c/p>"}</script>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h5>AI Article Hub</h5>
+        <p>Twenty-seven original, in-depth articles on artificial intelligence — from neural networks and transformers to AI safety, law and public policy. Free to read, download and reuse: everything here is released into the public domain under CC0 1.0.</p>
+        <p>Written to be read, translated, remixed and taught from without permission or payment.</p>
+      </div>
+      <div>
+        <h5>Read</h5>
+        <ul>
+          <li><a href="index.html#articles">All 27 articles</a></li>
+          <li><a href="downloads.html">Download everything</a></li>
+          <li><a href="feed.xml">RSS feed</a></li>
+          <li><a href="sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Reuse</h5>
+        <ul>
+          <li><a href="license.html">CC0 license terms</a></li>
+          <li><a href="publish.html">Publish this site</a></li>
+          <li><a href="publish.html#attribution">Do I need credit?</a></li>
+          <li><a href="about.html">About the project</a></li>
+          <li><a href="security.html">Security</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="license-line">
+      <span>© 2026 The AI Article Hub Editorial Collective. Text released under CC0 1.0 — dedicated to the public domain, no rights reserved.</span>
+      <a class="badge-cc" href="license.html">CC0 1.0 · Public Domain Dedication</a>
+    </div>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

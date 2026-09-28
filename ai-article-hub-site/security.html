@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Security · AI Article Hub</title>
+<meta name="description" content="How this site protects itself: no dependencies, escaped article content, a strict Content-Security-Policy, privacy headers, and how to report a vulnerability.">
+<link rel="canonical" href="https://example.org/ai-article-hub/index.html">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#2f5bd7">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AI Article Hub">
+<meta property="og:title" content="Security · AI Article Hub">
+<meta property="og:description" content="How this site protects itself: no dependencies, escaped article content, a strict Content-Security-Policy, privacy headers, and how to report a vulnerability.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="license" content="CC0 1.0">
+<meta name="dcterms.license" content="https://creativecommons.org/publicdomain/zero/1.0/">
+<link rel="alternate" type="application/rss+xml" title="AI Article Hub" href="feed.xml">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/styles.css">
+
+</head>
+<body class="">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="index.html">
+      <span class="logo" aria-hidden="true">AI</span>
+      <span>AI Article Hub<small>CC0 1.0 · Public Domain</small></span>
+    </a>
+    <button class="icon-btn menu-btn" data-menu-toggle aria-label="Toggle navigation" aria-controls="site-nav">☰</button>
+    <nav class="nav" id="site-nav" aria-label="Main">
+          <a href="index.html">Home</a>
+          <a href="index.html#articles">Articles</a>
+          <a href="downloads.html">Downloads</a>
+          <a href="publish.html">Publish</a>
+          <a href="license.html">License</a>
+          <a href="about.html">About</a>
+          <a href="security.html" aria-current="page">Security</a>
+      <button class="icon-btn theme-toggle" data-theme-toggle type="button" aria-label="Toggle theme">☾</button>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<div class="wrap">
+  <div class="page narrow">
+    <h1>Security</h1>
+    <p class="lede">What this site does to protect itself, and how to report a problem.</p>
+    <div class="panel">
+      <h2>Reporting a vulnerability</h2>
+      <p>This is a static site. There is no server, no database and no account system, so the realistic risks are limited to content injected into a page, a compromised build dependency, and misconfigured hosting headers.</p>
+      <p>If you find a genuine problem, please report it privately to <strong>security@example.org</strong> rather than opening a public issue. Include the page URL, what you observed, and how to reproduce it.</p>
+      <p>Machine-readable details, following RFC 9116, are at <a href=".well-known/security.txt"><code>.well-known/security.txt</code></a>.</p>    </div>
+
+    <div class="panel">
+      <h2>No dependencies</h2>
+      <p>There are no runtime and no build dependencies. Nothing third-party can be compromised to reach this site, and there is no lockfile to audit. The Markdown renderer is part of this project, released under the same CC0 licence as the articles.</p>
+    </div>
+
+    <div class="panel">
+      <h2>Articles cannot inject code</h2>
+      <p>Every character of article text is escaped before any formatting is applied, so a <code>&lt;script&gt;</code> tag or an <code>onerror</code> attribute written in an article renders as visible text. Link targets are limited to <code>http</code>, <code>https</code> and <code>mailto</code>; anything else is left as inert text.</p>
+    </div>
+
+    <div class="panel">
+      <h2>Strict Content-Security-Policy</h2>
+      <p>The site serves a policy that permits resources only from this origin, and nothing else:</p>
+      <pre><code>default-src 'self';
+base-uri 'self';
+object-src 'none';
+frame-ancestors 'none';
+frame-src 'none';
+child-src 'none';
+form-action 'self';
+script-src 'self';
+script-src-attr 'none';
+style-src 'self';
+img-src 'self';
+font-src 'self';
+connect-src 'self';
+media-src 'self';
+manifest-src 'self';
+worker-src 'self';
+upgrade-insecure-requests</code></pre>
+      <p>There is no inline script, no inline event handler, no inline style attribute, no plugin and no framing. The practical effect is that even a hypothetical content-injection bug has no way to execute code or phone home.</p>
+      <p>Because the policy forbids inline styles, all styling lives in one stylesheet. The reading-progress bar is a native <code>&lt;progress&gt;</code> element rather than a div with a percentage written into its style attribute.</p>
+    </div>
+
+    <div class="panel">
+      <h2>Response headers</h2>
+      <ul>
+        <li><code>X-Content-Type-Options: nosniff</code> &mdash; no MIME sniffing.</li>
+        <li><code>X-Frame-Options: DENY</code> &mdash; this site cannot be framed, which blocks clickjacking.</li>
+        <li><code>Referrer-Policy: strict-origin-when-cross-origin</code> &mdash; referrers are not leaked to third parties.</li>
+        <li><code>Permissions-Policy</code> &mdash; camera, microphone, geolocation and the rest are disabled.</li>
+        <li><code>Cross-Origin-Opener-Policy</code> and <code>Cross-Origin-Resource-Policy</code> &mdash; windows and files are not shared with other origins.</li>
+        <li><code>Strict-Transport-Security</code> &mdash; enforced when the site is served over HTTPS.</li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h2>No tracking</h2>
+      <p>There are no analytics, no cookies, no advertising, no fonts or scripts loaded from other origins, and no third-party embeds. Reading this page involves no network requests beyond the files needed to display it.</p>
+    </div>
+
+    <div class="panel">
+      <h2>What depends on the host</h2>
+      <p>The build writes ready-to-serve configuration for common hosts: <code>_headers</code> for Netlify and Cloudflare Pages, <code>vercel.json</code> for Vercel, <code>.htaccess</code> for Apache, and <code>security-headers.nginx.conf</code> for nginx. Serving over HTTPS and keeping the web server patched are the operator's responsibility, not something the build can enforce.</p>
+      <p>The full policy, the deployment options and the verification steps are documented in <code>SECURITY.md</code> in the project source.</p>
+    </div>
+  </div>
+</div>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h5>AI Article Hub</h5>
+        <p>Twenty-seven original, in-depth articles on artificial intelligence — from neural networks and transformers to AI safety, law and public policy. Free to read, download and reuse: everything here is released into the public domain under CC0 1.0.</p>
+        <p>Written to be read, translated, remixed and taught from without permission or payment.</p>
+      </div>
+      <div>
+        <h5>Read</h5>
+        <ul>
+          <li><a href="index.html#articles">All 27 articles</a></li>
+          <li><a href="downloads.html">Download everything</a></li>
+          <li><a href="feed.xml">RSS feed</a></li>
+          <li><a href="sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Reuse</h5>
+        <ul>
+          <li><a href="license.html">CC0 license terms</a></li>
+          <li><a href="publish.html">Publish this site</a></li>
+          <li><a href="publish.html#attribution">Do I need credit?</a></li>
+          <li><a href="about.html">About the project</a></li>
+          <li><a href="security.html">Security</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="license-line">
+      <span>© 2026 The AI Article Hub Editorial Collective. Text released under CC0 1.0 — dedicated to the public domain, no rights reserved.</span>
+      <a class="badge-cc" href="license.html">CC0 1.0 · Public Domain Dedication</a>
+    </div>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

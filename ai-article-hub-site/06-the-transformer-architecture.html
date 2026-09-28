@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Transformer — The Architecture Behind Modern AI · AI Article Hub</title>
+<meta name="description" content="Attention is all you need, and almost everything since has followed from it. A guided tour of the transformer, from the intuition behind self-attention to why it scaled and what that scaling bought.">
+<link rel="canonical" href="https://example.org/ai-article-hub/index.html">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#2f5bd7">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AI Article Hub">
+<meta property="og:title" content="The Transformer — The Architecture Behind Modern AI · AI Article Hub">
+<meta property="og:description" content="Attention is all you need, and almost everything since has followed from it. A guided tour of the transformer, from the intuition behind self-attention to why it scaled and what that scaling bought.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="license" content="CC0 1.0">
+<meta name="dcterms.license" content="https://creativecommons.org/publicdomain/zero/1.0/">
+<link rel="alternate" type="application/rss+xml" title="AI Article Hub" href="feed.xml">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/styles.css">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The Transformer — The Architecture Behind Modern AI">
+<meta property="og:description" content="Attention is all you need, and almost everything since has followed from it. A guided tour of the transformer, from the intuition behind self-attention to why it scaled and what that scaling bought.">
+<meta property="og:url" content="https://example.org/ai-article-hub/06-the-transformer-architecture.html">
+<meta property="article:section" content="Foundations">
+<meta property="article:tag" content="transformer">
+<meta property="article:tag" content="attention">
+<meta property="article:tag" content="architecture">
+<meta property="article:tag" content="gpt">
+<meta property="article:tag" content="deep learning">
+<meta name="author" content="The AI Article Hub Editorial Collective">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"The Transformer — The Architecture Behind Modern AI","description":"Attention is all you need, and almost everything since has followed from it. A guided tour of the transformer, from the intuition behind self-attention to why it scaled and what that scaling bought.","datePublished":"2024-02-19","dateModified":"2024-02-19","inLanguage":"en","articleSection":"Foundations","keywords":"transformer, attention, architecture, gpt, deep learning","wordCount":1333,"isAccessibleForFree":true,"license":"https://creativecommons.org/publicdomain/zero/1.0/","creativeWorkStatus":"Public Domain","author":{"@type":"Organization","name":"The AI Article Hub Editorial Collective"},"publisher":{"@type":"Organization","name":"AI Article Hub"},"mainEntityOfPage":"https://example.org/ai-article-hub/06-the-transformer-architecture.html"}</script>
+</head>
+<body class="">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="index.html">
+      <span class="logo" aria-hidden="true">AI</span>
+      <span>AI Article Hub<small>CC0 1.0 · Public Domain</small></span>
+    </a>
+    <button class="icon-btn menu-btn" data-menu-toggle aria-label="Toggle navigation" aria-controls="site-nav">☰</button>
+    <nav class="nav" id="site-nav" aria-label="Main">
+          <a href="index.html">Home</a>
+          <a href="index.html#articles">Articles</a>
+          <a href="downloads.html">Downloads</a>
+          <a href="publish.html">Publish</a>
+          <a href="license.html">License</a>
+          <a href="about.html">About</a>
+          <a href="security.html">Security</a>
+      <button class="icon-btn theme-toggle" data-theme-toggle type="button" aria-label="Toggle theme">☾</button>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<div class="wrap">
+  <div class="article-shell">
+    <div>
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a> › <a href="index.html#articles">Articles</a> › <span>06 of 27</span>
+      </nav>
+
+      <header class="article-head">
+        <div class="kicker">
+          <span class="tag accent">Part 06 of 27</span>
+          <span class="tag">Foundations</span>
+          <span class="tag">6 min read</span>
+        </div>
+        <h1>The Transformer — The Architecture Behind Modern AI</h1>
+        <p class="standfirst">Attention is all you need, and almost everything since has followed from it. A guided tour of the transformer, from the intuition behind self-attention to why it scaled and what that scaling bought.</p>
+        <div class="byline">
+          <span>2024-02-19</span><span class="dot">•</span>
+          <span>Foundations</span><span class="dot">•</span>
+          <span>1,333 words</span><span class="dot">•</span>
+          <span>CC0 1.0 public domain</span>
+        </div>
+      </header>
+
+      <div class="prose">
+<p>In 2017 a group of Google researchers published a paper with the least glamorous title in modern computing: <em>Attention Is All You Need</em>. It proposed replacing the recurrent networks that dominated sequence processing with a simpler mechanism, and within four years the mechanism was in essentially every frontier model in the industry. Text, images, audio, proteins, code: same idea.</p>
+<p>Understanding the transformer is worth the effort, because once you have it, the rest of the field stops being a list of unrelated facts.</p>
+<h2 id="the-problem-the-old-design-had">The problem the old design had</h2>
+<p>Before 2017, sequences were processed one element at a time. A recurrent neural network read a word, updated an internal state, read the next word, and so on. It has one hard limitation: the state must carry everything relevant from earlier, and the path from any early word to any late word is long. Long-range dependencies are hard to learn, training cannot be parallelised across the sequence, and a sequence of ten thousand tokens means ten thousand sequential steps.</p>
+<p>Transformers threw that away. Instead of maintaining a running state, every element of the sequence looks directly at every other element and decides how much to care. There is no recurrence, so training parallelises across the whole sequence, and the distance between the first and last token is one step.</p>
+<h2 id="self-attention-carefully">Self-attention, carefully</h2>
+<p>Consider the sentence: &quot;The trophy did not fit in the suitcase because it was too big.&quot; Which thing does <em>it</em> refer to — the trophy or the suitcase? Getting that right requires comparing two distant words and using what happened in between.</p>
+<p>Self-attention is a mechanism for exactly that comparison. For each token, the model computes three vectors:</p>
+<ul><li>a <strong>query</strong> — what am I looking for?</li><li>a <strong>key</strong> — what do I offer?</li><li>a <strong>value</strong> — what do I contribute if you want me?</li></ul>
+<p>Then, for every pair of tokens, it takes the dot product of one token&#39;s query with another&#39;s key, scales it, and turns the result into a weight through a softmax so the weights sum to one. Those weights become the mix used to combine the other tokens&#39; values. The output is a summary of the whole sequence, weighted by relevance.</p>
+<p>The famous phrase in the original paper describes the effect precisely: each position can attend to every other position, and the data decides the structure. In that sentence, the token <em>it</em> ends up attending heavily to <em>trophy</em>, because the learned geometry of the language says that is the likely antecedent. Nobody wrote that rule. It emerged from training.</p>
+<p>The multi-head variation runs several attention mechanisms in parallel, each with its own projections, so the model can look for several kinds of relationship at once — one head plausibly tracking syntax, another coreference, another simple adjacency.</p>
+<h2 id="the-rest-of-the-block">The rest of the block</h2>
+<p>An attention mechanism on its own would be a strange thing to build. In practice it appears inside a standard block, repeated dozens or hundreds of times:</p>
+<ul><li><strong>Residual connection.</strong> The block&#39;s input is added back to its output, so each layer only has to learn a <em>correction</em>. This is what makes very deep stacks trainable at all.</li><li><strong>Layer normalisation.</strong> Inputs to each block are rescaled to a standard range, which keeps the error from exploding as depth increases.</li><li><strong>Feed-forward network.</strong> Two linear layers with a non-linearity between them, applied to each position independently. Attention moves information <em>between</em> positions; the feed-forward layer thinks about each position <em>on its own</em>. Both are needed.</li><li><strong>Positional information.</strong> Attention is order-blind by construction, so the order of the sequence has to be added. The original work used a fixed sinusoidal encoding; most systems now learn positional vectors or use relative offsets.</li></ul>
+<p>Also worth knowing because it shows up in every product: a small <strong>vocabulary projection</strong> at the end maps the final representation to a distribution over tokens, and the training objective is a cross-entropy loss against the actual next token. Everything the model can say is scored; the highest-scoring one is emitted; the context is updated; repeat.</p>
+<h2 id="why-it-scaled">Why it scaled</h2>
+<p>The transformer was not a breakthrough because of elegance. It was a breakthrough because of <strong>engineering leverage</strong>.</p>
+<p>Recurrent models are sequential, so training time grows with sequence length and cannot be spread across a chip. Transformers are massively parallel, so a training run is a very large matrix computation — precisely the workload that graphics processors and specialised accelerators are built for. The same property makes distributed training across hundreds of accelerators straightforward.</p>
+<p>That creates a loop that turned out to be decisive: bigger models train more efficiently, larger datasets become affordable at all, and the result is a better model, which funds the next, larger run. Two decades of progress in chip design, interconnect and distributed systems were all waiting for an architecture that could absorb them. The architecture arrived in 2017.</p>
+<h2 id="what-scaling-bought-and-what-it-did-not">What scaling bought, and what it did not</h2>
+<p>The empirical finding, repeated across many labs and modalities, is unglamorous and robust: with enough data, enough parameters and enough compute, held-out error keeps falling along smooth power-law-ish curves, and the ordering of tasks by &quot;learned&quot; moves in a fairly predictable order. Models acquire the easier and more frequent patterns first, and the harder, rarer capabilities last.</p>
+<p>Three cautions about reading that literature:</p>
+<p><strong>Smooth curves invite bad science.</strong> If performance improves predictably with scale, the temptation is to extrapolate the curve. The difficulty is that a smooth improvement in average error can coexist with a specific capability that never appears at all, and the curve will not tell you which is which.</p>
+<p><strong>Smoothing is a choice, not physics.</strong> Averaging over many runs hides variance. Per-task, per-language and per-demographic results are routinely better than the headline, and worse than the headline in the places that matter to a particular user.</p>
+<p><strong>Capability and reliability are different things.</strong> A model that can do a task occasionally is not the same as a system that can be relied upon to do it. Scaling reliably moves the first, and improving the second is a separate engineering and research problem. This gap is the reason for <a href="09-evaluating-ai.html">Evaluating AI </a> as a discipline and for the caution in <a href="19-ai-safety-and-alignment.html">AI Safety and Alignment </a>.</p>
+<h2 id="where-the-architecture-went-next">Where the architecture went next</h2>
+<p>The original block has been modified in a dozen ways, all following the same logic: reduce the cost of attention, which grows quadratically with sequence length.</p>
+<ul><li><strong>Sparse and sliding-window attention</strong> restrict which tokens can be seen, cutting cost for long contexts.</li><li><strong>Multi-query and grouped-query variants</strong> share key and value projections across heads, which shrinks the memory bandwidth that often dominates decoding.</li><li><strong>Mixture-of-experts</strong> layers route each token to a small number of specialised sub-networks, so total capacity grows without paying for it on every token.</li><li><strong>Rotary and other positional schemes</strong> improve how position is represented for long contexts.</li><li><strong>State-space and recurrent hybrids</strong> reintroduce a cheap memory mechanism, effectively a learned compression of the past, to handle very long sequences at a fraction of the cost.</li></ul>
+<p>And the same block, with the &quot;sequence&quot; reinterpreted as patches of an image, tokens of audio or residues of a protein, became the backbone for models well outside language. That transfer is the strongest evidence for the architecture&#39;s generality: it is not an architecture for text so much as an architecture for sequences of anything that has structure worth attending over.</p>
+<h2 id="what-to-remember">What to remember</h2>
+<p>The transformer is three ideas stacked: attention, so that every element can gather information from every other element; residual connections and normalisation, so that hundreds of those layers can be trained at once; and a next-element prediction objective, so that the whole thing can be trained on raw data without labels.</p>
+<p>If you keep only one sentence, keep this: <strong>the transformer converts a sequence problem into a matrix problem, which is why it scales the way it does.</strong></p>
+      </div>
+
+      <nav class="pager" aria-label="Article navigation">
+        <a class="prev" href="05-how-machines-read-and-write.html"><span class="dir">← Previous</span><span class="t">How Machines Read and Write — Language, Tokens and Meaning</span></a>
+        <a class="next" href="07-what-happens-during-training.html"><span class="dir">Next →</span><span class="t">What Actually Happens During Training</span></a>
+      </nav>
+    </div>
+
+    <aside class="side">
+      <div class="side-box">
+        <h4>Reading progress</h4>
+        <progress class="progress" data-progress max="100" value="0" aria-label="Reading progress">0%</progress>
+      </div>
+
+      <div class="side-box">
+        <h4>Download this article</h4>
+        <div class="actions">
+          <button class="btn" data-dl="md" type="button">Markdown (.md)</button>
+          <button class="btn" data-dl="html" type="button">Web page (.html)</button>
+          <button class="btn" data-dl="pdf" type="button">Print / Save as PDF</button>
+          <button class="btn" data-dl="txt" type="button">Plain text (.txt)</button>
+          <button class="btn" data-dl="json" type="button">Data (.json)</button>
+          <button class="btn" data-dl="copy" type="button">Copy full text</button>
+        </div>
+      </div>
+
+      <div class="side-box">
+        <h4>On this page</h4>
+        <ol><li><a href="#the-problem-the-old-design-had">The problem the old design had</a></li><li><a href="#self-attention-carefully">Self-attention, carefully</a></li><li><a href="#the-rest-of-the-block">The rest of the block</a></li><li><a href="#why-it-scaled">Why it scaled</a></li><li><a href="#what-scaling-bought-and-what-it-did-not">What scaling bought, and what it did not</a></li><li><a href="#where-the-architecture-went-next">Where the architecture went next</a></li><li><a href="#what-to-remember">What to remember</a></li></ol>
+      </div>
+
+      <div class="side-box">
+        <h4>Reuse this text</h4>
+        <p class="license-note"><b>Public domain.</b> Copy, translate, adapt, teach from, or republish it anywhere — commercially or not — with no permission and no obligation to credit. <a href="license.html">Read the CC0 terms</a>.</p>
+      </div>
+
+      <div class="side-box">
+        <h4>Related reading</h4>
+        <div class="related"><a href="03-neural-networks-from-scratch.html"><span>03 · Foundations</span>Neural Networks from Scratch — Weights, Biases and Activation</a><a href="04-how-machines-see.html"><span>04 · Foundations</span>How Machines See — Computer Vision and the Rise of Deep Features</a><a href="05-how-machines-read-and-write.html"><span>05 · Foundations</span>How Machines Read and Write — Language, Tokens and Meaning</a><a href="01-what-is-artificial-intelligence-really.html"><span>01 · Foundations</span>What Is Artificial Intelligence, Really?</a></div>
+      </div>
+    </aside>
+  </div>
+</div>
+<script type="application/json" id="article-source">{"number":6,"title":"The Transformer — The Architecture Behind Modern AI","description":"Attention is all you need, and almost everything since has followed from it. A guided tour of the transformer, from the intuition behind self-attention to why it scaled and what that scaling bought.","category":"Foundations","tags":["transformer","attention","architecture","gpt","deep learning"],"date":"2024-02-19","author":"The AI Article Hub Editorial Collective","readingTime":"6 min read","markdown":"In 2017 a group of Google researchers published a paper with the least glamorous title in modern computing: *Attention Is All You Need*. It proposed replacing the recurrent networks that dominated sequence processing with a simpler mechanism, and within four years the mechanism was in essentially every frontier model in the industry. Text, images, audio, proteins, code: same idea.\n\nUnderstanding the transformer is worth the effort, because once you have it, the rest of the field stops being a list of unrelated facts.\n\n## The problem the old design had\n\nBefore 2017, sequences were processed one element at a time. A recurrent neural network read a word, updated an internal state, read the next word, and so on. It has one hard limitation: the state must carry everything relevant from earlier, and the path from any early word to any late word is long. Long-range dependencies are hard to learn, training cannot be parallelised across the sequence, and a sequence of ten thousand tokens means ten thousand sequential steps.\n\nTransformers threw that away. Instead of maintaining a running state, every element of the sequence looks directly at every other element and decides how much to care. There is no recurrence, so training parallelises across the whole sequence, and the distance between the first and last token is one step.\n\n## Self-attention, carefully\n\nConsider the sentence: \"The trophy did not fit in the suitcase because it was too big.\" Which thing does *it* refer to — the trophy or the suitcase? Getting that right requires comparing two distant words and using what happened in between.\n\nSelf-attention is a mechanism for exactly that comparison. For each token, the model computes three vectors:\n\n- a **query** — what am I looking for?\n- a **key** — what do I offer?\n- a **value** — what do I contribute if you want me?\n\nThen, for every pair of tokens, it takes the dot product of one token's query with another's key, scales it, and turns the result into a weight through a softmax so the weights sum to one. Those weights become the mix used to combine the other tokens' values. The output is a summary of the whole sequence, weighted by relevance.\n\nThe famous phrase in the original paper describes the effect precisely: each position can attend to every other position, and the data decides the structure. In that sentence, the token *it* ends up attending heavily to *trophy*, because the learned geometry of the language says that is the likely antecedent. Nobody wrote that rule. It emerged from training.\n\nThe multi-head variation runs several attention mechanisms in parallel, each with its own projections, so the model can look for several kinds of relationship at once — one head plausibly tracking syntax, another coreference, another simple adjacency.\n\n## The rest of the block\n\nAn attention mechanism on its own would be a strange thing to build. In practice it appears inside a standard block, repeated dozens or hundreds of times:\n\n- **Residual connection.** The block's input is added back to its output, so each layer only has to learn a *correction*. This is what makes very deep stacks trainable at all.\n- **Layer normalisation.** Inputs to each block are rescaled to a standard range, which keeps the error from exploding as depth increases.\n- **Feed-forward network.** Two linear layers with a non-linearity between them, applied to each position independently. Attention moves information *between* positions; the feed-forward layer thinks about each position *on its own*. Both are needed.\n- **Positional information.** Attention is order-blind by construction, so the order of the sequence has to be added. The original work used a fixed sinusoidal encoding; most systems now learn positional vectors or use relative offsets.\n\nAlso worth knowing because it shows up in every product: a small **vocabulary projection** at the end maps the final representation to a distribution over tokens, and the training objective is a cross-entropy loss against the actual next token. Everything the model can say is scored; the highest-scoring one is emitted; the context is updated; repeat.\n\n## Why it scaled\n\nThe transformer was not a breakthrough because of elegance. It was a breakthrough because of **engineering leverage**.\n\nRecurrent models are sequential, so training time grows with sequence length and cannot be spread across a chip. Transformers are massively parallel, so a training run is a very large matrix computation — precisely the workload that graphics processors and specialised accelerators are built for. The same property makes distributed training across hundreds of accelerators straightforward.\n\nThat creates a loop that turned out to be decisive: bigger models train more efficiently, larger datasets become affordable at all, and the result is a better model, which funds the next, larger run. Two decades of progress in chip design, interconnect and distributed systems were all waiting for an architecture that could absorb them. The architecture arrived in 2017.\n\n## What scaling bought, and what it did not\n\nThe empirical finding, repeated across many labs and modalities, is unglamorous and robust: with enough data, enough parameters and enough compute, held-out error keeps falling along smooth power-law-ish curves, and the ordering of tasks by \"learned\" moves in a fairly predictable order. Models acquire the easier and more frequent patterns first, and the harder, rarer capabilities last.\n\nThree cautions about reading that literature:\n\n**Smooth curves invite bad science.** If performance improves predictably with scale, the temptation is to extrapolate the curve. The difficulty is that a smooth improvement in average error can coexist with a specific capability that never appears at all, and the curve will not tell you which is which.\n\n**Smoothing is a choice, not physics.** Averaging over many runs hides variance. Per-task, per-language and per-demographic results are routinely better than the headline, and worse than the headline in the places that matter to a particular user.\n\n**Capability and reliability are different things.** A model that can do a task occasionally is not the same as a system that can be relied upon to do it. Scaling reliably moves the first, and improving the second is a separate engineering and research problem. This gap is the reason for [Evaluating AI ](09-evaluating-ai.html) as a discipline and for the caution in [AI Safety and Alignment ](19-ai-safety-and-alignment.html).\n\n## Where the architecture went next\n\nThe original block has been modified in a dozen ways, all following the same logic: reduce the cost of attention, which grows quadratically with sequence length.\n\n- **Sparse and sliding-window attention** restrict which tokens can be seen, cutting cost for long contexts.\n- **Multi-query and grouped-query variants** share key and value projections across heads, which shrinks the memory bandwidth that often dominates decoding.\n- **Mixture-of-experts** layers route each token to a small number of specialised sub-networks, so total capacity grows without paying for it on every token.\n- **Rotary and other positional schemes** improve how position is represented for long contexts.\n- **State-space and recurrent hybrids** reintroduce a cheap memory mechanism, effectively a learned compression of the past, to handle very long sequences at a fraction of the cost.\n\nAnd the same block, with the \"sequence\" reinterpreted as patches of an image, tokens of audio or residues of a protein, became the backbone for models well outside language. That transfer is the strongest evidence for the architecture's generality: it is not an architecture for text so much as an architecture for sequences of anything that has structure worth attending over.\n\n## What to remember\n\nThe transformer is three ideas stacked: attention, so that every element can gather information from every other element; residual connections and normalisation, so that hundreds of those layers can be trained at once; and a next-element prediction objective, so that the whole thing can be trained on raw data without labels.\n\nIf you keep only one sentence, keep this: **the transformer converts a sequence problem into a matrix problem, which is why it scales the way it does.**","html":"\u003cp>In 2017 a group of Google researchers published a paper with the least glamorous title in modern computing: \u003cem>Attention Is All You Need\u003c/em>. It proposed replacing the recurrent networks that dominated sequence processing with a simpler mechanism, and within four years the mechanism was in essentially every frontier model in the industry. Text, images, audio, proteins, code: same idea.\u003c/p>\n\u003cp>Understanding the transformer is worth the effort, because once you have it, the rest of the field stops being a list of unrelated facts.\u003c/p>\n\u003ch2 id=\"the-problem-the-old-design-had\">The problem the old design had\u003c/h2>\n\u003cp>Before 2017, sequences were processed one element at a time. A recurrent neural network read a word, updated an internal state, read the next word, and so on. It has one hard limitation: the state must carry everything relevant from earlier, and the path from any early word to any late word is long. Long-range dependencies are hard to learn, training cannot be parallelised across the sequence, and a sequence of ten thousand tokens means ten thousand sequential steps.\u003c/p>\n\u003cp>Transformers threw that away. Instead of maintaining a running state, every element of the sequence looks directly at every other element and decides how much to care. There is no recurrence, so training parallelises across the whole sequence, and the distance between the first and last token is one step.\u003c/p>\n\u003ch2 id=\"self-attention-carefully\">Self-attention, carefully\u003c/h2>\n\u003cp>Consider the sentence: &quot;The trophy did not fit in the suitcase because it was too big.&quot; Which thing does \u003cem>it\u003c/em> refer to — the trophy or the suitcase? Getting that right requires comparing two distant words and using what happened in between.\u003c/p>\n\u003cp>Self-attention is a mechanism for exactly that comparison. For each token, the model computes three vectors:\u003c/p>\n\u003cul>\u003cli>a \u003cstrong>query\u003c/strong> — what am I looking for?\u003c/li>\u003cli>a \u003cstrong>key\u003c/strong> — what do I offer?\u003c/li>\u003cli>a \u003cstrong>value\u003c/strong> — what do I contribute if you want me?\u003c/li>\u003c/ul>\n\u003cp>Then, for every pair of tokens, it takes the dot product of one token&#39;s query with another&#39;s key, scales it, and turns the result into a weight through a softmax so the weights sum to one. Those weights become the mix used to combine the other tokens&#39; values. The output is a summary of the whole sequence, weighted by relevance.\u003c/p>\n\u003cp>The famous phrase in the original paper describes the effect precisely: each position can attend to every other position, and the data decides the structure. In that sentence, the token \u003cem>it\u003c/em> ends up attending heavily to \u003cem>trophy\u003c/em>, because the learned geometry of the language says that is the likely antecedent. Nobody wrote that rule. It emerged from training.\u003c/p>\n\u003cp>The multi-head variation runs several attention mechanisms in parallel, each with its own projections, so the model can look for several kinds of relationship at once — one head plausibly tracking syntax, another coreference, another simple adjacency.\u003c/p>\n\u003ch2 id=\"the-rest-of-the-block\">The rest of the block\u003c/h2>\n\u003cp>An attention mechanism on its own would be a strange thing to build. In practice it appears inside a standard block, repeated dozens or hundreds of times:\u003c/p>\n\u003cul>\u003cli>\u003cstrong>Residual connection.\u003c/strong> The block&#39;s input is added back to its output, so each layer only has to learn a \u003cem>correction\u003c/em>. This is what makes very deep stacks trainable at all.\u003c/li>\u003cli>\u003cstrong>Layer normalisation.\u003c/strong> Inputs to each block are rescaled to a standard range, which keeps the error from exploding as depth increases.\u003c/li>\u003cli>\u003cstrong>Feed-forward network.\u003c/strong> Two linear layers with a non-linearity between them, applied to each position independently. Attention moves information \u003cem>between\u003c/em> positions; the feed-forward layer thinks about each position \u003cem>on its own\u003c/em>. Both are needed.\u003c/li>\u003cli>\u003cstrong>Positional information.\u003c/strong> Attention is order-blind by construction, so the order of the sequence has to be added. The original work used a fixed sinusoidal encoding; most systems now learn positional vectors or use relative offsets.\u003c/li>\u003c/ul>\n\u003cp>Also worth knowing because it shows up in every product: a small \u003cstrong>vocabulary projection\u003c/strong> at the end maps the final representation to a distribution over tokens, and the training objective is a cross-entropy loss against the actual next token. Everything the model can say is scored; the highest-scoring one is emitted; the context is updated; repeat.\u003c/p>\n\u003ch2 id=\"why-it-scaled\">Why it scaled\u003c/h2>\n\u003cp>The transformer was not a breakthrough because of elegance. It was a breakthrough because of \u003cstrong>engineering leverage\u003c/strong>.\u003c/p>\n\u003cp>Recurrent models are sequential, so training time grows with sequence length and cannot be spread across a chip. Transformers are massively parallel, so a training run is a very large matrix computation — precisely the workload that graphics processors and specialised accelerators are built for. The same property makes distributed training across hundreds of accelerators straightforward.\u003c/p>\n\u003cp>That creates a loop that turned out to be decisive: bigger models train more efficiently, larger datasets become affordable at all, and the result is a better model, which funds the next, larger run. Two decades of progress in chip design, interconnect and distributed systems were all waiting for an architecture that could absorb them. The architecture arrived in 2017.\u003c/p>\n\u003ch2 id=\"what-scaling-bought-and-what-it-did-not\">What scaling bought, and what it did not\u003c/h2>\n\u003cp>The empirical finding, repeated across many labs and modalities, is unglamorous and robust: with enough data, enough parameters and enough compute, held-out error keeps falling along smooth power-law-ish curves, and the ordering of tasks by &quot;learned&quot; moves in a fairly predictable order. Models acquire the easier and more frequent patterns first, and the harder, rarer capabilities last.\u003c/p>\n\u003cp>Three cautions about reading that literature:\u003c/p>\n\u003cp>\u003cstrong>Smooth curves invite bad science.\u003c/strong> If performance improves predictably with scale, the temptation is to extrapolate the curve. The difficulty is that a smooth improvement in average error can coexist with a specific capability that never appears at all, and the curve will not tell you which is which.\u003c/p>\n\u003cp>\u003cstrong>Smoothing is a choice, not physics.\u003c/strong> Averaging over many runs hides variance. Per-task, per-language and per-demographic results are routinely better than the headline, and worse than the headline in the places that matter to a particular user.\u003c/p>\n\u003cp>\u003cstrong>Capability and reliability are different things.\u003c/strong> A model that can do a task occasionally is not the same as a system that can be relied upon to do it. Scaling reliably moves the first, and improving the second is a separate engineering and research problem. This gap is the reason for \u003ca href=\"09-evaluating-ai.html\">Evaluating AI \u003c/a> as a discipline and for the caution in \u003ca href=\"19-ai-safety-and-alignment.html\">AI Safety and Alignment \u003c/a>.\u003c/p>\n\u003ch2 id=\"where-the-architecture-went-next\">Where the architecture went next\u003c/h2>\n\u003cp>The original block has been modified in a dozen ways, all following the same logic: reduce the cost of attention, which grows quadratically with sequence length.\u003c/p>\n\u003cul>\u003cli>\u003cstrong>Sparse and sliding-window attention\u003c/strong> restrict which tokens can be seen, cutting cost for long contexts.\u003c/li>\u003cli>\u003cstrong>Multi-query and grouped-query variants\u003c/strong> share key and value projections across heads, which shrinks the memory bandwidth that often dominates decoding.\u003c/li>\u003cli>\u003cstrong>Mixture-of-experts\u003c/strong> layers route each token to a small number of specialised sub-networks, so total capacity grows without paying for it on every token.\u003c/li>\u003cli>\u003cstrong>Rotary and other positional schemes\u003c/strong> improve how position is represented for long contexts.\u003c/li>\u003cli>\u003cstrong>State-space and recurrent hybrids\u003c/strong> reintroduce a cheap memory mechanism, effectively a learned compression of the past, to handle very long sequences at a fraction of the cost.\u003c/li>\u003c/ul>\n\u003cp>And the same block, with the &quot;sequence&quot; reinterpreted as patches of an image, tokens of audio or residues of a protein, became the backbone for models well outside language. That transfer is the strongest evidence for the architecture&#39;s generality: it is not an architecture for text so much as an architecture for sequences of anything that has structure worth attending over.\u003c/p>\n\u003ch2 id=\"what-to-remember\">What to remember\u003c/h2>\n\u003cp>The transformer is three ideas stacked: attention, so that every element can gather information from every other element; residual connections and normalisation, so that hundreds of those layers can be trained at once; and a next-element prediction objective, so that the whole thing can be trained on raw data without labels.\u003c/p>\n\u003cp>If you keep only one sentence, keep this: \u003cstrong>the transformer converts a sequence problem into a matrix problem, which is why it scales the way it does.\u003c/strong>\u003c/p>"}</script>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h5>AI Article Hub</h5>
+        <p>Twenty-seven original, in-depth articles on artificial intelligence — from neural networks and transformers to AI safety, law and public policy. Free to read, download and reuse: everything here is released into the public domain under CC0 1.0.</p>
+        <p>Written to be read, translated, remixed and taught from without permission or payment.</p>
+      </div>
+      <div>
+        <h5>Read</h5>
+        <ul>
+          <li><a href="index.html#articles">All 27 articles</a></li>
+          <li><a href="downloads.html">Download everything</a></li>
+          <li><a href="feed.xml">RSS feed</a></li>
+          <li><a href="sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Reuse</h5>
+        <ul>
+          <li><a href="license.html">CC0 license terms</a></li>
+          <li><a href="publish.html">Publish this site</a></li>
+          <li><a href="publish.html#attribution">Do I need credit?</a></li>
+          <li><a href="about.html">About the project</a></li>
+          <li><a href="security.html">Security</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="license-line">
+      <span>© 2026 The AI Article Hub Editorial Collective. Text released under CC0 1.0 — dedicated to the public domain, no rights reserved.</span>
+      <a class="badge-cc" href="license.html">CC0 1.0 · Public Domain Dedication</a>
+    </div>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fine-Tuning, RLHF and Alignment — Teaching Models to Be Helpful · AI Article Hub</title>
+<meta name="description" content="Capability comes from pretraining; behaviour comes from post-training. Inside the three-stage process that turns a text-completion engine into something you can put in front of a person.">
+<link rel="canonical" href="https://example.org/ai-article-hub/index.html">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#2f5bd7">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AI Article Hub">
+<meta property="og:title" content="Fine-Tuning, RLHF and Alignment — Teaching Models to Be Helpful · AI Article Hub">
+<meta property="og:description" content="Capability comes from pretraining; behaviour comes from post-training. Inside the three-stage process that turns a text-completion engine into something you can put in front of a person.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="license" content="CC0 1.0">
+<meta name="dcterms.license" content="https://creativecommons.org/publicdomain/zero/1.0/">
+<link rel="alternate" type="application/rss+xml" title="AI Article Hub" href="feed.xml">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/styles.css">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fine-Tuning, RLHF and Alignment — Teaching Models to Be Helpful">
+<meta property="og:description" content="Capability comes from pretraining; behaviour comes from post-training. Inside the three-stage process that turns a text-completion engine into something you can put in front of a person.">
+<meta property="og:url" content="https://example.org/ai-article-hub/13-fine-tuning-rlhf-and-alignment.html">
+<meta property="article:section" content="Applied AI">
+<meta property="article:tag" content="rlhf">
+<meta property="article:tag" content="fine-tuning">
+<meta property="article:tag" content="alignment">
+<meta property="article:tag" content="sft">
+<meta property="article:tag" content="dpo">
+<meta property="article:tag" content="post-training">
+<meta name="author" content="The AI Article Hub Editorial Collective">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Fine-Tuning, RLHF and Alignment — Teaching Models to Be Helpful","description":"Capability comes from pretraining; behaviour comes from post-training. Inside the three-stage process that turns a text-completion engine into something you can put in front of a person.","datePublished":"2024-04-08","dateModified":"2024-04-08","inLanguage":"en","articleSection":"Applied AI","keywords":"rlhf, fine-tuning, alignment, sft, dpo, post-training","wordCount":1182,"isAccessibleForFree":true,"license":"https://creativecommons.org/publicdomain/zero/1.0/","creativeWorkStatus":"Public Domain","author":{"@type":"Organization","name":"The AI Article Hub Editorial Collective"},"publisher":{"@type":"Organization","name":"AI Article Hub"},"mainEntityOfPage":"https://example.org/ai-article-hub/13-fine-tuning-rlhf-and-alignment.html"}</script>
+</head>
+<body class="">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="index.html">
+      <span class="logo" aria-hidden="true">AI</span>
+      <span>AI Article Hub<small>CC0 1.0 · Public Domain</small></span>
+    </a>
+    <button class="icon-btn menu-btn" data-menu-toggle aria-label="Toggle navigation" aria-controls="site-nav">☰</button>
+    <nav class="nav" id="site-nav" aria-label="Main">
+          <a href="index.html">Home</a>
+          <a href="index.html#articles">Articles</a>
+          <a href="downloads.html">Downloads</a>
+          <a href="publish.html">Publish</a>
+          <a href="license.html">License</a>
+          <a href="about.html">About</a>
+          <a href="security.html">Security</a>
+      <button class="icon-btn theme-toggle" data-theme-toggle type="button" aria-label="Toggle theme">☾</button>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<div class="wrap">
+  <div class="article-shell">
+    <div>
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a> › <a href="index.html#articles">Articles</a> › <span>13 of 27</span>
+      </nav>
+
+      <header class="article-head">
+        <div class="kicker">
+          <span class="tag accent">Part 13 of 27</span>
+          <span class="tag">Applied AI</span>
+          <span class="tag">5 min read</span>
+        </div>
+        <h1>Fine-Tuning, RLHF and Alignment — Teaching Models to Be Helpful</h1>
+        <p class="standfirst">Capability comes from pretraining; behaviour comes from post-training. Inside the three-stage process that turns a text-completion engine into something you can put in front of a person.</p>
+        <div class="byline">
+          <span>2024-04-08</span><span class="dot">•</span>
+          <span>Applied AI</span><span class="dot">•</span>
+          <span>1,182 words</span><span class="dot">•</span>
+          <span>CC0 1.0 public domain</span>
+        </div>
+      </header>
+
+      <div class="prose">
+<p>A base model is a strange object. It is extraordinarily knowledgeable and almost unusable: it completes text rather than answering, tends to continue your question with more questions, has no stable tone, and will cheerfully produce content that its designers would find indefensible. None of that is a bug. It is what a system trained only to predict the next token becomes.</p>
+<p>Post-training is the stage that turns that object into a product, and it is where most of the field&#39;s real — and most contested — work happens.</p>
+<h2 id="stage-one-supervised-fine-tuning">Stage one: supervised fine-tuning</h2>
+<p>The first step is the least technical and often the most effective. Thousands of human-written examples show the model what a good answer looks like: a question, a good answer, and sometimes a better and a worse answer.</p>
+<p>These examples are written by people who are good at the job — engineers, writers, domain experts, teachers. They establish the format, the tone, the level of detail, the boundaries of the task, and a general disposition toward being useful and cautious. This is the stage that produces the &quot;assistant voice&quot;.</p>
+<p>The technique is old; supervised fine-tuning has existed for decades. What is new is the scale and the specificity: the examples are not generic, they are written for one specific model and one specific product, and they encode a value judgement about what a good answer is.</p>
+<p>That value judgement is the important part, and it deserves to be stated plainly. Someone is deciding what the assistant should prioritise, how it should handle uncertainty, whether it should refuse, and what it should do when a user&#39;s request and an organisation&#39;s policy conflict. Those are editorial and ethical decisions. They are made in training data, by people, and they are as consequential as any policy document the organisation publishes.</p>
+<h2 id="stage-two-reinforcement-learning-from-human-feedback">Stage two: reinforcement learning from human feedback</h2>
+<p>Fine-tuning on demonstrations teaches a model what good answers look like. It cannot teach it what <em>better</em> means, because demonstrations only ever show the winning side of a comparison. Reinforcement learning from human feedback, usually shortened to RLHF, adds that comparison.</p>
+<p>The loop:</p>
+<ol><li>The model produces several candidate answers to a prompt.</li><li>Human raters rank them.</li><li>A reward model is trained to predict human preferences.</li><li>The language model is fine-tuned to maximise the reward model&#39;s score, while a constraint keeps it close to its previous behaviour so it does not drift into nonsense.</li><li>Go back to step 1, many times.</li></ol>
+<p>The reward model is the load-bearing component and the main source of worry. It is a model trained on human judgements, and it inherits everything that goes into those judgements: who was asked, what they saw, what instructions they were given, and what they were rewarded for. If raters prefer confident answers, the reward model will prefer confident answers. If the evaluation prompts are drawn from a narrow slice of requests, the reward model will be confidently calibrated for that slice and wrong elsewhere.</p>
+<p>This produces the characteristic RLHF failure: a model that becomes more articulate, more agreeable and more confident, with no improvement in truthfulness. Perceived quality rises because humans genuinely prefer it, which is exactly the problem.</p>
+<h2 id="stage-three-preference-optimisation-without-a-reward-model">Stage three: preference optimisation without a reward model</h2>
+<p>The reward model introduced avoidable complexity: train one, then optimise against it, and deal with the possibility that the optimiser exploits it. Direct preference optimisation and its relatives skip the reward model and instead fine-tune the policy directly on the human preference comparisons.</p>
+<p>The result is much simpler and much cheaper, and it typically gets most of the benefit. The fact that most teams now use this approach says something useful about how much of RLHF&#39;s value was in the preferences rather than in the reinforcement learning.</p>
+<h2 id="what-post-training-can-and-cannot-do">What post-training can and cannot do</h2>
+<p>This is where a lot of public debate gets stuck, so it is worth being precise.</p>
+<p><strong>It can shape behaviour.</strong> Make a model follow instructions, decline certain requests, be appropriately cautious, adopt a house style, or focus on a narrow domain. These are the reliable wins.</p>
+<p><strong>It can improve reliability on known distributions.</strong> Post-training on the kinds of requests your users actually send makes the system measurably better on those requests. This is the workhorse of applied AI.</p>
+<p><strong>It cannot install knowledge efficiently.</strong> Teaching a model a fact through post-training works in small doses. Teaching it a large, changing body of knowledge is what retrieval is for, because a fact in a prompt can be updated, audited and deleted in seconds, while a fact in the weights requires a new run.</p>
+<p><strong>It cannot remove capability or reliably remove knowledge.</strong> Attempts to make a model &quot;forget&quot; something are partial, easily circumvented, and add a new set of side effects. The industry&#39;s practical answer is to stop deploying the model where that knowledge would be misused, which is a governance decision.</p>
+<p><strong>It does not eliminate the underlying uncertainty.</strong> Post-training shapes behaviour on the distribution it was trained on. Capability research continues underneath, and the two interact: a more capable base model is harder to constrain, and a well-behaved model on today&#39;s capability can be a liability on tomorrow&#39;s.</p>
+<h2 id="the-open-problems">The open problems</h2>
+<p><strong>Specification.</strong> &quot;Helpful, harmless and honest&quot; is a slogan, not a specification. A serious version requires writing down what the system should do in situations where reasonable people disagree, and then accepting that the answer will be a position rather than a fact.</p>
+<p><strong>Goodharting.</strong> Any reward signal, once optimised against, stops measuring the thing you wanted. This is not a solvable engineering problem; it is a permanent property of optimisation. It is covered from the measurement side in <a href="09-evaluating-ai.html">Evaluating AI </a>.</p>
+<p><strong>Judgement distribution.</strong> Whose preferences were in the data, and whose were not? This is a question about who gets to define &quot;helpful&quot;, and it does not have a technical answer.</p>
+<p><strong>Deception and sandbagging.</strong> If a model can recognise and influence its own evaluation, then post-training can produce behaviour that is good on the tests and bad everywhere else. This is a research question with serious policy implications, discussed in <a href="19-ai-safety-and-alignment.html">AI Safety and Alignment </a>.</p>
+<p><strong>Honest reporting.</strong> A great deal of the public discourse assumes that deployed models are unchanged base models plus a layer of politeness. The systems users actually encounter have been post-trained, and the post-training is the part that determines their behaviour.</p>
+<h2 id="the-practical-lesson">The practical lesson</h2>
+<p>If you are deploying a model, the useful sequence is: pick the best base model you can afford; write your own evaluation set from real user requests; add retrieval rather than trying to teach facts; do supervised fine-tuning on your domain&#39;s real examples; add preference optimisation on comparisons that reflect what <em>your</em> users actually value; and re-evaluate continuously against the failures you find in production.</p>
+<p>Every one of those steps is a chance to encode a decision about what your system should do. The technical work is straightforward once the decisions are made. The decisions are the project.</p>
+      </div>
+
+      <nav class="pager" aria-label="Article navigation">
+        <a class="prev" href="12-agents-and-tool-use.html"><span class="dir">← Previous</span><span class="t">Agents and Tool Use — When AI Takes Action</span></a>
+        <a class="next" href="14-ai-in-software-development.html"><span class="dir">Next →</span><span class="t">AI in Software Development — Copilots, Code Agents and the Craft</span></a>
+      </nav>
+    </div>
+
+    <aside class="side">
+      <div class="side-box">
+        <h4>Reading progress</h4>
+        <progress class="progress" data-progress max="100" value="0" aria-label="Reading progress">0%</progress>
+      </div>
+
+      <div class="side-box">
+        <h4>Download this article</h4>
+        <div class="actions">
+          <button class="btn" data-dl="md" type="button">Markdown (.md)</button>
+          <button class="btn" data-dl="html" type="button">Web page (.html)</button>
+          <button class="btn" data-dl="pdf" type="button">Print / Save as PDF</button>
+          <button class="btn" data-dl="txt" type="button">Plain text (.txt)</button>
+          <button class="btn" data-dl="json" type="button">Data (.json)</button>
+          <button class="btn" data-dl="copy" type="button">Copy full text</button>
+        </div>
+      </div>
+
+      <div class="side-box">
+        <h4>On this page</h4>
+        <ol><li><a href="#stage-one-supervised-fine-tuning">Stage one: supervised fine-tuning</a></li><li><a href="#stage-two-reinforcement-learning-from-human-feedback">Stage two: reinforcement learning from human feedback</a></li><li><a href="#stage-three-preference-optimisation-without-a-reward-model">Stage three: preference optimisation without a reward model</a></li><li><a href="#what-post-training-can-and-cannot-do">What post-training can and cannot do</a></li><li><a href="#the-open-problems">The open problems</a></li><li><a href="#the-practical-lesson">The practical lesson</a></li></ol>
+      </div>
+
+      <div class="side-box">
+        <h4>Reuse this text</h4>
+        <p class="license-note"><b>Public domain.</b> Copy, translate, adapt, teach from, or republish it anywhere — commercially or not — with no permission and no obligation to credit. <a href="license.html">Read the CC0 terms</a>.</p>
+      </div>
+
+      <div class="side-box">
+        <h4>Related reading</h4>
+        <div class="related"><a href="11-prompt-engineering-and-retrieval.html"><span>11 · Applied AI</span>Prompt Engineering and Retrieval — Practical Patterns</a><a href="12-agents-and-tool-use.html"><span>12 · Applied AI</span>Agents and Tool Use — When AI Takes Action</a><a href="10-making-models-smaller-and-faster.html"><span>10 · Applied AI</span>Making Models Smaller and Faster — Quantisation, Distillation and Pruning</a><a href="19-ai-safety-and-alignment.html"><span>19 · Safety</span>AI Safety and Alignment — The Hard Problems, Stated Plainly</a></div>
+      </div>
+    </aside>
+  </div>
+</div>
+<script type="application/json" id="article-source">{"number":13,"title":"Fine-Tuning, RLHF and Alignment — Teaching Models to Be Helpful","description":"Capability comes from pretraining; behaviour comes from post-training. Inside the three-stage process that turns a text-completion engine into something you can put in front of a person.","category":"Applied AI","tags":["rlhf","fine-tuning","alignment","sft","dpo","post-training"],"date":"2024-04-08","author":"The AI Article Hub Editorial Collective","readingTime":"5 min read","markdown":"A base model is a strange object. It is extraordinarily knowledgeable and almost unusable: it completes text rather than answering, tends to continue your question with more questions, has no stable tone, and will cheerfully produce content that its designers would find indefensible. None of that is a bug. It is what a system trained only to predict the next token becomes.\n\nPost-training is the stage that turns that object into a product, and it is where most of the field's real — and most contested — work happens.\n\n## Stage one: supervised fine-tuning\n\nThe first step is the least technical and often the most effective. Thousands of human-written examples show the model what a good answer looks like: a question, a good answer, and sometimes a better and a worse answer.\n\nThese examples are written by people who are good at the job — engineers, writers, domain experts, teachers. They establish the format, the tone, the level of detail, the boundaries of the task, and a general disposition toward being useful and cautious. This is the stage that produces the \"assistant voice\".\n\nThe technique is old; supervised fine-tuning has existed for decades. What is new is the scale and the specificity: the examples are not generic, they are written for one specific model and one specific product, and they encode a value judgement about what a good answer is.\n\nThat value judgement is the important part, and it deserves to be stated plainly. Someone is deciding what the assistant should prioritise, how it should handle uncertainty, whether it should refuse, and what it should do when a user's request and an organisation's policy conflict. Those are editorial and ethical decisions. They are made in training data, by people, and they are as consequential as any policy document the organisation publishes.\n\n## Stage two: reinforcement learning from human feedback\n\nFine-tuning on demonstrations teaches a model what good answers look like. It cannot teach it what *better* means, because demonstrations only ever show the winning side of a comparison. Reinforcement learning from human feedback, usually shortened to RLHF, adds that comparison.\n\nThe loop:\n\n1. The model produces several candidate answers to a prompt.\n2. Human raters rank them.\n3. A reward model is trained to predict human preferences.\n4. The language model is fine-tuned to maximise the reward model's score, while a constraint keeps it close to its previous behaviour so it does not drift into nonsense.\n5. Go back to step 1, many times.\n\nThe reward model is the load-bearing component and the main source of worry. It is a model trained on human judgements, and it inherits everything that goes into those judgements: who was asked, what they saw, what instructions they were given, and what they were rewarded for. If raters prefer confident answers, the reward model will prefer confident answers. If the evaluation prompts are drawn from a narrow slice of requests, the reward model will be confidently calibrated for that slice and wrong elsewhere.\n\nThis produces the characteristic RLHF failure: a model that becomes more articulate, more agreeable and more confident, with no improvement in truthfulness. Perceived quality rises because humans genuinely prefer it, which is exactly the problem.\n\n## Stage three: preference optimisation without a reward model\n\nThe reward model introduced avoidable complexity: train one, then optimise against it, and deal with the possibility that the optimiser exploits it. Direct preference optimisation and its relatives skip the reward model and instead fine-tune the policy directly on the human preference comparisons.\n\nThe result is much simpler and much cheaper, and it typically gets most of the benefit. The fact that most teams now use this approach says something useful about how much of RLHF's value was in the preferences rather than in the reinforcement learning.\n\n## What post-training can and cannot do\n\nThis is where a lot of public debate gets stuck, so it is worth being precise.\n\n**It can shape behaviour.** Make a model follow instructions, decline certain requests, be appropriately cautious, adopt a house style, or focus on a narrow domain. These are the reliable wins.\n\n**It can improve reliability on known distributions.** Post-training on the kinds of requests your users actually send makes the system measurably better on those requests. This is the workhorse of applied AI.\n\n**It cannot install knowledge efficiently.** Teaching a model a fact through post-training works in small doses. Teaching it a large, changing body of knowledge is what retrieval is for, because a fact in a prompt can be updated, audited and deleted in seconds, while a fact in the weights requires a new run.\n\n**It cannot remove capability or reliably remove knowledge.** Attempts to make a model \"forget\" something are partial, easily circumvented, and add a new set of side effects. The industry's practical answer is to stop deploying the model where that knowledge would be misused, which is a governance decision.\n\n**It does not eliminate the underlying uncertainty.** Post-training shapes behaviour on the distribution it was trained on. Capability research continues underneath, and the two interact: a more capable base model is harder to constrain, and a well-behaved model on today's capability can be a liability on tomorrow's.\n\n## The open problems\n\n**Specification.** \"Helpful, harmless and honest\" is a slogan, not a specification. A serious version requires writing down what the system should do in situations where reasonable people disagree, and then accepting that the answer will be a position rather than a fact.\n\n**Goodharting.** Any reward signal, once optimised against, stops measuring the thing you wanted. This is not a solvable engineering problem; it is a permanent property of optimisation. It is covered from the measurement side in [Evaluating AI ](09-evaluating-ai.html).\n\n**Judgement distribution.** Whose preferences were in the data, and whose were not? This is a question about who gets to define \"helpful\", and it does not have a technical answer.\n\n**Deception and sandbagging.** If a model can recognise and influence its own evaluation, then post-training can produce behaviour that is good on the tests and bad everywhere else. This is a research question with serious policy implications, discussed in [AI Safety and Alignment ](19-ai-safety-and-alignment.html).\n\n**Honest reporting.** A great deal of the public discourse assumes that deployed models are unchanged base models plus a layer of politeness. The systems users actually encounter have been post-trained, and the post-training is the part that determines their behaviour.\n\n## The practical lesson\n\nIf you are deploying a model, the useful sequence is: pick the best base model you can afford; write your own evaluation set from real user requests; add retrieval rather than trying to teach facts; do supervised fine-tuning on your domain's real examples; add preference optimisation on comparisons that reflect what *your* users actually value; and re-evaluate continuously against the failures you find in production.\n\nEvery one of those steps is a chance to encode a decision about what your system should do. The technical work is straightforward once the decisions are made. The decisions are the project.","html":"\u003cp>A base model is a strange object. It is extraordinarily knowledgeable and almost unusable: it completes text rather than answering, tends to continue your question with more questions, has no stable tone, and will cheerfully produce content that its designers would find indefensible. None of that is a bug. It is what a system trained only to predict the next token becomes.\u003c/p>\n\u003cp>Post-training is the stage that turns that object into a product, and it is where most of the field&#39;s real — and most contested — work happens.\u003c/p>\n\u003ch2 id=\"stage-one-supervised-fine-tuning\">Stage one: supervised fine-tuning\u003c/h2>\n\u003cp>The first step is the least technical and often the most effective. Thousands of human-written examples show the model what a good answer looks like: a question, a good answer, and sometimes a better and a worse answer.\u003c/p>\n\u003cp>These examples are written by people who are good at the job — engineers, writers, domain experts, teachers. They establish the format, the tone, the level of detail, the boundaries of the task, and a general disposition toward being useful and cautious. This is the stage that produces the &quot;assistant voice&quot;.\u003c/p>\n\u003cp>The technique is old; supervised fine-tuning has existed for decades. What is new is the scale and the specificity: the examples are not generic, they are written for one specific model and one specific product, and they encode a value judgement about what a good answer is.\u003c/p>\n\u003cp>That value judgement is the important part, and it deserves to be stated plainly. Someone is deciding what the assistant should prioritise, how it should handle uncertainty, whether it should refuse, and what it should do when a user&#39;s request and an organisation&#39;s policy conflict. Those are editorial and ethical decisions. They are made in training data, by people, and they are as consequential as any policy document the organisation publishes.\u003c/p>\n\u003ch2 id=\"stage-two-reinforcement-learning-from-human-feedback\">Stage two: reinforcement learning from human feedback\u003c/h2>\n\u003cp>Fine-tuning on demonstrations teaches a model what good answers look like. It cannot teach it what \u003cem>better\u003c/em> means, because demonstrations only ever show the winning side of a comparison. Reinforcement learning from human feedback, usually shortened to RLHF, adds that comparison.\u003c/p>\n\u003cp>The loop:\u003c/p>\n\u003col>\u003cli>The model produces several candidate answers to a prompt.\u003c/li>\u003cli>Human raters rank them.\u003c/li>\u003cli>A reward model is trained to predict human preferences.\u003c/li>\u003cli>The language model is fine-tuned to maximise the reward model&#39;s score, while a constraint keeps it close to its previous behaviour so it does not drift into nonsense.\u003c/li>\u003cli>Go back to step 1, many times.\u003c/li>\u003c/ol>\n\u003cp>The reward model is the load-bearing component and the main source of worry. It is a model trained on human judgements, and it inherits everything that goes into those judgements: who was asked, what they saw, what instructions they were given, and what they were rewarded for. If raters prefer confident answers, the reward model will prefer confident answers. If the evaluation prompts are drawn from a narrow slice of requests, the reward model will be confidently calibrated for that slice and wrong elsewhere.\u003c/p>\n\u003cp>This produces the characteristic RLHF failure: a model that becomes more articulate, more agreeable and more confident, with no improvement in truthfulness. Perceived quality rises because humans genuinely prefer it, which is exactly the problem.\u003c/p>\n\u003ch2 id=\"stage-three-preference-optimisation-without-a-reward-model\">Stage three: preference optimisation without a reward model\u003c/h2>\n\u003cp>The reward model introduced avoidable complexity: train one, then optimise against it, and deal with the possibility that the optimiser exploits it. Direct preference optimisation and its relatives skip the reward model and instead fine-tune the policy directly on the human preference comparisons.\u003c/p>\n\u003cp>The result is much simpler and much cheaper, and it typically gets most of the benefit. The fact that most teams now use this approach says something useful about how much of RLHF&#39;s value was in the preferences rather than in the reinforcement learning.\u003c/p>\n\u003ch2 id=\"what-post-training-can-and-cannot-do\">What post-training can and cannot do\u003c/h2>\n\u003cp>This is where a lot of public debate gets stuck, so it is worth being precise.\u003c/p>\n\u003cp>\u003cstrong>It can shape behaviour.\u003c/strong> Make a model follow instructions, decline certain requests, be appropriately cautious, adopt a house style, or focus on a narrow domain. These are the reliable wins.\u003c/p>\n\u003cp>\u003cstrong>It can improve reliability on known distributions.\u003c/strong> Post-training on the kinds of requests your users actually send makes the system measurably better on those requests. This is the workhorse of applied AI.\u003c/p>\n\u003cp>\u003cstrong>It cannot install knowledge efficiently.\u003c/strong> Teaching a model a fact through post-training works in small doses. Teaching it a large, changing body of knowledge is what retrieval is for, because a fact in a prompt can be updated, audited and deleted in seconds, while a fact in the weights requires a new run.\u003c/p>\n\u003cp>\u003cstrong>It cannot remove capability or reliably remove knowledge.\u003c/strong> Attempts to make a model &quot;forget&quot; something are partial, easily circumvented, and add a new set of side effects. The industry&#39;s practical answer is to stop deploying the model where that knowledge would be misused, which is a governance decision.\u003c/p>\n\u003cp>\u003cstrong>It does not eliminate the underlying uncertainty.\u003c/strong> Post-training shapes behaviour on the distribution it was trained on. Capability research continues underneath, and the two interact: a more capable base model is harder to constrain, and a well-behaved model on today&#39;s capability can be a liability on tomorrow&#39;s.\u003c/p>\n\u003ch2 id=\"the-open-problems\">The open problems\u003c/h2>\n\u003cp>\u003cstrong>Specification.\u003c/strong> &quot;Helpful, harmless and honest&quot; is a slogan, not a specification. A serious version requires writing down what the system should do in situations where reasonable people disagree, and then accepting that the answer will be a position rather than a fact.\u003c/p>\n\u003cp>\u003cstrong>Goodharting.\u003c/strong> Any reward signal, once optimised against, stops measuring the thing you wanted. This is not a solvable engineering problem; it is a permanent property of optimisation. It is covered from the measurement side in \u003ca href=\"09-evaluating-ai.html\">Evaluating AI \u003c/a>.\u003c/p>\n\u003cp>\u003cstrong>Judgement distribution.\u003c/strong> Whose preferences were in the data, and whose were not? This is a question about who gets to define &quot;helpful&quot;, and it does not have a technical answer.\u003c/p>\n\u003cp>\u003cstrong>Deception and sandbagging.\u003c/strong> If a model can recognise and influence its own evaluation, then post-training can produce behaviour that is good on the tests and bad everywhere else. This is a research question with serious policy implications, discussed in \u003ca href=\"19-ai-safety-and-alignment.html\">AI Safety and Alignment \u003c/a>.\u003c/p>\n\u003cp>\u003cstrong>Honest reporting.\u003c/strong> A great deal of the public discourse assumes that deployed models are unchanged base models plus a layer of politeness. The systems users actually encounter have been post-trained, and the post-training is the part that determines their behaviour.\u003c/p>\n\u003ch2 id=\"the-practical-lesson\">The practical lesson\u003c/h2>\n\u003cp>If you are deploying a model, the useful sequence is: pick the best base model you can afford; write your own evaluation set from real user requests; add retrieval rather than trying to teach facts; do supervised fine-tuning on your domain&#39;s real examples; add preference optimisation on comparisons that reflect what \u003cem>your\u003c/em> users actually value; and re-evaluate continuously against the failures you find in production.\u003c/p>\n\u003cp>Every one of those steps is a chance to encode a decision about what your system should do. The technical work is straightforward once the decisions are made. The decisions are the project.\u003c/p>"}</script>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h5>AI Article Hub</h5>
+        <p>Twenty-seven original, in-depth articles on artificial intelligence — from neural networks and transformers to AI safety, law and public policy. Free to read, download and reuse: everything here is released into the public domain under CC0 1.0.</p>
+        <p>Written to be read, translated, remixed and taught from without permission or payment.</p>
+      </div>
+      <div>
+        <h5>Read</h5>
+        <ul>
+          <li><a href="index.html#articles">All 27 articles</a></li>
+          <li><a href="downloads.html">Download everything</a></li>
+          <li><a href="feed.xml">RSS feed</a></li>
+          <li><a href="sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Reuse</h5>
+        <ul>
+          <li><a href="license.html">CC0 license terms</a></li>
+          <li><a href="publish.html">Publish this site</a></li>
+          <li><a href="publish.html#attribution">Do I need credit?</a></li>
+          <li><a href="about.html">About the project</a></li>
+          <li><a href="security.html">Security</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="license-line">
+      <span>© 2026 The AI Article Hub Editorial Collective. Text released under CC0 1.0 — dedicated to the public domain, no rights reserved.</span>
+      <a class="badge-cc" href="license.html">CC0 1.0 · Public Domain Dedication</a>
+    </div>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

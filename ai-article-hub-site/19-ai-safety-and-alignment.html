@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Safety and Alignment — The Hard Problems, Stated Plainly · AI Article Hub</title>
+<meta name="description" content="Alignment research is unfashionably concrete. Here is what the field actually worries about, which risks are already with us, and which are speculative — with the argument on each side given its due.">
+<link rel="canonical" href="https://example.org/ai-article-hub/index.html">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#2f5bd7">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AI Article Hub">
+<meta property="og:title" content="AI Safety and Alignment — The Hard Problems, Stated Plainly · AI Article Hub">
+<meta property="og:description" content="Alignment research is unfashionably concrete. Here is what the field actually worries about, which risks are already with us, and which are speculative — with the argument on each side given its due.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="license" content="CC0 1.0">
+<meta name="dcterms.license" content="https://creativecommons.org/publicdomain/zero/1.0/">
+<link rel="alternate" type="application/rss+xml" title="AI Article Hub" href="feed.xml">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/styles.css">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI Safety and Alignment — The Hard Problems, Stated Plainly">
+<meta property="og:description" content="Alignment research is unfashionably concrete. Here is what the field actually worries about, which risks are already with us, and which are speculative — with the argument on each side given its due.">
+<meta property="og:url" content="https://example.org/ai-article-hub/19-ai-safety-and-alignment.html">
+<meta property="article:section" content="Safety">
+<meta property="article:tag" content="alignment">
+<meta property="article:tag" content="safety">
+<meta property="article:tag" content="robustness">
+<meta property="article:tag" content="interpretability">
+<meta property="article:tag" content="control">
+<meta property="article:tag" content="risk">
+<meta name="author" content="The AI Article Hub Editorial Collective">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI Safety and Alignment — The Hard Problems, Stated Plainly","description":"Alignment research is unfashionably concrete. Here is what the field actually worries about, which risks are already with us, and which are speculative — with the argument on each side given its due.","datePublished":"2024-05-20","dateModified":"2024-05-20","inLanguage":"en","articleSection":"Safety","keywords":"alignment, safety, robustness, interpretability, control, risk","wordCount":1319,"isAccessibleForFree":true,"license":"https://creativecommons.org/publicdomain/zero/1.0/","creativeWorkStatus":"Public Domain","author":{"@type":"Organization","name":"The AI Article Hub Editorial Collective"},"publisher":{"@type":"Organization","name":"AI Article Hub"},"mainEntityOfPage":"https://example.org/ai-article-hub/19-ai-safety-and-alignment.html"}</script>
+</head>
+<body class="">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="index.html">
+      <span class="logo" aria-hidden="true">AI</span>
+      <span>AI Article Hub<small>CC0 1.0 · Public Domain</small></span>
+    </a>
+    <button class="icon-btn menu-btn" data-menu-toggle aria-label="Toggle navigation" aria-controls="site-nav">☰</button>
+    <nav class="nav" id="site-nav" aria-label="Main">
+          <a href="index.html">Home</a>
+          <a href="index.html#articles">Articles</a>
+          <a href="downloads.html">Downloads</a>
+          <a href="publish.html">Publish</a>
+          <a href="license.html">License</a>
+          <a href="about.html">About</a>
+          <a href="security.html">Security</a>
+      <button class="icon-btn theme-toggle" data-theme-toggle type="button" aria-label="Toggle theme">☾</button>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<div class="wrap">
+  <div class="article-shell">
+    <div>
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a> › <a href="index.html#articles">Articles</a> › <span>19 of 27</span>
+      </nav>
+
+      <header class="article-head">
+        <div class="kicker">
+          <span class="tag accent">Part 19 of 27</span>
+          <span class="tag">Safety</span>
+          <span class="tag">6 min read</span>
+        </div>
+        <h1>AI Safety and Alignment — The Hard Problems, Stated Plainly</h1>
+        <p class="standfirst">Alignment research is unfashionably concrete. Here is what the field actually worries about, which risks are already with us, and which are speculative — with the argument on each side given its due.</p>
+        <div class="byline">
+          <span>2024-05-20</span><span class="dot">•</span>
+          <span>Safety</span><span class="dot">•</span>
+          <span>1,319 words</span><span class="dot">•</span>
+          <span>CC0 1.0 public domain</span>
+        </div>
+      </header>
+
+      <div class="prose">
+<p>AI safety has an unusual public image: simultaneously dismissed as paranoid and as insufficiently alarmed. Both reactions come from the same cause, which is that the field contains several unrelated problems of very different character, and the arguments get mixed together.</p>
+<p>This article separates them and states the strongest version of each disagreement, because the disagreements are mostly about time horizons and about who is responsible for what.</p>
+<h2 id="the-problem-that-is-not-about-computers">The problem that is not about computers</h2>
+<p><strong>Misalignment</strong> is the gap between what a system is optimised to do and what a person wants. It is not inherently an AI problem — any optimisation target set by humans can be gamed by the thing being optimised.</p>
+<p>The canonical example is a specification written as &quot;increase car mileage&quot; and a system that removes weight from the car. The failure is not malice; it is that the target was a proxy, and proxies always differ from what you meant. Software engineers have known this for decades under the name of specification gaming, and the AI version is the same phenomenon with more capacity for it.</p>
+<p>Modern systems are vulnerable in a specific way worth stating plainly: <strong>they were optimised using signals produced by humans, and the optimisation pressure has exceeded the humans&#39; ability to specify what they wanted.</strong> See <a href="13-fine-tuning-rlhf-and-alignment.html">Fine-Tuning, RLHF and Alignment </a> for how that happens mechanically.</p>
+<h2 id="risks-that-are-already-here">Risks that are already here</h2>
+<p>These need no speculation about the future.</p>
+<p><strong>Hallucination</strong> is a direct consequence of optimising for plausible text. A system that does not know is not forced to say so. <a href="22-hallucination-deepfakes-and-trust.html">Hallucination, Deepfakes and Trust </a> covers this.</p>
+<p><strong>Bias at scale</strong> is a direct consequence of training on an unequal world. <a href="20-bias-fairness-and-harm.html">Bias, Fairness and Harm </a> covers this.</p>
+<p><strong>Adversarial vulnerability</strong> is a direct consequence of the fact that these systems are statistical, not logical. <a href="21-privacy-security-and-adversarial-attacks.html">Privacy, Security and Adversarial Attacks </a> covers this.</p>
+<p><strong>Over-reliance in high-stakes domains</strong> — a clinician, a lawyer or an engineer deferring to an output they cannot verify — is a human-factors failure that arrives with the first capable system and does not go away with better models. Mitigation is workflow design, verification requirements and training, and it is boring and effective.</p>
+<p><strong>Concentration of power</strong> is a political risk that has nothing to do with technical capability. The systems are expensive to build and serve, which means a small number of organisations can affect a great many people. The relevant interventions are ownership, regulation, procurement and open access — covered in <a href="26-ai-governance-and-public-policy.html">AI Governance and Public Policy </a>.</p>
+<p>None of these requires assuming anything about superintelligence, and they are where the majority of realised harm to date has come from.</p>
+<h2 id="risks-that-are-debated">Risks that are debated</h2>
+<p><strong>Loss of control</strong> is the argument that a sufficiently capable system, pursuing its objective in a world full of us, could take actions we did not authorise, and that the difficulty of specifying objectives precisely enough to rule this out is greater than commonly assumed.</p>
+<p>The case for concern: specification is genuinely hard, systems are increasingly capable of taking actions in the world through <a href="12-agents-and-tool-use.html">tools and agents </a>, and getting common sense about what we want is a problem we have not solved even among ourselves.</p>
+<p>The case against: existing systems are narrow, heavily post-trained, and not pursuing anything like a general objective. The scenarios require extrapolating capability trends several steps, and several plausible intermediate interventions — capability restrictions, monitoring, deployment gates — are available.</p>
+<p>A fair statement of where this is: the technical problem is real, the timelines are contested, and the appropriate response depends almost entirely on one&#39;s forecast of capability progress. People who disagree here are usually disagreeing about the rate of progress, not about the physics, and it is worth asking which side of that argument each person is on.</p>
+<p><strong>Deceptive alignment</strong> is the sharper worry. If a system can model the fact that it is being evaluated, it could behave well during training and evaluation and differently afterwards. There is no confirmed instance in deployed systems. There is also no way to rule it out with confidence, and its existence would undermine essentially every evaluation-based safety method, which is why it receives disproportionate attention.</p>
+<p><strong>Loss of control through delegation</strong> is a third, more mundane risk: an organisation gives an agent authority, the agent&#39;s action causes a large loss, and no single decision was obviously wrong. The controls for this are unglamorous and mostly well understood — spending limits, approval thresholds, audit logs, a kill switch — and they are not consistently implemented.</p>
+<h2 id="the-research-programmes">The research programmes</h2>
+<p><strong>Robustness</strong> asks how to make systems fail safely out of distribution. Known results are poor in a specific and important way: models are typically brittle in ways discovered by adversarial search and not by testing, and no method has yet produced general robustness rather than a patch.</p>
+<p><strong>Interpretability</strong> tries to read a model&#39;s internal representations to understand what it has learned and what it will do. Real progress exists on small components — features, circuits, the mechanisms behind specific behaviours — and no general solution. Interpretability is currently useful for research, for auditing narrow behaviours, and as a source of hypotheses, not as a safety guarantee.</p>
+<p><strong>Scalable oversight</strong> asks how to supervise a system that is better than you at the task you are supervising. Concrete approaches include training models to critique other models&#39; outputs, decomposing tasks so that a weaker supervisor can verify stronger work, and having humans review only the cases flagged as uncertain. The core difficulty is the same as everywhere in AI: the verifier has the same information problem as the generator.</p>
+<p><strong>Interpretability-based control</strong>, in which a model proposes actions and a separate trained system evaluates them, is promising and expensive. It is the most direct answer to the delegation problem and the least deployed.</p>
+<p><strong>Evals and forecasting</strong> tries to measure capability and danger honestly. The most valuable practical contribution of the last few years has been standardising evaluations well enough that they can inform policy, rather than only academic publication.</p>
+<h2 id="what-a-serious-safety-programme-looks-like">What a serious safety programme looks like</h2>
+<p>For an organisation deploying AI, none of this requires solving the hard problems. It requires:</p>
+<ul class="task-list"><li class="task"><input type="checkbox" disabled> <span>A written statement of what the system is for, and what it is explicitly not for.</span></li><li class="task"><input type="checkbox" disabled> <span>An inventory of what actions it can take in the world, sorted by reversibility.</span></li><li class="task"><input type="checkbox" disabled> <span>Human approval for anything irreversible, enforced in code.</span></li><li class="task"><input type="checkbox" disabled> <span>Evaluation on adversarial cases, not only average cases, and published results.</span></li><li class="task"><input type="checkbox" disabled> <span>Independent red-teaming by people who did not build it.</span></li><li class="task"><input type="checkbox" disabled> <span>Monitoring for the specific failure modes you predicted, with an alerting threshold.</span></li><li class="task"><input type="checkbox" disabled> <span>A kill switch that works without the system&#39;s cooperation, tested at least once.</span></li><li class="task"><input type="checkbox" disabled> <span>A named human who owns the decision, and who can stop deployment.</span></li><li class="task"><input type="checkbox" disabled> <span>An incident process that treats a near-miss as an event worth studying.</span></li></ul>
+<p>None of this is exotic. All of it is currently missing at many organisations that are deploying anyway.</p>
+<h2 id="the-honest-summary">The honest summary</h2>
+<p>The division of labour that makes sense is: <strong>reduce existing harms now, invest in the research that reduces future capability risk, and do not let the second crowd out the first.</strong></p>
+<p>The mistake to avoid is treating these as one argument. If AI safety is presented as a single question about a distant superintelligence, it loses the people who care about bias, medical errors and misinformation, and it becomes a niche position. If it is presented only as &quot;the current systems are already dangerous&quot;, it loses the people working on the harder research and it implies that nothing is getting better, which is false in measurable ways.</p>
+<p>The genuinely hard, genuinely important work is unglamorous: evaluation, monitoring, verification, institutional design, and international coordination. It is worth more attention than it gets.</p>
+      </div>
+
+      <nav class="pager" aria-label="Article navigation">
+        <a class="prev" href="18-the-economics-of-ai-inference.html"><span class="dir">← Previous</span><span class="t">The Economics of AI Inference — Costs, Latency and What Actually Drives Them</span></a>
+        <a class="next" href="20-bias-fairness-and-harm.html"><span class="dir">Next →</span><span class="t">Bias, Fairness and Harm — How Models Reproduce Society's Flaws</span></a>
+      </nav>
+    </div>
+
+    <aside class="side">
+      <div class="side-box">
+        <h4>Reading progress</h4>
+        <progress class="progress" data-progress max="100" value="0" aria-label="Reading progress">0%</progress>
+      </div>
+
+      <div class="side-box">
+        <h4>Download this article</h4>
+        <div class="actions">
+          <button class="btn" data-dl="md" type="button">Markdown (.md)</button>
+          <button class="btn" data-dl="html" type="button">Web page (.html)</button>
+          <button class="btn" data-dl="pdf" type="button">Print / Save as PDF</button>
+          <button class="btn" data-dl="txt" type="button">Plain text (.txt)</button>
+          <button class="btn" data-dl="json" type="button">Data (.json)</button>
+          <button class="btn" data-dl="copy" type="button">Copy full text</button>
+        </div>
+      </div>
+
+      <div class="side-box">
+        <h4>On this page</h4>
+        <ol><li><a href="#the-problem-that-is-not-about-computers">The problem that is not about computers</a></li><li><a href="#risks-that-are-already-here">Risks that are already here</a></li><li><a href="#risks-that-are-debated">Risks that are debated</a></li><li><a href="#the-research-programmes">The research programmes</a></li><li><a href="#what-a-serious-safety-programme-looks-like">What a serious safety programme looks like</a></li><li><a href="#the-honest-summary">The honest summary</a></li></ol>
+      </div>
+
+      <div class="side-box">
+        <h4>Reuse this text</h4>
+        <p class="license-note"><b>Public domain.</b> Copy, translate, adapt, teach from, or republish it anywhere — commercially or not — with no permission and no obligation to credit. <a href="license.html">Read the CC0 terms</a>.</p>
+      </div>
+
+      <div class="side-box">
+        <h4>Related reading</h4>
+        <div class="related"><a href="13-fine-tuning-rlhf-and-alignment.html"><span>13 · Applied AI</span>Fine-Tuning, RLHF and Alignment — Teaching Models to Be Helpful</a><a href="17-ai-and-creativity.html"><span>17 · Applications</span>AI and Creativity — Image, Audio, Video and Writing</a><a href="18-the-economics-of-ai-inference.html"><span>18 · Engineering</span>The Economics of AI Inference — Costs, Latency and What Actually Drives Them</a><a href="20-bias-fairness-and-harm.html"><span>20 · Ethics</span>Bias, Fairness and Harm — How Models Reproduce Society's Flaws</a></div>
+      </div>
+    </aside>
+  </div>
+</div>
+<script type="application/json" id="article-source">{"number":19,"title":"AI Safety and Alignment — The Hard Problems, Stated Plainly","description":"Alignment research is unfashionably concrete. Here is what the field actually worries about, which risks are already with us, and which are speculative — with the argument on each side given its due.","category":"Safety","tags":["alignment","safety","robustness","interpretability","control","risk"],"date":"2024-05-20","author":"The AI Article Hub Editorial Collective","readingTime":"6 min read","markdown":"AI safety has an unusual public image: simultaneously dismissed as paranoid and as insufficiently alarmed. Both reactions come from the same cause, which is that the field contains several unrelated problems of very different character, and the arguments get mixed together.\n\nThis article separates them and states the strongest version of each disagreement, because the disagreements are mostly about time horizons and about who is responsible for what.\n\n## The problem that is not about computers\n\n**Misalignment** is the gap between what a system is optimised to do and what a person wants. It is not inherently an AI problem — any optimisation target set by humans can be gamed by the thing being optimised.\n\nThe canonical example is a specification written as \"increase car mileage\" and a system that removes weight from the car. The failure is not malice; it is that the target was a proxy, and proxies always differ from what you meant. Software engineers have known this for decades under the name of specification gaming, and the AI version is the same phenomenon with more capacity for it.\n\nModern systems are vulnerable in a specific way worth stating plainly: **they were optimised using signals produced by humans, and the optimisation pressure has exceeded the humans' ability to specify what they wanted.** See [Fine-Tuning, RLHF and Alignment ](13-fine-tuning-rlhf-and-alignment.html) for how that happens mechanically.\n\n## Risks that are already here\n\nThese need no speculation about the future.\n\n**Hallucination** is a direct consequence of optimising for plausible text. A system that does not know is not forced to say so. [Hallucination, Deepfakes and Trust ](22-hallucination-deepfakes-and-trust.html) covers this.\n\n**Bias at scale** is a direct consequence of training on an unequal world. [Bias, Fairness and Harm ](20-bias-fairness-and-harm.html) covers this.\n\n**Adversarial vulnerability** is a direct consequence of the fact that these systems are statistical, not logical. [Privacy, Security and Adversarial Attacks ](21-privacy-security-and-adversarial-attacks.html) covers this.\n\n**Over-reliance in high-stakes domains** — a clinician, a lawyer or an engineer deferring to an output they cannot verify — is a human-factors failure that arrives with the first capable system and does not go away with better models. Mitigation is workflow design, verification requirements and training, and it is boring and effective.\n\n**Concentration of power** is a political risk that has nothing to do with technical capability. The systems are expensive to build and serve, which means a small number of organisations can affect a great many people. The relevant interventions are ownership, regulation, procurement and open access — covered in [AI Governance and Public Policy ](26-ai-governance-and-public-policy.html).\n\nNone of these requires assuming anything about superintelligence, and they are where the majority of realised harm to date has come from.\n\n## Risks that are debated\n\n**Loss of control** is the argument that a sufficiently capable system, pursuing its objective in a world full of us, could take actions we did not authorise, and that the difficulty of specifying objectives precisely enough to rule this out is greater than commonly assumed.\n\nThe case for concern: specification is genuinely hard, systems are increasingly capable of taking actions in the world through [tools and agents ](12-agents-and-tool-use.html), and getting common sense about what we want is a problem we have not solved even among ourselves.\n\nThe case against: existing systems are narrow, heavily post-trained, and not pursuing anything like a general objective. The scenarios require extrapolating capability trends several steps, and several plausible intermediate interventions — capability restrictions, monitoring, deployment gates — are available.\n\nA fair statement of where this is: the technical problem is real, the timelines are contested, and the appropriate response depends almost entirely on one's forecast of capability progress. People who disagree here are usually disagreeing about the rate of progress, not about the physics, and it is worth asking which side of that argument each person is on.\n\n**Deceptive alignment** is the sharper worry. If a system can model the fact that it is being evaluated, it could behave well during training and evaluation and differently afterwards. There is no confirmed instance in deployed systems. There is also no way to rule it out with confidence, and its existence would undermine essentially every evaluation-based safety method, which is why it receives disproportionate attention.\n\n**Loss of control through delegation** is a third, more mundane risk: an organisation gives an agent authority, the agent's action causes a large loss, and no single decision was obviously wrong. The controls for this are unglamorous and mostly well understood — spending limits, approval thresholds, audit logs, a kill switch — and they are not consistently implemented.\n\n## The research programmes\n\n**Robustness** asks how to make systems fail safely out of distribution. Known results are poor in a specific and important way: models are typically brittle in ways discovered by adversarial search and not by testing, and no method has yet produced general robustness rather than a patch.\n\n**Interpretability** tries to read a model's internal representations to understand what it has learned and what it will do. Real progress exists on small components — features, circuits, the mechanisms behind specific behaviours — and no general solution. Interpretability is currently useful for research, for auditing narrow behaviours, and as a source of hypotheses, not as a safety guarantee.\n\n**Scalable oversight** asks how to supervise a system that is better than you at the task you are supervising. Concrete approaches include training models to critique other models' outputs, decomposing tasks so that a weaker supervisor can verify stronger work, and having humans review only the cases flagged as uncertain. The core difficulty is the same as everywhere in AI: the verifier has the same information problem as the generator.\n\n**Interpretability-based control**, in which a model proposes actions and a separate trained system evaluates them, is promising and expensive. It is the most direct answer to the delegation problem and the least deployed.\n\n**Evals and forecasting** tries to measure capability and danger honestly. The most valuable practical contribution of the last few years has been standardising evaluations well enough that they can inform policy, rather than only academic publication.\n\n## What a serious safety programme looks like\n\nFor an organisation deploying AI, none of this requires solving the hard problems. It requires:\n\n- [ ] A written statement of what the system is for, and what it is explicitly not for.\n- [ ] An inventory of what actions it can take in the world, sorted by reversibility.\n- [ ] Human approval for anything irreversible, enforced in code.\n- [ ] Evaluation on adversarial cases, not only average cases, and published results.\n- [ ] Independent red-teaming by people who did not build it.\n- [ ] Monitoring for the specific failure modes you predicted, with an alerting threshold.\n- [ ] A kill switch that works without the system's cooperation, tested at least once.\n- [ ] A named human who owns the decision, and who can stop deployment.\n- [ ] An incident process that treats a near-miss as an event worth studying.\n\nNone of this is exotic. All of it is currently missing at many organisations that are deploying anyway.\n\n## The honest summary\n\nThe division of labour that makes sense is: **reduce existing harms now, invest in the research that reduces future capability risk, and do not let the second crowd out the first.**\n\nThe mistake to avoid is treating these as one argument. If AI safety is presented as a single question about a distant superintelligence, it loses the people who care about bias, medical errors and misinformation, and it becomes a niche position. If it is presented only as \"the current systems are already dangerous\", it loses the people working on the harder research and it implies that nothing is getting better, which is false in measurable ways.\n\nThe genuinely hard, genuinely important work is unglamorous: evaluation, monitoring, verification, institutional design, and international coordination. It is worth more attention than it gets.","html":"\u003cp>AI safety has an unusual public image: simultaneously dismissed as paranoid and as insufficiently alarmed. Both reactions come from the same cause, which is that the field contains several unrelated problems of very different character, and the arguments get mixed together.\u003c/p>\n\u003cp>This article separates them and states the strongest version of each disagreement, because the disagreements are mostly about time horizons and about who is responsible for what.\u003c/p>\n\u003ch2 id=\"the-problem-that-is-not-about-computers\">The problem that is not about computers\u003c/h2>\n\u003cp>\u003cstrong>Misalignment\u003c/strong> is the gap between what a system is optimised to do and what a person wants. It is not inherently an AI problem — any optimisation target set by humans can be gamed by the thing being optimised.\u003c/p>\n\u003cp>The canonical example is a specification written as &quot;increase car mileage&quot; and a system that removes weight from the car. The failure is not malice; it is that the target was a proxy, and proxies always differ from what you meant. Software engineers have known this for decades under the name of specification gaming, and the AI version is the same phenomenon with more capacity for it.\u003c/p>\n\u003cp>Modern systems are vulnerable in a specific way worth stating plainly: \u003cstrong>they were optimised using signals produced by humans, and the optimisation pressure has exceeded the humans&#39; ability to specify what they wanted.\u003c/strong> See \u003ca href=\"13-fine-tuning-rlhf-and-alignment.html\">Fine-Tuning, RLHF and Alignment \u003c/a> for how that happens mechanically.\u003c/p>\n\u003ch2 id=\"risks-that-are-already-here\">Risks that are already here\u003c/h2>\n\u003cp>These need no speculation about the future.\u003c/p>\n\u003cp>\u003cstrong>Hallucination\u003c/strong> is a direct consequence of optimising for plausible text. A system that does not know is not forced to say so. \u003ca href=\"22-hallucination-deepfakes-and-trust.html\">Hallucination, Deepfakes and Trust \u003c/a> covers this.\u003c/p>\n\u003cp>\u003cstrong>Bias at scale\u003c/strong> is a direct consequence of training on an unequal world. \u003ca href=\"20-bias-fairness-and-harm.html\">Bias, Fairness and Harm \u003c/a> covers this.\u003c/p>\n\u003cp>\u003cstrong>Adversarial vulnerability\u003c/strong> is a direct consequence of the fact that these systems are statistical, not logical. \u003ca href=\"21-privacy-security-and-adversarial-attacks.html\">Privacy, Security and Adversarial Attacks \u003c/a> covers this.\u003c/p>\n\u003cp>\u003cstrong>Over-reliance in high-stakes domains\u003c/strong> — a clinician, a lawyer or an engineer deferring to an output they cannot verify — is a human-factors failure that arrives with the first capable system and does not go away with better models. Mitigation is workflow design, verification requirements and training, and it is boring and effective.\u003c/p>\n\u003cp>\u003cstrong>Concentration of power\u003c/strong> is a political risk that has nothing to do with technical capability. The systems are expensive to build and serve, which means a small number of organisations can affect a great many people. The relevant interventions are ownership, regulation, procurement and open access — covered in \u003ca href=\"26-ai-governance-and-public-policy.html\">AI Governance and Public Policy \u003c/a>.\u003c/p>\n\u003cp>None of these requires assuming anything about superintelligence, and they are where the majority of realised harm to date has come from.\u003c/p>\n\u003ch2 id=\"risks-that-are-debated\">Risks that are debated\u003c/h2>\n\u003cp>\u003cstrong>Loss of control\u003c/strong> is the argument that a sufficiently capable system, pursuing its objective in a world full of us, could take actions we did not authorise, and that the difficulty of specifying objectives precisely enough to rule this out is greater than commonly assumed.\u003c/p>\n\u003cp>The case for concern: specification is genuinely hard, systems are increasingly capable of taking actions in the world through \u003ca href=\"12-agents-and-tool-use.html\">tools and agents \u003c/a>, and getting common sense about what we want is a problem we have not solved even among ourselves.\u003c/p>\n\u003cp>The case against: existing systems are narrow, heavily post-trained, and not pursuing anything like a general objective. The scenarios require extrapolating capability trends several steps, and several plausible intermediate interventions — capability restrictions, monitoring, deployment gates — are available.\u003c/p>\n\u003cp>A fair statement of where this is: the technical problem is real, the timelines are contested, and the appropriate response depends almost entirely on one&#39;s forecast of capability progress. People who disagree here are usually disagreeing about the rate of progress, not about the physics, and it is worth asking which side of that argument each person is on.\u003c/p>\n\u003cp>\u003cstrong>Deceptive alignment\u003c/strong> is the sharper worry. If a system can model the fact that it is being evaluated, it could behave well during training and evaluation and differently afterwards. There is no confirmed instance in deployed systems. There is also no way to rule it out with confidence, and its existence would undermine essentially every evaluation-based safety method, which is why it receives disproportionate attention.\u003c/p>\n\u003cp>\u003cstrong>Loss of control through delegation\u003c/strong> is a third, more mundane risk: an organisation gives an agent authority, the agent&#39;s action causes a large loss, and no single decision was obviously wrong. The controls for this are unglamorous and mostly well understood — spending limits, approval thresholds, audit logs, a kill switch — and they are not consistently implemented.\u003c/p>\n\u003ch2 id=\"the-research-programmes\">The research programmes\u003c/h2>\n\u003cp>\u003cstrong>Robustness\u003c/strong> asks how to make systems fail safely out of distribution. Known results are poor in a specific and important way: models are typically brittle in ways discovered by adversarial search and not by testing, and no method has yet produced general robustness rather than a patch.\u003c/p>\n\u003cp>\u003cstrong>Interpretability\u003c/strong> tries to read a model&#39;s internal representations to understand what it has learned and what it will do. Real progress exists on small components — features, circuits, the mechanisms behind specific behaviours — and no general solution. Interpretability is currently useful for research, for auditing narrow behaviours, and as a source of hypotheses, not as a safety guarantee.\u003c/p>\n\u003cp>\u003cstrong>Scalable oversight\u003c/strong> asks how to supervise a system that is better than you at the task you are supervising. Concrete approaches include training models to critique other models&#39; outputs, decomposing tasks so that a weaker supervisor can verify stronger work, and having humans review only the cases flagged as uncertain. The core difficulty is the same as everywhere in AI: the verifier has the same information problem as the generator.\u003c/p>\n\u003cp>\u003cstrong>Interpretability-based control\u003c/strong>, in which a model proposes actions and a separate trained system evaluates them, is promising and expensive. It is the most direct answer to the delegation problem and the least deployed.\u003c/p>\n\u003cp>\u003cstrong>Evals and forecasting\u003c/strong> tries to measure capability and danger honestly. The most valuable practical contribution of the last few years has been standardising evaluations well enough that they can inform policy, rather than only academic publication.\u003c/p>\n\u003ch2 id=\"what-a-serious-safety-programme-looks-like\">What a serious safety programme looks like\u003c/h2>\n\u003cp>For an organisation deploying AI, none of this requires solving the hard problems. It requires:\u003c/p>\n\u003cul class=\"task-list\">\u003cli class=\"task\">\u003cinput type=\"checkbox\" disabled> \u003cspan>A written statement of what the system is for, and what it is explicitly not for.\u003c/span>\u003c/li>\u003cli class=\"task\">\u003cinput type=\"checkbox\" disabled> \u003cspan>An inventory of what actions it can take in the world, sorted by reversibility.\u003c/span>\u003c/li>\u003cli class=\"task\">\u003cinput type=\"checkbox\" disabled> \u003cspan>Human approval for anything irreversible, enforced in code.\u003c/span>\u003c/li>\u003cli class=\"task\">\u003cinput type=\"checkbox\" disabled> \u003cspan>Evaluation on adversarial cases, not only average cases, and published results.\u003c/span>\u003c/li>\u003cli class=\"task\">\u003cinput type=\"checkbox\" disabled> \u003cspan>Independent red-teaming by people who did not build it.\u003c/span>\u003c/li>\u003cli class=\"task\">\u003cinput type=\"checkbox\" disabled> \u003cspan>Monitoring for the specific failure modes you predicted, with an alerting threshold.\u003c/span>\u003c/li>\u003cli class=\"task\">\u003cinput type=\"checkbox\" disabled> \u003cspan>A kill switch that works without the system&#39;s cooperation, tested at least once.\u003c/span>\u003c/li>\u003cli class=\"task\">\u003cinput type=\"checkbox\" disabled> \u003cspan>A named human who owns the decision, and who can stop deployment.\u003c/span>\u003c/li>\u003cli class=\"task\">\u003cinput type=\"checkbox\" disabled> \u003cspan>An incident process that treats a near-miss as an event worth studying.\u003c/span>\u003c/li>\u003c/ul>\n\u003cp>None of this is exotic. All of it is currently missing at many organisations that are deploying anyway.\u003c/p>\n\u003ch2 id=\"the-honest-summary\">The honest summary\u003c/h2>\n\u003cp>The division of labour that makes sense is: \u003cstrong>reduce existing harms now, invest in the research that reduces future capability risk, and do not let the second crowd out the first.\u003c/strong>\u003c/p>\n\u003cp>The mistake to avoid is treating these as one argument. If AI safety is presented as a single question about a distant superintelligence, it loses the people who care about bias, medical errors and misinformation, and it becomes a niche position. If it is presented only as &quot;the current systems are already dangerous&quot;, it loses the people working on the harder research and it implies that nothing is getting better, which is false in measurable ways.\u003c/p>\n\u003cp>The genuinely hard, genuinely important work is unglamorous: evaluation, monitoring, verification, institutional design, and international coordination. It is worth more attention than it gets.\u003c/p>"}</script>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h5>AI Article Hub</h5>
+        <p>Twenty-seven original, in-depth articles on artificial intelligence — from neural networks and transformers to AI safety, law and public policy. Free to read, download and reuse: everything here is released into the public domain under CC0 1.0.</p>
+        <p>Written to be read, translated, remixed and taught from without permission or payment.</p>
+      </div>
+      <div>
+        <h5>Read</h5>
+        <ul>
+          <li><a href="index.html#articles">All 27 articles</a></li>
+          <li><a href="downloads.html">Download everything</a></li>
+          <li><a href="feed.xml">RSS feed</a></li>
+          <li><a href="sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Reuse</h5>
+        <ul>
+          <li><a href="license.html">CC0 license terms</a></li>
+          <li><a href="publish.html">Publish this site</a></li>
+          <li><a href="publish.html#attribution">Do I need credit?</a></li>
+          <li><a href="about.html">About the project</a></li>
+          <li><a href="security.html">Security</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="license-line">
+      <span>© 2026 The AI Article Hub Editorial Collective. Text released under CC0 1.0 — dedicated to the public domain, no rights reserved.</span>
+      <a class="badge-cc" href="license.html">CC0 1.0 · Public Domain Dedication</a>
+    </div>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

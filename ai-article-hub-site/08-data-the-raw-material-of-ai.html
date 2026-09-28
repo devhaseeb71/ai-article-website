@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data — The Raw Material of AI · AI Article Hub</title>
+<meta name="description" content="Everyone talks about models and almost nobody talks about data. Yet data choices decide capability, cost, bias and legal exposure long before any architecture is chosen.">
+<link rel="canonical" href="https://example.org/ai-article-hub/index.html">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#2f5bd7">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AI Article Hub">
+<meta property="og:title" content="Data — The Raw Material of AI · AI Article Hub">
+<meta property="og:description" content="Everyone talks about models and almost nobody talks about data. Yet data choices decide capability, cost, bias and legal exposure long before any architecture is chosen.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="license" content="CC0 1.0">
+<meta name="dcterms.license" content="https://creativecommons.org/publicdomain/zero/1.0/">
+<link rel="alternate" type="application/rss+xml" title="AI Article Hub" href="feed.xml">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/styles.css">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Data — The Raw Material of AI">
+<meta property="og:description" content="Everyone talks about models and almost nobody talks about data. Yet data choices decide capability, cost, bias and legal exposure long before any architecture is chosen.">
+<meta property="og:url" content="https://example.org/ai-article-hub/08-data-the-raw-material-of-ai.html">
+<meta property="article:section" content="Machine Learning">
+<meta property="article:tag" content="data">
+<meta property="article:tag" content="datasets">
+<meta property="article:tag" content="quality">
+<meta property="article:tag" content="provenance">
+<meta property="article:tag" content="curation">
+<meta name="author" content="The AI Article Hub Editorial Collective">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Data — The Raw Material of AI","description":"Everyone talks about models and almost nobody talks about data. Yet data choices decide capability, cost, bias and legal exposure long before any architecture is chosen.","datePublished":"2024-03-04","dateModified":"2024-03-04","inLanguage":"en","articleSection":"Machine Learning","keywords":"data, datasets, quality, provenance, curation","wordCount":1143,"isAccessibleForFree":true,"license":"https://creativecommons.org/publicdomain/zero/1.0/","creativeWorkStatus":"Public Domain","author":{"@type":"Organization","name":"The AI Article Hub Editorial Collective"},"publisher":{"@type":"Organization","name":"AI Article Hub"},"mainEntityOfPage":"https://example.org/ai-article-hub/08-data-the-raw-material-of-ai.html"}</script>
+</head>
+<body class="">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="index.html">
+      <span class="logo" aria-hidden="true">AI</span>
+      <span>AI Article Hub<small>CC0 1.0 · Public Domain</small></span>
+    </a>
+    <button class="icon-btn menu-btn" data-menu-toggle aria-label="Toggle navigation" aria-controls="site-nav">☰</button>
+    <nav class="nav" id="site-nav" aria-label="Main">
+          <a href="index.html">Home</a>
+          <a href="index.html#articles">Articles</a>
+          <a href="downloads.html">Downloads</a>
+          <a href="publish.html">Publish</a>
+          <a href="license.html">License</a>
+          <a href="about.html">About</a>
+          <a href="security.html">Security</a>
+      <button class="icon-btn theme-toggle" data-theme-toggle type="button" aria-label="Toggle theme">☾</button>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<div class="wrap">
+  <div class="article-shell">
+    <div>
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a> › <a href="index.html#articles">Articles</a> › <span>08 of 27</span>
+      </nav>
+
+      <header class="article-head">
+        <div class="kicker">
+          <span class="tag accent">Part 08 of 27</span>
+          <span class="tag">Machine Learning</span>
+          <span class="tag">5 min read</span>
+        </div>
+        <h1>Data — The Raw Material of AI</h1>
+        <p class="standfirst">Everyone talks about models and almost nobody talks about data. Yet data choices decide capability, cost, bias and legal exposure long before any architecture is chosen.</p>
+        <div class="byline">
+          <span>2024-03-04</span><span class="dot">•</span>
+          <span>Machine Learning</span><span class="dot">•</span>
+          <span>1,143 words</span><span class="dot">•</span>
+          <span>CC0 1.0 public domain</span>
+        </div>
+      </header>
+
+      <div class="prose">
+<p>Ask someone to describe a machine learning project and they will describe the model. Ask what will make it succeed and they will mention the algorithm. In practice, the project succeeds or fails on data, and the decisions about data are made early, by people who are not yet thinking about the model, and are nearly impossible to change later.</p>
+<p>This article walks through the data lifecycle: where datasets come from, what makes them good or bad, the ways they fail, and what to do about each.</p>
+<h2 id="why-data-dominates">Why data dominates</h2>
+<p>A model can only imitate the distribution it was trained on. If the data says consultations end after eleven minutes, the model will say consultations end after eleven minutes — not because eleven minutes is true, but because eleven minutes is what the record contains.</p>
+<p>This gives data a strange double status. It is simultaneously the <em>source</em> of the model&#39;s capability and the <em>definition</em> of the model&#39;s errors. A wrong prediction is a data problem until proven otherwise, and the proof is usually hard to produce.</p>
+<p>The economics agree. In a typical supervised project, the split is roughly: labelling and data engineering consume most of the budget, model selection a modest share, and training compute a smaller one still in anything but a frontier setting. The industry&#39;s attention is inverted, because modelling is more publishable and data work is not.</p>
+<h2 id="anatomy-of-a-modern-dataset">Anatomy of a modern dataset</h2>
+<p>A large text dataset is assembled in a pipeline with recognisable stages:</p>
+<ol><li><strong>Crawl.</strong> Fetch pages at scale, respecting site rules and rate limits, and keeping a record of where everything came from.</li><li><strong>Extract.</strong> Strip navigation, boilerplate, cookie notices and duplicated site furniture. A page of article text and a page of navigation both produce hundreds of tokens; if you keep the noise, you spend most of your budget learning to recognise navigation.</li><li><strong>Filter for quality.</strong> Score documents with a classifier trained on human preferences. Roughly: keep text that a person would write, keep reference material, keep code, discard the rest.</li><li><strong>Deduplicate.</strong> Exact matches, then near-matches. This is not optional. Duplicated documents are up-weighted training examples, and heavy duplication degrades both quality and safety behaviour in ways that are difficult to detect without deliberately looking.</li><li><strong>Remove harmful and personal data.</strong> Malicious content, and personal information at volume.</li><li><strong>Mix.</strong> Choose proportions by domain, language and quality. This is a strategic act with permanent consequences for the model.</li><li><strong>Split.</strong> Hold out validation and test sets — and hold them out <em>properly</em>, deduplicated against the training set, or the evaluation is contaminated.</li></ol>
+<h2 id="labelled-data-still-the-hard-part">Labelled data: still the hard part</h2>
+<p>For supervised tasks, the cost is in the labels, and the difficulty is rarely in producing them mechanically. It is in deciding what counts as the right answer.</p>
+<p>Consider medical imaging: radiologists labelling a scan may disagree with each other. The disagreement is often the real signal, and averaging it away produces a label that is confidently wrong. Consider content moderation: what counts as hate speech is a political question, and a model trained on one jurisdiction&#39;s answer will produce false positives in another. Consider any labelling task where the &quot;correct&quot; answer depends on taste, style or intent — those are not datasets you can buy your way out of.</p>
+<p>Two techniques help with genuinely ambiguous labels: writing guidelines with worked examples, and having several labelers rate the same items so the <em>distribution</em> of judgement becomes the training signal rather than a single number. The second is usually more honest and always more expensive.</p>
+<h2 id="the-failure-catalogue">The failure catalogue</h2>
+<p><strong>Historical bias.</strong> Data is a record of a world that was unequal, so a model trained on it reproduces the inequality. This is not a subtle interaction; the mechanism is direct.</p>
+<p><strong>Under-representation.</strong> Rare classes, minority languages, disabled users, small countries, old equipment, unusual conditions. Aggregate metrics hide them almost perfectly, because the affected group is a small fraction of the total.</p>
+<p><strong>Domain shift.</strong> A model trained on one hospital, one camera, one accent or one documentation style degrades silently when deployed in another. The failure is not a crash; it is a few percentage points, spread across a population that will never see a dashboard about it.</p>
+<p><strong>Annotation artefacts.</strong> A model that predicts a hospital&#39;s billing code from a scan is partly predicting the scanner. Spurious correlations between the label and something incidental in the data are extremely common, and removing them requires deliberately searching for them.</p>
+<p><strong>Leakage.</strong> Information from the evaluation set reaching training, often through duplicate documents or a preprocessing step performed before splitting. Leakage inflates results, produces papers that cannot be reproduced, and is the single most common reason a published benchmark number is meaningless.</p>
+<p><strong>Permission.</strong> Data collected, licensed or scraped under conditions that were not clearly permitted. This is not a technical problem, and it cannot be solved by better engineering, though it is frequently treated as if it were.</p>
+<h2 id="practical-advice-that-survives-contact-with-reality">Practical advice that survives contact with reality</h2>
+<ul><li><strong>Write down where each field came from</strong>, with a date and a licence or permission basis. Six months later nobody remembers, and the answer is needed for both compliance and debugging.</li><li><strong>Measure the slices, not just the average.</strong> Accuracy by language, by demographic, by document type, by time period, by source. If a subgroup&#39;s performance is not reported, assume it is bad.</li><li><strong>Keep a permanent held-out set</strong> that is never used for tuning, and rebuild it periodically as the world changes.</li><li><strong>Sample manually, constantly.</strong> Reading fifty examples a week from the production distribution will reveal more real problems than any dashboard. It is also the only way to notice that the production distribution has quietly become something else.</li><li><strong>Prefer more distinct data over more data.</strong> Ten thousand unique examples beat a hundred thousand copies of a thousand.</li><li><strong>Document the exclusions</strong> as carefully as the inclusions. A dataset is defined as much by what you threw out.</li></ul>
+<blockquote><p>&quot;Garbage in, garbage out&quot; undersells it. The more accurate phrase is: whatever you put in, the model will faithfully become.</p></blockquote>
+<h2 id="data-as-a-durable-asset">Data as a durable asset</h2>
+<p>There is one more reason to care: a well-documented dataset outlives the models trained on it. Models become obsolete as architectures change and as their training recipes are rebuilt; the dataset can be reused, re-licensed, audited, corrected and re-used by anyone, which is exactly the kind of asset that belongs in the public domain.</p>
+<p>That is the argument for publishing datasets alongside the work, under a clear open licence, with the collection method documented, known limitations stated, and personal or restricted material removed. A public-domain corpus is something a whole field can build on for decades. A model checkpoint is something that ages out in about two years.</p>
+<p>Both matter. Neither substitutes for the other. But when you have to choose what to leave behind, leave the data.</p>
+      </div>
+
+      <nav class="pager" aria-label="Article navigation">
+        <a class="prev" href="07-what-happens-during-training.html"><span class="dir">← Previous</span><span class="t">What Actually Happens During Training</span></a>
+        <a class="next" href="09-evaluating-ai.html"><span class="dir">Next →</span><span class="t">Evaluating AI — Benchmarks, Hallucinations and How to Measure Quality</span></a>
+      </nav>
+    </div>
+
+    <aside class="side">
+      <div class="side-box">
+        <h4>Reading progress</h4>
+        <progress class="progress" data-progress max="100" value="0" aria-label="Reading progress">0%</progress>
+      </div>
+
+      <div class="side-box">
+        <h4>Download this article</h4>
+        <div class="actions">
+          <button class="btn" data-dl="md" type="button">Markdown (.md)</button>
+          <button class="btn" data-dl="html" type="button">Web page (.html)</button>
+          <button class="btn" data-dl="pdf" type="button">Print / Save as PDF</button>
+          <button class="btn" data-dl="txt" type="button">Plain text (.txt)</button>
+          <button class="btn" data-dl="json" type="button">Data (.json)</button>
+          <button class="btn" data-dl="copy" type="button">Copy full text</button>
+        </div>
+      </div>
+
+      <div class="side-box">
+        <h4>On this page</h4>
+        <ol><li><a href="#why-data-dominates">Why data dominates</a></li><li><a href="#anatomy-of-a-modern-dataset">Anatomy of a modern dataset</a></li><li><a href="#labelled-data-still-the-hard-part">Labelled data: still the hard part</a></li><li><a href="#the-failure-catalogue">The failure catalogue</a></li><li><a href="#practical-advice-that-survives-contact-with-reality">Practical advice that survives contact with reality</a></li><li><a href="#data-as-a-durable-asset">Data as a durable asset</a></li></ol>
+      </div>
+
+      <div class="side-box">
+        <h4>Reuse this text</h4>
+        <p class="license-note"><b>Public domain.</b> Copy, translate, adapt, teach from, or republish it anywhere — commercially or not — with no permission and no obligation to credit. <a href="license.html">Read the CC0 terms</a>.</p>
+      </div>
+
+      <div class="side-box">
+        <h4>Related reading</h4>
+        <div class="related"><a href="07-what-happens-during-training.html"><span>07 · Machine Learning</span>What Actually Happens During Training</a><a href="09-evaluating-ai.html"><span>09 · Machine Learning</span>Evaluating AI — Benchmarks, Hallucinations and How to Measure Quality</a><a href="22-hallucination-deepfakes-and-trust.html"><span>22 · Society</span>Hallucination, Deepfakes and Trust</a><a href="06-the-transformer-architecture.html"><span>06 · Foundations</span>The Transformer — The Architecture Behind Modern AI</a></div>
+      </div>
+    </aside>
+  </div>
+</div>
+<script type="application/json" id="article-source">{"number":8,"title":"Data — The Raw Material of AI","description":"Everyone talks about models and almost nobody talks about data. Yet data choices decide capability, cost, bias and legal exposure long before any architecture is chosen.","category":"Machine Learning","tags":["data","datasets","quality","provenance","curation"],"date":"2024-03-04","author":"The AI Article Hub Editorial Collective","readingTime":"5 min read","markdown":"Ask someone to describe a machine learning project and they will describe the model. Ask what will make it succeed and they will mention the algorithm. In practice, the project succeeds or fails on data, and the decisions about data are made early, by people who are not yet thinking about the model, and are nearly impossible to change later.\n\nThis article walks through the data lifecycle: where datasets come from, what makes them good or bad, the ways they fail, and what to do about each.\n\n## Why data dominates\n\nA model can only imitate the distribution it was trained on. If the data says consultations end after eleven minutes, the model will say consultations end after eleven minutes — not because eleven minutes is true, but because eleven minutes is what the record contains.\n\nThis gives data a strange double status. It is simultaneously the *source* of the model's capability and the *definition* of the model's errors. A wrong prediction is a data problem until proven otherwise, and the proof is usually hard to produce.\n\nThe economics agree. In a typical supervised project, the split is roughly: labelling and data engineering consume most of the budget, model selection a modest share, and training compute a smaller one still in anything but a frontier setting. The industry's attention is inverted, because modelling is more publishable and data work is not.\n\n## Anatomy of a modern dataset\n\nA large text dataset is assembled in a pipeline with recognisable stages:\n\n1. **Crawl.** Fetch pages at scale, respecting site rules and rate limits, and keeping a record of where everything came from.\n2. **Extract.** Strip navigation, boilerplate, cookie notices and duplicated site furniture. A page of article text and a page of navigation both produce hundreds of tokens; if you keep the noise, you spend most of your budget learning to recognise navigation.\n3. **Filter for quality.** Score documents with a classifier trained on human preferences. Roughly: keep text that a person would write, keep reference material, keep code, discard the rest.\n4. **Deduplicate.** Exact matches, then near-matches. This is not optional. Duplicated documents are up-weighted training examples, and heavy duplication degrades both quality and safety behaviour in ways that are difficult to detect without deliberately looking.\n5. **Remove harmful and personal data.** Malicious content, and personal information at volume.\n6. **Mix.** Choose proportions by domain, language and quality. This is a strategic act with permanent consequences for the model.\n7. **Split.** Hold out validation and test sets — and hold them out *properly*, deduplicated against the training set, or the evaluation is contaminated.\n\n## Labelled data: still the hard part\n\nFor supervised tasks, the cost is in the labels, and the difficulty is rarely in producing them mechanically. It is in deciding what counts as the right answer.\n\nConsider medical imaging: radiologists labelling a scan may disagree with each other. The disagreement is often the real signal, and averaging it away produces a label that is confidently wrong. Consider content moderation: what counts as hate speech is a political question, and a model trained on one jurisdiction's answer will produce false positives in another. Consider any labelling task where the \"correct\" answer depends on taste, style or intent — those are not datasets you can buy your way out of.\n\nTwo techniques help with genuinely ambiguous labels: writing guidelines with worked examples, and having several labelers rate the same items so the *distribution* of judgement becomes the training signal rather than a single number. The second is usually more honest and always more expensive.\n\n## The failure catalogue\n\n**Historical bias.** Data is a record of a world that was unequal, so a model trained on it reproduces the inequality. This is not a subtle interaction; the mechanism is direct.\n\n**Under-representation.** Rare classes, minority languages, disabled users, small countries, old equipment, unusual conditions. Aggregate metrics hide them almost perfectly, because the affected group is a small fraction of the total.\n\n**Domain shift.** A model trained on one hospital, one camera, one accent or one documentation style degrades silently when deployed in another. The failure is not a crash; it is a few percentage points, spread across a population that will never see a dashboard about it.\n\n**Annotation artefacts.** A model that predicts a hospital's billing code from a scan is partly predicting the scanner. Spurious correlations between the label and something incidental in the data are extremely common, and removing them requires deliberately searching for them.\n\n**Leakage.** Information from the evaluation set reaching training, often through duplicate documents or a preprocessing step performed before splitting. Leakage inflates results, produces papers that cannot be reproduced, and is the single most common reason a published benchmark number is meaningless.\n\n**Permission.** Data collected, licensed or scraped under conditions that were not clearly permitted. This is not a technical problem, and it cannot be solved by better engineering, though it is frequently treated as if it were.\n\n## Practical advice that survives contact with reality\n\n- **Write down where each field came from**, with a date and a licence or permission basis. Six months later nobody remembers, and the answer is needed for both compliance and debugging.\n- **Measure the slices, not just the average.** Accuracy by language, by demographic, by document type, by time period, by source. If a subgroup's performance is not reported, assume it is bad.\n- **Keep a permanent held-out set** that is never used for tuning, and rebuild it periodically as the world changes.\n- **Sample manually, constantly.** Reading fifty examples a week from the production distribution will reveal more real problems than any dashboard. It is also the only way to notice that the production distribution has quietly become something else.\n- **Prefer more distinct data over more data.** Ten thousand unique examples beat a hundred thousand copies of a thousand.\n- **Document the exclusions** as carefully as the inclusions. A dataset is defined as much by what you threw out.\n\n> \"Garbage in, garbage out\" undersells it. The more accurate phrase is: whatever you put in, the model will faithfully become.\n\n## Data as a durable asset\n\nThere is one more reason to care: a well-documented dataset outlives the models trained on it. Models become obsolete as architectures change and as their training recipes are rebuilt; the dataset can be reused, re-licensed, audited, corrected and re-used by anyone, which is exactly the kind of asset that belongs in the public domain.\n\nThat is the argument for publishing datasets alongside the work, under a clear open licence, with the collection method documented, known limitations stated, and personal or restricted material removed. A public-domain corpus is something a whole field can build on for decades. A model checkpoint is something that ages out in about two years.\n\nBoth matter. Neither substitutes for the other. But when you have to choose what to leave behind, leave the data.","html":"\u003cp>Ask someone to describe a machine learning project and they will describe the model. Ask what will make it succeed and they will mention the algorithm. In practice, the project succeeds or fails on data, and the decisions about data are made early, by people who are not yet thinking about the model, and are nearly impossible to change later.\u003c/p>\n\u003cp>This article walks through the data lifecycle: where datasets come from, what makes them good or bad, the ways they fail, and what to do about each.\u003c/p>\n\u003ch2 id=\"why-data-dominates\">Why data dominates\u003c/h2>\n\u003cp>A model can only imitate the distribution it was trained on. If the data says consultations end after eleven minutes, the model will say consultations end after eleven minutes — not because eleven minutes is true, but because eleven minutes is what the record contains.\u003c/p>\n\u003cp>This gives data a strange double status. It is simultaneously the \u003cem>source\u003c/em> of the model&#39;s capability and the \u003cem>definition\u003c/em> of the model&#39;s errors. A wrong prediction is a data problem until proven otherwise, and the proof is usually hard to produce.\u003c/p>\n\u003cp>The economics agree. In a typical supervised project, the split is roughly: labelling and data engineering consume most of the budget, model selection a modest share, and training compute a smaller one still in anything but a frontier setting. The industry&#39;s attention is inverted, because modelling is more publishable and data work is not.\u003c/p>\n\u003ch2 id=\"anatomy-of-a-modern-dataset\">Anatomy of a modern dataset\u003c/h2>\n\u003cp>A large text dataset is assembled in a pipeline with recognisable stages:\u003c/p>\n\u003col>\u003cli>\u003cstrong>Crawl.\u003c/strong> Fetch pages at scale, respecting site rules and rate limits, and keeping a record of where everything came from.\u003c/li>\u003cli>\u003cstrong>Extract.\u003c/strong> Strip navigation, boilerplate, cookie notices and duplicated site furniture. A page of article text and a page of navigation both produce hundreds of tokens; if you keep the noise, you spend most of your budget learning to recognise navigation.\u003c/li>\u003cli>\u003cstrong>Filter for quality.\u003c/strong> Score documents with a classifier trained on human preferences. Roughly: keep text that a person would write, keep reference material, keep code, discard the rest.\u003c/li>\u003cli>\u003cstrong>Deduplicate.\u003c/strong> Exact matches, then near-matches. This is not optional. Duplicated documents are up-weighted training examples, and heavy duplication degrades both quality and safety behaviour in ways that are difficult to detect without deliberately looking.\u003c/li>\u003cli>\u003cstrong>Remove harmful and personal data.\u003c/strong> Malicious content, and personal information at volume.\u003c/li>\u003cli>\u003cstrong>Mix.\u003c/strong> Choose proportions by domain, language and quality. This is a strategic act with permanent consequences for the model.\u003c/li>\u003cli>\u003cstrong>Split.\u003c/strong> Hold out validation and test sets — and hold them out \u003cem>properly\u003c/em>, deduplicated against the training set, or the evaluation is contaminated.\u003c/li>\u003c/ol>\n\u003ch2 id=\"labelled-data-still-the-hard-part\">Labelled data: still the hard part\u003c/h2>\n\u003cp>For supervised tasks, the cost is in the labels, and the difficulty is rarely in producing them mechanically. It is in deciding what counts as the right answer.\u003c/p>\n\u003cp>Consider medical imaging: radiologists labelling a scan may disagree with each other. The disagreement is often the real signal, and averaging it away produces a label that is confidently wrong. Consider content moderation: what counts as hate speech is a political question, and a model trained on one jurisdiction&#39;s answer will produce false positives in another. Consider any labelling task where the &quot;correct&quot; answer depends on taste, style or intent — those are not datasets you can buy your way out of.\u003c/p>\n\u003cp>Two techniques help with genuinely ambiguous labels: writing guidelines with worked examples, and having several labelers rate the same items so the \u003cem>distribution\u003c/em> of judgement becomes the training signal rather than a single number. The second is usually more honest and always more expensive.\u003c/p>\n\u003ch2 id=\"the-failure-catalogue\">The failure catalogue\u003c/h2>\n\u003cp>\u003cstrong>Historical bias.\u003c/strong> Data is a record of a world that was unequal, so a model trained on it reproduces the inequality. This is not a subtle interaction; the mechanism is direct.\u003c/p>\n\u003cp>\u003cstrong>Under-representation.\u003c/strong> Rare classes, minority languages, disabled users, small countries, old equipment, unusual conditions. Aggregate metrics hide them almost perfectly, because the affected group is a small fraction of the total.\u003c/p>\n\u003cp>\u003cstrong>Domain shift.\u003c/strong> A model trained on one hospital, one camera, one accent or one documentation style degrades silently when deployed in another. The failure is not a crash; it is a few percentage points, spread across a population that will never see a dashboard about it.\u003c/p>\n\u003cp>\u003cstrong>Annotation artefacts.\u003c/strong> A model that predicts a hospital&#39;s billing code from a scan is partly predicting the scanner. Spurious correlations between the label and something incidental in the data are extremely common, and removing them requires deliberately searching for them.\u003c/p>\n\u003cp>\u003cstrong>Leakage.\u003c/strong> Information from the evaluation set reaching training, often through duplicate documents or a preprocessing step performed before splitting. Leakage inflates results, produces papers that cannot be reproduced, and is the single most common reason a published benchmark number is meaningless.\u003c/p>\n\u003cp>\u003cstrong>Permission.\u003c/strong> Data collected, licensed or scraped under conditions that were not clearly permitted. This is not a technical problem, and it cannot be solved by better engineering, though it is frequently treated as if it were.\u003c/p>\n\u003ch2 id=\"practical-advice-that-survives-contact-with-reality\">Practical advice that survives contact with reality\u003c/h2>\n\u003cul>\u003cli>\u003cstrong>Write down where each field came from\u003c/strong>, with a date and a licence or permission basis. Six months later nobody remembers, and the answer is needed for both compliance and debugging.\u003c/li>\u003cli>\u003cstrong>Measure the slices, not just the average.\u003c/strong> Accuracy by language, by demographic, by document type, by time period, by source. If a subgroup&#39;s performance is not reported, assume it is bad.\u003c/li>\u003cli>\u003cstrong>Keep a permanent held-out set\u003c/strong> that is never used for tuning, and rebuild it periodically as the world changes.\u003c/li>\u003cli>\u003cstrong>Sample manually, constantly.\u003c/strong> Reading fifty examples a week from the production distribution will reveal more real problems than any dashboard. It is also the only way to notice that the production distribution has quietly become something else.\u003c/li>\u003cli>\u003cstrong>Prefer more distinct data over more data.\u003c/strong> Ten thousand unique examples beat a hundred thousand copies of a thousand.\u003c/li>\u003cli>\u003cstrong>Document the exclusions\u003c/strong> as carefully as the inclusions. A dataset is defined as much by what you threw out.\u003c/li>\u003c/ul>\n\u003cblockquote>\u003cp>&quot;Garbage in, garbage out&quot; undersells it. The more accurate phrase is: whatever you put in, the model will faithfully become.\u003c/p>\u003c/blockquote>\n\u003ch2 id=\"data-as-a-durable-asset\">Data as a durable asset\u003c/h2>\n\u003cp>There is one more reason to care: a well-documented dataset outlives the models trained on it. Models become obsolete as architectures change and as their training recipes are rebuilt; the dataset can be reused, re-licensed, audited, corrected and re-used by anyone, which is exactly the kind of asset that belongs in the public domain.\u003c/p>\n\u003cp>That is the argument for publishing datasets alongside the work, under a clear open licence, with the collection method documented, known limitations stated, and personal or restricted material removed. A public-domain corpus is something a whole field can build on for decades. A model checkpoint is something that ages out in about two years.\u003c/p>\n\u003cp>Both matter. Neither substitutes for the other. But when you have to choose what to leave behind, leave the data.\u003c/p>"}</script>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h5>AI Article Hub</h5>
+        <p>Twenty-seven original, in-depth articles on artificial intelligence — from neural networks and transformers to AI safety, law and public policy. Free to read, download and reuse: everything here is released into the public domain under CC0 1.0.</p>
+        <p>Written to be read, translated, remixed and taught from without permission or payment.</p>
+      </div>
+      <div>
+        <h5>Read</h5>
+        <ul>
+          <li><a href="index.html#articles">All 27 articles</a></li>
+          <li><a href="downloads.html">Download everything</a></li>
+          <li><a href="feed.xml">RSS feed</a></li>
+          <li><a href="sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Reuse</h5>
+        <ul>
+          <li><a href="license.html">CC0 license terms</a></li>
+          <li><a href="publish.html">Publish this site</a></li>
+          <li><a href="publish.html#attribution">Do I need credit?</a></li>
+          <li><a href="about.html">About the project</a></li>
+          <li><a href="security.html">Security</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="license-line">
+      <span>© 2026 The AI Article Hub Editorial Collective. Text released under CC0 1.0 — dedicated to the public domain, no rights reserved.</span>
+      <a class="badge-cc" href="license.html">CC0 1.0 · Public Domain Dedication</a>
+    </div>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

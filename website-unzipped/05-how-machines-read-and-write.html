@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How Machines Read and Write — Language, Tokens and Meaning · AI Article Hub</title>
+<meta name="description" content="A language model does not read words; it reads numbers that stand in for pieces of words. Everything interesting about modern text AI follows from that one design decision.">
+<link rel="canonical" href="https://example.org/ai-article-hub/index.html">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#2f5bd7">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AI Article Hub">
+<meta property="og:title" content="How Machines Read and Write — Language, Tokens and Meaning · AI Article Hub">
+<meta property="og:description" content="A language model does not read words; it reads numbers that stand in for pieces of words. Everything interesting about modern text AI follows from that one design decision.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="license" content="CC0 1.0">
+<meta name="dcterms.license" content="https://creativecommons.org/publicdomain/zero/1.0/">
+<link rel="alternate" type="application/rss+xml" title="AI Article Hub" href="feed.xml">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/styles.css">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How Machines Read and Write — Language, Tokens and Meaning">
+<meta property="og:description" content="A language model does not read words; it reads numbers that stand in for pieces of words. Everything interesting about modern text AI follows from that one design decision.">
+<meta property="og:url" content="https://example.org/ai-article-hub/05-how-machines-read-and-write.html">
+<meta property="article:section" content="Foundations">
+<meta property="article:tag" content="language models">
+<meta property="article:tag" content="tokens">
+<meta property="article:tag" content="nlp">
+<meta property="article:tag" content="embeddings">
+<meta property="article:tag" content="text">
+<meta name="author" content="The AI Article Hub Editorial Collective">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How Machines Read and Write — Language, Tokens and Meaning","description":"A language model does not read words; it reads numbers that stand in for pieces of words. Everything interesting about modern text AI follows from that one design decision.","datePublished":"2024-02-12","dateModified":"2024-02-12","inLanguage":"en","articleSection":"Foundations","keywords":"language models, tokens, nlp, embeddings, text","wordCount":1270,"isAccessibleForFree":true,"license":"https://creativecommons.org/publicdomain/zero/1.0/","creativeWorkStatus":"Public Domain","author":{"@type":"Organization","name":"The AI Article Hub Editorial Collective"},"publisher":{"@type":"Organization","name":"AI Article Hub"},"mainEntityOfPage":"https://example.org/ai-article-hub/05-how-machines-read-and-write.html"}</script>
+</head>
+<body class="">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="index.html">
+      <span class="logo" aria-hidden="true">AI</span>
+      <span>AI Article Hub<small>CC0 1.0 · Public Domain</small></span>
+    </a>
+    <button class="icon-btn menu-btn" data-menu-toggle aria-label="Toggle navigation" aria-controls="site-nav">☰</button>
+    <nav class="nav" id="site-nav" aria-label="Main">
+          <a href="index.html">Home</a>
+          <a href="index.html#articles">Articles</a>
+          <a href="downloads.html">Downloads</a>
+          <a href="publish.html">Publish</a>
+          <a href="license.html">License</a>
+          <a href="about.html">About</a>
+          <a href="security.html">Security</a>
+      <button class="icon-btn theme-toggle" data-theme-toggle type="button" aria-label="Toggle theme">☾</button>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<div class="wrap">
+  <div class="article-shell">
+    <div>
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a> › <a href="index.html#articles">Articles</a> › <span>05 of 27</span>
+      </nav>
+
+      <header class="article-head">
+        <div class="kicker">
+          <span class="tag accent">Part 05 of 27</span>
+          <span class="tag">Foundations</span>
+          <span class="tag">6 min read</span>
+        </div>
+        <h1>How Machines Read and Write — Language, Tokens and Meaning</h1>
+        <p class="standfirst">A language model does not read words; it reads numbers that stand in for pieces of words. Everything interesting about modern text AI follows from that one design decision.</p>
+        <div class="byline">
+          <span>2024-02-12</span><span class="dot">•</span>
+          <span>Foundations</span><span class="dot">•</span>
+          <span>1,270 words</span><span class="dot">•</span>
+          <span>CC0 1.0 public domain</span>
+        </div>
+      </header>
+
+      <div class="prose">
+<p>Ask a large language model what the last letter of &quot;elephant&quot; is and it will usually answer &quot;t&quot; without complaint. Ask it to count the letter &quot;r&quot; in &quot;strawberry&quot; and it will frequently get it wrong. Both facts trace back to the same place: a model does not see letters at all.</p>
+<h2 id="words-become-numbers">Words become numbers</h2>
+<p>Text reaches a model as a sequence of <strong>tokens</strong>. A token is a chunk of text, usually a word, part of a word, or a common byte sequence. Common words are single tokens; rare words are split into pieces; unusual characters, emoji and code fragments fall back to raw bytes.</p>
+<p>This is a deliberate engineering compromise. Reading raw characters wastes capacity on a huge, mostly-ignored vocabulary of common short strings. Reading whole words explodes the vocabulary and leaves the model unable to handle words it has never seen. Sub-word tokenisation sits in the middle: a vocabulary of a few hundred thousand entries covers ordinary text efficiently, and every possible input can still be spelled.</p>
+<p>The consequences of tokenisation are not incidental. They explain the model&#39;s fluency and its blind spots in the same breath.</p>
+<p><strong>Fluency, because chunks carry meaning.</strong> Common English words are often single tokens, and word endings like &quot;-ing&quot; and &quot;-tion&quot; are common tokens too. This is why models handle grammar better than character-level systems do, and why non-English languages tend to cost more tokens for the same meaning.</p>
+<p><strong>Blind spots, because counting is hard.</strong> Asking a model to count letters within a word asks it to reason about the internal structure of tokens, which is not what they encode. Ask it about tokens and it answers cleanly; ask it about letters and it guesses. This is not a reasoning failure so much as an interface mismatch.</p>
+<p><strong>Uneven languages.</strong> Scripts that tokenise inefficiently cost proportionally more to process. For a language that needs three tokens where English needs one, the same job costs roughly three times as much. This is a documented driver of the price and quality gap between language families, and it is a design decision that can be changed — the same corpus, tokenised with a different scheme, behaves differently on every downstream task.</p>
+<blockquote><p>Tokens are not words. They are accounting units, and every surprising behaviour usually traces back to the accounting.</p></blockquote>
+<h2 id="from-tokens-to-meaning">From tokens to meaning</h2>
+<p>The second transformation turns a sequence of token numbers into something a network can reason about. Each token is mapped to a long vector of numbers called an <strong>embedding</strong> — a point in a high-dimensional space where distance encodes similarity.</p>
+<p>The intuition is spatial: a well-trained embedding space places related concepts near each other. &quot;Cat&quot; and &quot;kitten&quot; land close; &quot;cat&quot; and &quot;policy&quot; land far apart. Directions in the space turn out to be meaningful too, so that arithmetic on embeddings corresponds to relationships in the world. These relationships are not designed; they are a side effect of the training objective, and the fact that they are interpretable at all is one of the more interesting results in the field.</p>
+<p>Embeddings are not just for input. A text-generation model works with a sequence of embeddings, one per token, each combining information about the token itself with information about the surrounding context. The same token in two places in a sentence gets two different vectors. &quot;Bank&quot; as a financial institution and &quot;bank&quot; as a river edge are not distinguished by the token; they are distinguished by context, and the model computes that distinction.</p>
+<h2 id="the-objective">The objective</h2>
+<p>Most of what a text model does follows from a deceptively simple training task: <strong>predict the next token</strong>.</p>
+<p>Given a sequence of tokens, the model produces a probability for every token in the vocabulary as the next one. The error between its guess and reality is measured, and the weights are adjusted slightly. Then the window slides forward and it happens again, hundreds of billions of times.</p>
+<p>Nothing in that process mentions facts, reasoning, or truth. What emerges is a system that has been optimised to produce text that is typical of the data, which — because the data is a record of human writing — requires an enormous amount of implicit knowledge about the world in order to be typical. A model that continues &quot;the capital of France is&quot; well has internalised a great deal of geography, not because it was taught geography, but because geography is expensive to get wrong in text.</p>
+<p>The same objective produces the field&#39;s signature failure. Text that is <em>typical</em> is not the same as text that is <em>true</em>. A confident, fluent, plausible-sounding falsehood is exactly what a system optimising for likelihood will produce when it does not know the answer, because plausible-sounding falsehoods are common in the training data and a hedge would be atypical. <a href="22-hallucination-deepfakes-and-trust.html">Hallucination, Deepfakes and Trust </a> examines this in detail.</p>
+<h2 id="what-the-model-has-and-has-not-got">What the model has and has not got</h2>
+<p>Older, smaller approaches made this explicit. Word embeddings were a lookup table, so a model had no way to reason about word order at all. Recurrent networks processed text one token at a time, which made long-range structure difficult and slow to train. Attention mechanisms allowed every token to look at every other token at once.</p>
+<p>The result is a model with an unusual profile: broad, shallow capability. It can write a plausible essay on a subject it has never seen, translate between languages, summarise a document, and produce working code, all without any of that being a designed feature. It is simultaneously unreliable in ways that reveal it learned surface pattern rather than checking facts, and it forgets and invents with a fluency that makes its errors hard to spot by eye.</p>
+<h2 id="the-four-jobs-one-engine">The four jobs, one engine</h2>
+<p>Underneath the product categories that dominate the industry, the same engine does four distinct things:</p>
+<ul><li><strong>Language modelling</strong> predicts the next token. This is the raw capability and the training objective.</li><li><strong>Classification and ranking</strong> uses the model&#39;s internal state to sort or label — sentiment, spam, relevance, duplicate detection. Often cheaper and more accurate than fine-tuning.</li><li><strong>Representation</strong> uses embeddings to compare, cluster, search or match texts semantically, which is what powers retrieval systems.</li><li><strong>Generation</strong> produces text by sampling from the next-token distribution repeatedly, with a rule that decides how much randomness to allow.</li></ul>
+<p>The last one is where the design choices become product decisions. Temperature controls randomness: near zero, a model takes the most likely token every time, which is repetitive and predictable; higher values produce variety and more errors. So a factual question and a creative prompt are served optimally by different settings of the same machinery, which is why a single &quot;creativity&quot; slider changes a system&#39;s accuracy as well as its liveliness.</p>
+<h2 id="the-practical-upshot">The practical upshot</h2>
+<p>Three habits make working with language models noticeably less frustrating.</p>
+<ol><li><strong>Ask for structure, not vibes.</strong> Specifying format, length, audience and constraints produces far better output than describing the tone you want.</li><li><strong>Give it something to work from.</strong> Retrieval — putting relevant documents into the input — beats both a bigger memory and a more confident tone. See <a href="11-prompt-engineering-and-retrieval.html">Prompt Engineering and Retrieval </a>.</li><li><strong>Verify anything that matters.</strong> The model is a plausible generator, not an oracle. Anything load-bearing should be checked against a source, a calculation, or a person.</li></ol>
+<p>That last point is not scepticism about the technology. It is the correct way to use a system that was optimised to be typical, and is as true of the technology as it is of any other kind of source.</p>
+      </div>
+
+      <nav class="pager" aria-label="Article navigation">
+        <a class="prev" href="04-how-machines-see.html"><span class="dir">← Previous</span><span class="t">How Machines See — Computer Vision and the Rise of Deep Features</span></a>
+        <a class="next" href="06-the-transformer-architecture.html"><span class="dir">Next →</span><span class="t">The Transformer — The Architecture Behind Modern AI</span></a>
+      </nav>
+    </div>
+
+    <aside class="side">
+      <div class="side-box">
+        <h4>Reading progress</h4>
+        <progress class="progress" data-progress max="100" value="0" aria-label="Reading progress">0%</progress>
+      </div>
+
+      <div class="side-box">
+        <h4>Download this article</h4>
+        <div class="actions">
+          <button class="btn" data-dl="md" type="button">Markdown (.md)</button>
+          <button class="btn" data-dl="html" type="button">Web page (.html)</button>
+          <button class="btn" data-dl="pdf" type="button">Print / Save as PDF</button>
+          <button class="btn" data-dl="txt" type="button">Plain text (.txt)</button>
+          <button class="btn" data-dl="json" type="button">Data (.json)</button>
+          <button class="btn" data-dl="copy" type="button">Copy full text</button>
+        </div>
+      </div>
+
+      <div class="side-box">
+        <h4>On this page</h4>
+        <ol><li><a href="#words-become-numbers">Words become numbers</a></li><li><a href="#from-tokens-to-meaning">From tokens to meaning</a></li><li><a href="#the-objective">The objective</a></li><li><a href="#what-the-model-has-and-has-not-got">What the model has and has not got</a></li><li><a href="#the-four-jobs-one-engine">The four jobs, one engine</a></li><li><a href="#the-practical-upshot">The practical upshot</a></li></ol>
+      </div>
+
+      <div class="side-box">
+        <h4>Reuse this text</h4>
+        <p class="license-note"><b>Public domain.</b> Copy, translate, adapt, teach from, or republish it anywhere — commercially or not — with no permission and no obligation to credit. <a href="license.html">Read the CC0 terms</a>.</p>
+      </div>
+
+      <div class="side-box">
+        <h4>Related reading</h4>
+        <div class="related"><a href="03-neural-networks-from-scratch.html"><span>03 · Foundations</span>Neural Networks from Scratch — Weights, Biases and Activation</a><a href="04-how-machines-see.html"><span>04 · Foundations</span>How Machines See — Computer Vision and the Rise of Deep Features</a><a href="06-the-transformer-architecture.html"><span>06 · Foundations</span>The Transformer — The Architecture Behind Modern AI</a><a href="01-what-is-artificial-intelligence-really.html"><span>01 · Foundations</span>What Is Artificial Intelligence, Really?</a></div>
+      </div>
+    </aside>
+  </div>
+</div>
+<script type="application/json" id="article-source">{"number":5,"title":"How Machines Read and Write — Language, Tokens and Meaning","description":"A language model does not read words; it reads numbers that stand in for pieces of words. Everything interesting about modern text AI follows from that one design decision.","category":"Foundations","tags":["language models","tokens","nlp","embeddings","text"],"date":"2024-02-12","author":"The AI Article Hub Editorial Collective","readingTime":"6 min read","markdown":"Ask a large language model what the last letter of \"elephant\" is and it will usually answer \"t\" without complaint. Ask it to count the letter \"r\" in \"strawberry\" and it will frequently get it wrong. Both facts trace back to the same place: a model does not see letters at all.\n\n## Words become numbers\n\nText reaches a model as a sequence of **tokens**. A token is a chunk of text, usually a word, part of a word, or a common byte sequence. Common words are single tokens; rare words are split into pieces; unusual characters, emoji and code fragments fall back to raw bytes.\n\nThis is a deliberate engineering compromise. Reading raw characters wastes capacity on a huge, mostly-ignored vocabulary of common short strings. Reading whole words explodes the vocabulary and leaves the model unable to handle words it has never seen. Sub-word tokenisation sits in the middle: a vocabulary of a few hundred thousand entries covers ordinary text efficiently, and every possible input can still be spelled.\n\nThe consequences of tokenisation are not incidental. They explain the model's fluency and its blind spots in the same breath.\n\n**Fluency, because chunks carry meaning.** Common English words are often single tokens, and word endings like \"-ing\" and \"-tion\" are common tokens too. This is why models handle grammar better than character-level systems do, and why non-English languages tend to cost more tokens for the same meaning.\n\n**Blind spots, because counting is hard.** Asking a model to count letters within a word asks it to reason about the internal structure of tokens, which is not what they encode. Ask it about tokens and it answers cleanly; ask it about letters and it guesses. This is not a reasoning failure so much as an interface mismatch.\n\n**Uneven languages.** Scripts that tokenise inefficiently cost proportionally more to process. For a language that needs three tokens where English needs one, the same job costs roughly three times as much. This is a documented driver of the price and quality gap between language families, and it is a design decision that can be changed — the same corpus, tokenised with a different scheme, behaves differently on every downstream task.\n\n> Tokens are not words. They are accounting units, and every surprising behaviour usually traces back to the accounting.\n\n## From tokens to meaning\n\nThe second transformation turns a sequence of token numbers into something a network can reason about. Each token is mapped to a long vector of numbers called an **embedding** — a point in a high-dimensional space where distance encodes similarity.\n\nThe intuition is spatial: a well-trained embedding space places related concepts near each other. \"Cat\" and \"kitten\" land close; \"cat\" and \"policy\" land far apart. Directions in the space turn out to be meaningful too, so that arithmetic on embeddings corresponds to relationships in the world. These relationships are not designed; they are a side effect of the training objective, and the fact that they are interpretable at all is one of the more interesting results in the field.\n\nEmbeddings are not just for input. A text-generation model works with a sequence of embeddings, one per token, each combining information about the token itself with information about the surrounding context. The same token in two places in a sentence gets two different vectors. \"Bank\" as a financial institution and \"bank\" as a river edge are not distinguished by the token; they are distinguished by context, and the model computes that distinction.\n\n## The objective\n\nMost of what a text model does follows from a deceptively simple training task: **predict the next token**.\n\nGiven a sequence of tokens, the model produces a probability for every token in the vocabulary as the next one. The error between its guess and reality is measured, and the weights are adjusted slightly. Then the window slides forward and it happens again, hundreds of billions of times.\n\nNothing in that process mentions facts, reasoning, or truth. What emerges is a system that has been optimised to produce text that is typical of the data, which — because the data is a record of human writing — requires an enormous amount of implicit knowledge about the world in order to be typical. A model that continues \"the capital of France is\" well has internalised a great deal of geography, not because it was taught geography, but because geography is expensive to get wrong in text.\n\nThe same objective produces the field's signature failure. Text that is *typical* is not the same as text that is *true*. A confident, fluent, plausible-sounding falsehood is exactly what a system optimising for likelihood will produce when it does not know the answer, because plausible-sounding falsehoods are common in the training data and a hedge would be atypical. [Hallucination, Deepfakes and Trust ](22-hallucination-deepfakes-and-trust.html) examines this in detail.\n\n## What the model has and has not got\n\nOlder, smaller approaches made this explicit. Word embeddings were a lookup table, so a model had no way to reason about word order at all. Recurrent networks processed text one token at a time, which made long-range structure difficult and slow to train. Attention mechanisms allowed every token to look at every other token at once.\n\nThe result is a model with an unusual profile: broad, shallow capability. It can write a plausible essay on a subject it has never seen, translate between languages, summarise a document, and produce working code, all without any of that being a designed feature. It is simultaneously unreliable in ways that reveal it learned surface pattern rather than checking facts, and it forgets and invents with a fluency that makes its errors hard to spot by eye.\n\n## The four jobs, one engine\n\nUnderneath the product categories that dominate the industry, the same engine does four distinct things:\n\n- **Language modelling** predicts the next token. This is the raw capability and the training objective.\n- **Classification and ranking** uses the model's internal state to sort or label — sentiment, spam, relevance, duplicate detection. Often cheaper and more accurate than fine-tuning.\n- **Representation** uses embeddings to compare, cluster, search or match texts semantically, which is what powers retrieval systems.\n- **Generation** produces text by sampling from the next-token distribution repeatedly, with a rule that decides how much randomness to allow.\n\nThe last one is where the design choices become product decisions. Temperature controls randomness: near zero, a model takes the most likely token every time, which is repetitive and predictable; higher values produce variety and more errors. So a factual question and a creative prompt are served optimally by different settings of the same machinery, which is why a single \"creativity\" slider changes a system's accuracy as well as its liveliness.\n\n## The practical upshot\n\nThree habits make working with language models noticeably less frustrating.\n\n1. **Ask for structure, not vibes.** Specifying format, length, audience and constraints produces far better output than describing the tone you want.\n2. **Give it something to work from.** Retrieval — putting relevant documents into the input — beats both a bigger memory and a more confident tone. See [Prompt Engineering and Retrieval ](11-prompt-engineering-and-retrieval.html).\n3. **Verify anything that matters.** The model is a plausible generator, not an oracle. Anything load-bearing should be checked against a source, a calculation, or a person.\n\nThat last point is not scepticism about the technology. It is the correct way to use a system that was optimised to be typical, and is as true of the technology as it is of any other kind of source.","html":"\u003cp>Ask a large language model what the last letter of &quot;elephant&quot; is and it will usually answer &quot;t&quot; without complaint. Ask it to count the letter &quot;r&quot; in &quot;strawberry&quot; and it will frequently get it wrong. Both facts trace back to the same place: a model does not see letters at all.\u003c/p>\n\u003ch2 id=\"words-become-numbers\">Words become numbers\u003c/h2>\n\u003cp>Text reaches a model as a sequence of \u003cstrong>tokens\u003c/strong>. A token is a chunk of text, usually a word, part of a word, or a common byte sequence. Common words are single tokens; rare words are split into pieces; unusual characters, emoji and code fragments fall back to raw bytes.\u003c/p>\n\u003cp>This is a deliberate engineering compromise. Reading raw characters wastes capacity on a huge, mostly-ignored vocabulary of common short strings. Reading whole words explodes the vocabulary and leaves the model unable to handle words it has never seen. Sub-word tokenisation sits in the middle: a vocabulary of a few hundred thousand entries covers ordinary text efficiently, and every possible input can still be spelled.\u003c/p>\n\u003cp>The consequences of tokenisation are not incidental. They explain the model&#39;s fluency and its blind spots in the same breath.\u003c/p>\n\u003cp>\u003cstrong>Fluency, because chunks carry meaning.\u003c/strong> Common English words are often single tokens, and word endings like &quot;-ing&quot; and &quot;-tion&quot; are common tokens too. This is why models handle grammar better than character-level systems do, and why non-English languages tend to cost more tokens for the same meaning.\u003c/p>\n\u003cp>\u003cstrong>Blind spots, because counting is hard.\u003c/strong> Asking a model to count letters within a word asks it to reason about the internal structure of tokens, which is not what they encode. Ask it about tokens and it answers cleanly; ask it about letters and it guesses. This is not a reasoning failure so much as an interface mismatch.\u003c/p>\n\u003cp>\u003cstrong>Uneven languages.\u003c/strong> Scripts that tokenise inefficiently cost proportionally more to process. For a language that needs three tokens where English needs one, the same job costs roughly three times as much. This is a documented driver of the price and quality gap between language families, and it is a design decision that can be changed — the same corpus, tokenised with a different scheme, behaves differently on every downstream task.\u003c/p>\n\u003cblockquote>\u003cp>Tokens are not words. They are accounting units, and every surprising behaviour usually traces back to the accounting.\u003c/p>\u003c/blockquote>\n\u003ch2 id=\"from-tokens-to-meaning\">From tokens to meaning\u003c/h2>\n\u003cp>The second transformation turns a sequence of token numbers into something a network can reason about. Each token is mapped to a long vector of numbers called an \u003cstrong>embedding\u003c/strong> — a point in a high-dimensional space where distance encodes similarity.\u003c/p>\n\u003cp>The intuition is spatial: a well-trained embedding space places related concepts near each other. &quot;Cat&quot; and &quot;kitten&quot; land close; &quot;cat&quot; and &quot;policy&quot; land far apart. Directions in the space turn out to be meaningful too, so that arithmetic on embeddings corresponds to relationships in the world. These relationships are not designed; they are a side effect of the training objective, and the fact that they are interpretable at all is one of the more interesting results in the field.\u003c/p>\n\u003cp>Embeddings are not just for input. A text-generation model works with a sequence of embeddings, one per token, each combining information about the token itself with information about the surrounding context. The same token in two places in a sentence gets two different vectors. &quot;Bank&quot; as a financial institution and &quot;bank&quot; as a river edge are not distinguished by the token; they are distinguished by context, and the model computes that distinction.\u003c/p>\n\u003ch2 id=\"the-objective\">The objective\u003c/h2>\n\u003cp>Most of what a text model does follows from a deceptively simple training task: \u003cstrong>predict the next token\u003c/strong>.\u003c/p>\n\u003cp>Given a sequence of tokens, the model produces a probability for every token in the vocabulary as the next one. The error between its guess and reality is measured, and the weights are adjusted slightly. Then the window slides forward and it happens again, hundreds of billions of times.\u003c/p>\n\u003cp>Nothing in that process mentions facts, reasoning, or truth. What emerges is a system that has been optimised to produce text that is typical of the data, which — because the data is a record of human writing — requires an enormous amount of implicit knowledge about the world in order to be typical. A model that continues &quot;the capital of France is&quot; well has internalised a great deal of geography, not because it was taught geography, but because geography is expensive to get wrong in text.\u003c/p>\n\u003cp>The same objective produces the field&#39;s signature failure. Text that is \u003cem>typical\u003c/em> is not the same as text that is \u003cem>true\u003c/em>. A confident, fluent, plausible-sounding falsehood is exactly what a system optimising for likelihood will produce when it does not know the answer, because plausible-sounding falsehoods are common in the training data and a hedge would be atypical. \u003ca href=\"22-hallucination-deepfakes-and-trust.html\">Hallucination, Deepfakes and Trust \u003c/a> examines this in detail.\u003c/p>\n\u003ch2 id=\"what-the-model-has-and-has-not-got\">What the model has and has not got\u003c/h2>\n\u003cp>Older, smaller approaches made this explicit. Word embeddings were a lookup table, so a model had no way to reason about word order at all. Recurrent networks processed text one token at a time, which made long-range structure difficult and slow to train. Attention mechanisms allowed every token to look at every other token at once.\u003c/p>\n\u003cp>The result is a model with an unusual profile: broad, shallow capability. It can write a plausible essay on a subject it has never seen, translate between languages, summarise a document, and produce working code, all without any of that being a designed feature. It is simultaneously unreliable in ways that reveal it learned surface pattern rather than checking facts, and it forgets and invents with a fluency that makes its errors hard to spot by eye.\u003c/p>\n\u003ch2 id=\"the-four-jobs-one-engine\">The four jobs, one engine\u003c/h2>\n\u003cp>Underneath the product categories that dominate the industry, the same engine does four distinct things:\u003c/p>\n\u003cul>\u003cli>\u003cstrong>Language modelling\u003c/strong> predicts the next token. This is the raw capability and the training objective.\u003c/li>\u003cli>\u003cstrong>Classification and ranking\u003c/strong> uses the model&#39;s internal state to sort or label — sentiment, spam, relevance, duplicate detection. Often cheaper and more accurate than fine-tuning.\u003c/li>\u003cli>\u003cstrong>Representation\u003c/strong> uses embeddings to compare, cluster, search or match texts semantically, which is what powers retrieval systems.\u003c/li>\u003cli>\u003cstrong>Generation\u003c/strong> produces text by sampling from the next-token distribution repeatedly, with a rule that decides how much randomness to allow.\u003c/li>\u003c/ul>\n\u003cp>The last one is where the design choices become product decisions. Temperature controls randomness: near zero, a model takes the most likely token every time, which is repetitive and predictable; higher values produce variety and more errors. So a factual question and a creative prompt are served optimally by different settings of the same machinery, which is why a single &quot;creativity&quot; slider changes a system&#39;s accuracy as well as its liveliness.\u003c/p>\n\u003ch2 id=\"the-practical-upshot\">The practical upshot\u003c/h2>\n\u003cp>Three habits make working with language models noticeably less frustrating.\u003c/p>\n\u003col>\u003cli>\u003cstrong>Ask for structure, not vibes.\u003c/strong> Specifying format, length, audience and constraints produces far better output than describing the tone you want.\u003c/li>\u003cli>\u003cstrong>Give it something to work from.\u003c/strong> Retrieval — putting relevant documents into the input — beats both a bigger memory and a more confident tone. See \u003ca href=\"11-prompt-engineering-and-retrieval.html\">Prompt Engineering and Retrieval \u003c/a>.\u003c/li>\u003cli>\u003cstrong>Verify anything that matters.\u003c/strong> The model is a plausible generator, not an oracle. Anything load-bearing should be checked against a source, a calculation, or a person.\u003c/li>\u003c/ol>\n\u003cp>That last point is not scepticism about the technology. It is the correct way to use a system that was optimised to be typical, and is as true of the technology as it is of any other kind of source.\u003c/p>"}</script>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h5>AI Article Hub</h5>
+        <p>Twenty-seven original, in-depth articles on artificial intelligence — from neural networks and transformers to AI safety, law and public policy. Free to read, download and reuse: everything here is released into the public domain under CC0 1.0.</p>
+        <p>Written to be read, translated, remixed and taught from without permission or payment.</p>
+      </div>
+      <div>
+        <h5>Read</h5>
+        <ul>
+          <li><a href="index.html#articles">All 27 articles</a></li>
+          <li><a href="downloads.html">Download everything</a></li>
+          <li><a href="feed.xml">RSS feed</a></li>
+          <li><a href="sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Reuse</h5>
+        <ul>
+          <li><a href="license.html">CC0 license terms</a></li>
+          <li><a href="publish.html">Publish this site</a></li>
+          <li><a href="publish.html#attribution">Do I need credit?</a></li>
+          <li><a href="about.html">About the project</a></li>
+          <li><a href="security.html">Security</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="license-line">
+      <span>© 2026 The AI Article Hub Editorial Collective. Text released under CC0 1.0 — dedicated to the public domain, no rights reserved.</span>
+      <a class="badge-cc" href="license.html">CC0 1.0 · Public Domain Dedication</a>
+    </div>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

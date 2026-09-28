@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bias, Fairness and Harm — How Models Reproduce Society's Flaws · AI Article Hub</title>
+<meta name="description" content="A model trained on the world learns the world's patterns, including its inequalities. A clear account of where algorithmic bias comes from, why removing it is harder than it looks, and what actually works.">
+<link rel="canonical" href="https://example.org/ai-article-hub/index.html">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#2f5bd7">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AI Article Hub">
+<meta property="og:title" content="Bias, Fairness and Harm — How Models Reproduce Society's Flaws · AI Article Hub">
+<meta property="og:description" content="A model trained on the world learns the world's patterns, including its inequalities. A clear account of where algorithmic bias comes from, why removing it is harder than it looks, and what actually works.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="license" content="CC0 1.0">
+<meta name="dcterms.license" content="https://creativecommons.org/publicdomain/zero/1.0/">
+<link rel="alternate" type="application/rss+xml" title="AI Article Hub" href="feed.xml">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/styles.css">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Bias, Fairness and Harm — How Models Reproduce Society's Flaws">
+<meta property="og:description" content="A model trained on the world learns the world's patterns, including its inequalities. A clear account of where algorithmic bias comes from, why removing it is harder than it looks, and what actually works.">
+<meta property="og:url" content="https://example.org/ai-article-hub/20-bias-fairness-and-harm.html">
+<meta property="article:section" content="Ethics">
+<meta property="article:tag" content="bias">
+<meta property="article:tag" content="fairness">
+<meta property="article:tag" content="discrimination">
+<meta property="article:tag" content="equity">
+<meta property="article:tag" content="harms">
+<meta property="article:tag" content="accountability">
+<meta name="author" content="The AI Article Hub Editorial Collective">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Bias, Fairness and Harm — How Models Reproduce Society's Flaws","description":"A model trained on the world learns the world's patterns, including its inequalities. A clear account of where algorithmic bias comes from, why removing it is harder than it looks, and what actually works.","datePublished":"2024-05-27","dateModified":"2024-05-27","inLanguage":"en","articleSection":"Ethics","keywords":"bias, fairness, discrimination, equity, harms, accountability","wordCount":1322,"isAccessibleForFree":true,"license":"https://creativecommons.org/publicdomain/zero/1.0/","creativeWorkStatus":"Public Domain","author":{"@type":"Organization","name":"The AI Article Hub Editorial Collective"},"publisher":{"@type":"Organization","name":"AI Article Hub"},"mainEntityOfPage":"https://example.org/ai-article-hub/20-bias-fairness-and-harm.html"}</script>
+</head>
+<body class="">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="index.html">
+      <span class="logo" aria-hidden="true">AI</span>
+      <span>AI Article Hub<small>CC0 1.0 · Public Domain</small></span>
+    </a>
+    <button class="icon-btn menu-btn" data-menu-toggle aria-label="Toggle navigation" aria-controls="site-nav">☰</button>
+    <nav class="nav" id="site-nav" aria-label="Main">
+          <a href="index.html">Home</a>
+          <a href="index.html#articles">Articles</a>
+          <a href="downloads.html">Downloads</a>
+          <a href="publish.html">Publish</a>
+          <a href="license.html">License</a>
+          <a href="about.html">About</a>
+          <a href="security.html">Security</a>
+      <button class="icon-btn theme-toggle" data-theme-toggle type="button" aria-label="Toggle theme">☾</button>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<div class="wrap">
+  <div class="article-shell">
+    <div>
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a> › <a href="index.html#articles">Articles</a> › <span>20 of 27</span>
+      </nav>
+
+      <header class="article-head">
+        <div class="kicker">
+          <span class="tag accent">Part 20 of 27</span>
+          <span class="tag">Ethics</span>
+          <span class="tag">6 min read</span>
+        </div>
+        <h1>Bias, Fairness and Harm — How Models Reproduce Society's Flaws</h1>
+        <p class="standfirst">A model trained on the world learns the world's patterns, including its inequalities. A clear account of where algorithmic bias comes from, why removing it is harder than it looks, and what actually works.</p>
+        <div class="byline">
+          <span>2024-05-27</span><span class="dot">•</span>
+          <span>Ethics</span><span class="dot">•</span>
+          <span>1,322 words</span><span class="dot">•</span>
+          <span>CC0 1.0 public domain</span>
+        </div>
+      </header>
+
+      <div class="prose">
+<p>The most common objection to using AI in decisions about people is that it is biased. This is correct, and it is also incomplete in a way that leads to bad policy.</p>
+<p>The more accurate statement is: <strong>a model learns the statistical patterns of the world it is shown, and the world it is shown contains inequality.</strong> The bias is not noise added to a neutral process. It is the process working exactly as designed on data that records a biased world.</p>
+<h2 id="where-bias-enters">Where bias enters</h2>
+<p><strong>Historical data.</strong> The clearest case. If past hiring, lending, policing or medical decisions contained discrimination, a model trained on those outcomes will reproduce it — and will do so with the speed, scale and apparent objectivity of a piece of software.</p>
+<p>The important refinement: reproducing past discrimination is not a modelling error. The system is optimising the objective it was given, accurately, against the data provided. The defect is upstream, in the choice of objective, and that is where the fix has to go.</p>
+<p><strong>Representation.</strong> Under-representation produces uneven performance, and the groups that are under-represented are systematically those already disadvantaged. Under <a href="08-data-the-raw-material-of-ai.html">Data, the Raw Material of AI </a>, this is measured by slicing results by group rather than trusting the average.</p>
+<p><strong>Measurement proxies.</strong> Systems are often trained on whatever is available: arrest records, credit bureau entries, prior claims, clinical codes. Each is a proxy for behaviour or need, and each encodes who is more likely to be recorded. A model predicting &quot;risk of reoffending&quot; from criminal history is partly predicting &quot;likelihood of being arrested again&quot;, which depends on where police are deployed.</p>
+<p><strong>Deployment context.</strong> A model validated in one hospital, one country or one population can be systematically wrong in another, and the mismatch is invisible without measurement in the new setting.</p>
+<p><strong>Feedback loops.</strong> This is the mechanism that turns a small bias into a large one. A predictive system allocates attention, attention generates labels, the labels train the next version of the system. Predicted crime produces more policing, which produces more recorded crime, which trains the system to predict more crime in that area. The loop is not a bug; it is what happens when a prediction is used as a target.</p>
+<h2 id="why-fairness-is-technically-hard">Why fairness is technically hard</h2>
+<p>The uncomfortable fact is that the intuitive definitions of fairness are mathematically incompatible. One widely cited result shows that you generally cannot simultaneously achieve:</p>
+<ul><li><strong>Equal error rates</strong> — the false-positive rate is the same for every group.</li><li><strong>Equal false-negative rates</strong> — the false-negative rate is the same for every group.</li><li><strong>Equal predictive values</strong> — the base rate of the condition is the same for every group.</li></ul>
+<p>They are incompatible whenever the underlying base rates differ — which is to say, whenever the world is unequal. If a condition is genuinely more common in one group, matching overall accuracy across groups necessarily means different error rates for each.</p>
+<p>There is no technical resolution here, because the conflict is not technical. It is a question about which kind of error is more harmful in a given context, and that is a moral and legal judgement. A health screening programme and a fraud investigation have different appropriate answers, and no amount of modelling will tell you which one you are building.</p>
+<p><strong>The honest position:</strong> fairness is a set of choices, not an objective function. The technical work is to make the choices visible, quantify each one, and let the decision be made explicitly by the people accountable for it.</p>
+<h2 id="what-actually-works">What actually works</h2>
+<p>The interventions that have demonstrably reduced harm share a shape: they operate on the decision process, not only on the model.</p>
+<ul><li><strong>Fix the objective, not the model.</strong> If the training target is a biased historical decision, the model is doing its job. Changing what &quot;success&quot; means is a policy act, and it is the highest-leverage change available.</li><li><strong>Use a better outcome variable.</strong> Predicting what actually happened to a patient is different from predicting which patients got flagged. Where a causal question can be identified — what would have happened without intervention — it beats a correlation, even with a worse apparent fit.</li><li><strong>Measure every slice, always.</strong> Accuracy, false-positive rate and false-negative rate by group, by site, by time, and published internally. An unmeasured disparity is an unmanaged one.</li><li><strong>Use the model as a decision aid, not a decision.</strong> Human review reduces harm, at a known cost in time and at a well-documented risk: automation bias, where people defer too readily. Aid-plus-review is a compromise with a specific failure mode, and it has to be monitored for that failure mode.</li><li><strong>Involve the affected groups in the decision.</strong> Not as a courtesy and not as a checkbox, but because the groups being scored know which outputs are absurd, and that knowledge is data. Community oversight bodies have surfaced harms no audit found.</li><li><strong>Test after deployment, on real traffic.</strong> Pre-deployment tests will not find the distribution shift that matters. The first weeks of production are where the real failures appear.</li><li><strong>Design for refusal.</strong> A system that can say &quot;this case is outside what I can assess&quot; is safer than one that always produces a number.</li><li><strong>Give people a route to contest.</strong> An automated decision a person cannot challenge is a different institution, whatever its accuracy.</li></ul>
+<h2 id="where-it-goes-wrong-in-practice">Where it goes wrong in practice</h2>
+<p><strong>Proxies recede.</strong> Organizations that remove an explicit protected attribute rarely remove the disparity, because the information is present in postcode, name, education history, purchase patterns and device type. This is well documented across sectors. It is why a fairness review that asks only about the model card&#39;s feature list is not a fairness review.</p>
+<p><strong>The most oppressed group is the loudest proxy.</strong> There is a documented pattern where a system&#39;s protected-attribute handling effectively elevates one marginalised group over another. Any fairness intervention must ask which groups it is prioritising, not only whether it is prioritising anyone.</p>
+<p><strong>Benchmarks reward demographic parity over impact.</strong> A system that is equally inaccurate for everyone is arguably fair by the standard metric and useless in practice. Equal failure is not a good outcome; it is a symmetric one.</p>
+<p><strong>Deployed and forgotten.</strong> Many governance failures are not failures of design but of maintenance. A model that passed review three years ago, whose data distribution has since shifted, is still in production and nobody is watching it.</p>
+<p><strong>The model was never the problem.</strong> Sometimes the discriminating process was fully manual and the model simply codified it, making the discrimination faster and harder to see. This is not a reason to avoid automation. It is a reason to be clear about what automation is for.</p>
+<h2 id="the-responsibility-question">The responsibility question</h2>
+<p>The most consequential thing about deploying an AI decision system in a domain that affects people&#39;s lives is that responsibility can diffuse. The developer wrote the model. The data team prepared the inputs. The vendor supplies the software. The manager approved deployment. The frontline staff follow the output. Everyone did their job and no one is accountable for the outcome.</p>
+<p>That is a governance failure, not a technical one, and it is why the most useful requirements are procedural: name the accountable person, require a documented reason for every decision that affects an individual, keep the decision log, and give the affected person the information and the appeal.</p>
+<h2 id="the-summary">The summary</h2>
+<p>Algorithmic bias is not a mysterious property of models. It is the expected output of optimising a chosen objective on data that records an unequal world, deployed in a context that may not resemble the training data, inside a process with diffused responsibility.</p>
+<p>The interventions that work are mostly not technical. They are: choosing better objectives, measuring every subgroup, keeping humans accountable for decisions, involving affected communities, and monitoring after deployment. None of these is expensive compared to the harm they prevent, and all of them are harder than training a model.</p>
+      </div>
+
+      <nav class="pager" aria-label="Article navigation">
+        <a class="prev" href="19-ai-safety-and-alignment.html"><span class="dir">← Previous</span><span class="t">AI Safety and Alignment — The Hard Problems, Stated Plainly</span></a>
+        <a class="next" href="21-privacy-security-and-adversarial-attacks.html"><span class="dir">Next →</span><span class="t">Privacy, Security and Adversarial Attacks</span></a>
+      </nav>
+    </div>
+
+    <aside class="side">
+      <div class="side-box">
+        <h4>Reading progress</h4>
+        <progress class="progress" data-progress max="100" value="0" aria-label="Reading progress">0%</progress>
+      </div>
+
+      <div class="side-box">
+        <h4>Download this article</h4>
+        <div class="actions">
+          <button class="btn" data-dl="md" type="button">Markdown (.md)</button>
+          <button class="btn" data-dl="html" type="button">Web page (.html)</button>
+          <button class="btn" data-dl="pdf" type="button">Print / Save as PDF</button>
+          <button class="btn" data-dl="txt" type="button">Plain text (.txt)</button>
+          <button class="btn" data-dl="json" type="button">Data (.json)</button>
+          <button class="btn" data-dl="copy" type="button">Copy full text</button>
+        </div>
+      </div>
+
+      <div class="side-box">
+        <h4>On this page</h4>
+        <ol><li><a href="#where-bias-enters">Where bias enters</a></li><li><a href="#why-fairness-is-technically-hard">Why fairness is technically hard</a></li><li><a href="#what-actually-works">What actually works</a></li><li><a href="#where-it-goes-wrong-in-practice">Where it goes wrong in practice</a></li><li><a href="#the-responsibility-question">The responsibility question</a></li><li><a href="#the-summary">The summary</a></li></ol>
+      </div>
+
+      <div class="side-box">
+        <h4>Reuse this text</h4>
+        <p class="license-note"><b>Public domain.</b> Copy, translate, adapt, teach from, or republish it anywhere — commercially or not — with no permission and no obligation to credit. <a href="license.html">Read the CC0 terms</a>.</p>
+      </div>
+
+      <div class="side-box">
+        <h4>Related reading</h4>
+        <div class="related"><a href="21-privacy-security-and-adversarial-attacks.html"><span>21 · Ethics</span>Privacy, Security and Adversarial Attacks</a><a href="18-the-economics-of-ai-inference.html"><span>18 · Engineering</span>The Economics of AI Inference — Costs, Latency and What Actually Drives Them</a><a href="19-ai-safety-and-alignment.html"><span>19 · Safety</span>AI Safety and Alignment — The Hard Problems, Stated Plainly</a><a href="22-hallucination-deepfakes-and-trust.html"><span>22 · Society</span>Hallucination, Deepfakes and Trust</a></div>
+      </div>
+    </aside>
+  </div>
+</div>
+<script type="application/json" id="article-source">{"number":20,"title":"Bias, Fairness and Harm — How Models Reproduce Society's Flaws","description":"A model trained on the world learns the world's patterns, including its inequalities. A clear account of where algorithmic bias comes from, why removing it is harder than it looks, and what actually works.","category":"Ethics","tags":["bias","fairness","discrimination","equity","harms","accountability"],"date":"2024-05-27","author":"The AI Article Hub Editorial Collective","readingTime":"6 min read","markdown":"The most common objection to using AI in decisions about people is that it is biased. This is correct, and it is also incomplete in a way that leads to bad policy.\n\nThe more accurate statement is: **a model learns the statistical patterns of the world it is shown, and the world it is shown contains inequality.** The bias is not noise added to a neutral process. It is the process working exactly as designed on data that records a biased world.\n\n## Where bias enters\n\n**Historical data.** The clearest case. If past hiring, lending, policing or medical decisions contained discrimination, a model trained on those outcomes will reproduce it — and will do so with the speed, scale and apparent objectivity of a piece of software.\n\nThe important refinement: reproducing past discrimination is not a modelling error. The system is optimising the objective it was given, accurately, against the data provided. The defect is upstream, in the choice of objective, and that is where the fix has to go.\n\n**Representation.** Under-representation produces uneven performance, and the groups that are under-represented are systematically those already disadvantaged. Under [Data, the Raw Material of AI ](08-data-the-raw-material-of-ai.html), this is measured by slicing results by group rather than trusting the average.\n\n**Measurement proxies.** Systems are often trained on whatever is available: arrest records, credit bureau entries, prior claims, clinical codes. Each is a proxy for behaviour or need, and each encodes who is more likely to be recorded. A model predicting \"risk of reoffending\" from criminal history is partly predicting \"likelihood of being arrested again\", which depends on where police are deployed.\n\n**Deployment context.** A model validated in one hospital, one country or one population can be systematically wrong in another, and the mismatch is invisible without measurement in the new setting.\n\n**Feedback loops.** This is the mechanism that turns a small bias into a large one. A predictive system allocates attention, attention generates labels, the labels train the next version of the system. Predicted crime produces more policing, which produces more recorded crime, which trains the system to predict more crime in that area. The loop is not a bug; it is what happens when a prediction is used as a target.\n\n## Why fairness is technically hard\n\nThe uncomfortable fact is that the intuitive definitions of fairness are mathematically incompatible. One widely cited result shows that you generally cannot simultaneously achieve:\n\n- **Equal error rates** — the false-positive rate is the same for every group.\n- **Equal false-negative rates** — the false-negative rate is the same for every group.\n- **Equal predictive values** — the base rate of the condition is the same for every group.\n\nThey are incompatible whenever the underlying base rates differ — which is to say, whenever the world is unequal. If a condition is genuinely more common in one group, matching overall accuracy across groups necessarily means different error rates for each.\n\nThere is no technical resolution here, because the conflict is not technical. It is a question about which kind of error is more harmful in a given context, and that is a moral and legal judgement. A health screening programme and a fraud investigation have different appropriate answers, and no amount of modelling will tell you which one you are building.\n\n**The honest position:** fairness is a set of choices, not an objective function. The technical work is to make the choices visible, quantify each one, and let the decision be made explicitly by the people accountable for it.\n\n## What actually works\n\nThe interventions that have demonstrably reduced harm share a shape: they operate on the decision process, not only on the model.\n\n- **Fix the objective, not the model.** If the training target is a biased historical decision, the model is doing its job. Changing what \"success\" means is a policy act, and it is the highest-leverage change available.\n- **Use a better outcome variable.** Predicting what actually happened to a patient is different from predicting which patients got flagged. Where a causal question can be identified — what would have happened without intervention — it beats a correlation, even with a worse apparent fit.\n- **Measure every slice, always.** Accuracy, false-positive rate and false-negative rate by group, by site, by time, and published internally. An unmeasured disparity is an unmanaged one.\n- **Use the model as a decision aid, not a decision.** Human review reduces harm, at a known cost in time and at a well-documented risk: automation bias, where people defer too readily. Aid-plus-review is a compromise with a specific failure mode, and it has to be monitored for that failure mode.\n- **Involve the affected groups in the decision.** Not as a courtesy and not as a checkbox, but because the groups being scored know which outputs are absurd, and that knowledge is data. Community oversight bodies have surfaced harms no audit found.\n- **Test after deployment, on real traffic.** Pre-deployment tests will not find the distribution shift that matters. The first weeks of production are where the real failures appear.\n- **Design for refusal.** A system that can say \"this case is outside what I can assess\" is safer than one that always produces a number.\n- **Give people a route to contest.** An automated decision a person cannot challenge is a different institution, whatever its accuracy.\n\n## Where it goes wrong in practice\n\n**Proxies recede.** Organizations that remove an explicit protected attribute rarely remove the disparity, because the information is present in postcode, name, education history, purchase patterns and device type. This is well documented across sectors. It is why a fairness review that asks only about the model card's feature list is not a fairness review.\n\n**The most oppressed group is the loudest proxy.** There is a documented pattern where a system's protected-attribute handling effectively elevates one marginalised group over another. Any fairness intervention must ask which groups it is prioritising, not only whether it is prioritising anyone.\n\n**Benchmarks reward demographic parity over impact.** A system that is equally inaccurate for everyone is arguably fair by the standard metric and useless in practice. Equal failure is not a good outcome; it is a symmetric one.\n\n**Deployed and forgotten.** Many governance failures are not failures of design but of maintenance. A model that passed review three years ago, whose data distribution has since shifted, is still in production and nobody is watching it.\n\n**The model was never the problem.** Sometimes the discriminating process was fully manual and the model simply codified it, making the discrimination faster and harder to see. This is not a reason to avoid automation. It is a reason to be clear about what automation is for.\n\n## The responsibility question\n\nThe most consequential thing about deploying an AI decision system in a domain that affects people's lives is that responsibility can diffuse. The developer wrote the model. The data team prepared the inputs. The vendor supplies the software. The manager approved deployment. The frontline staff follow the output. Everyone did their job and no one is accountable for the outcome.\n\nThat is a governance failure, not a technical one, and it is why the most useful requirements are procedural: name the accountable person, require a documented reason for every decision that affects an individual, keep the decision log, and give the affected person the information and the appeal.\n\n## The summary\n\nAlgorithmic bias is not a mysterious property of models. It is the expected output of optimising a chosen objective on data that records an unequal world, deployed in a context that may not resemble the training data, inside a process with diffused responsibility.\n\nThe interventions that work are mostly not technical. They are: choosing better objectives, measuring every subgroup, keeping humans accountable for decisions, involving affected communities, and monitoring after deployment. None of these is expensive compared to the harm they prevent, and all of them are harder than training a model.","html":"\u003cp>The most common objection to using AI in decisions about people is that it is biased. This is correct, and it is also incomplete in a way that leads to bad policy.\u003c/p>\n\u003cp>The more accurate statement is: \u003cstrong>a model learns the statistical patterns of the world it is shown, and the world it is shown contains inequality.\u003c/strong> The bias is not noise added to a neutral process. It is the process working exactly as designed on data that records a biased world.\u003c/p>\n\u003ch2 id=\"where-bias-enters\">Where bias enters\u003c/h2>\n\u003cp>\u003cstrong>Historical data.\u003c/strong> The clearest case. If past hiring, lending, policing or medical decisions contained discrimination, a model trained on those outcomes will reproduce it — and will do so with the speed, scale and apparent objectivity of a piece of software.\u003c/p>\n\u003cp>The important refinement: reproducing past discrimination is not a modelling error. The system is optimising the objective it was given, accurately, against the data provided. The defect is upstream, in the choice of objective, and that is where the fix has to go.\u003c/p>\n\u003cp>\u003cstrong>Representation.\u003c/strong> Under-representation produces uneven performance, and the groups that are under-represented are systematically those already disadvantaged. Under \u003ca href=\"08-data-the-raw-material-of-ai.html\">Data, the Raw Material of AI \u003c/a>, this is measured by slicing results by group rather than trusting the average.\u003c/p>\n\u003cp>\u003cstrong>Measurement proxies.\u003c/strong> Systems are often trained on whatever is available: arrest records, credit bureau entries, prior claims, clinical codes. Each is a proxy for behaviour or need, and each encodes who is more likely to be recorded. A model predicting &quot;risk of reoffending&quot; from criminal history is partly predicting &quot;likelihood of being arrested again&quot;, which depends on where police are deployed.\u003c/p>\n\u003cp>\u003cstrong>Deployment context.\u003c/strong> A model validated in one hospital, one country or one population can be systematically wrong in another, and the mismatch is invisible without measurement in the new setting.\u003c/p>\n\u003cp>\u003cstrong>Feedback loops.\u003c/strong> This is the mechanism that turns a small bias into a large one. A predictive system allocates attention, attention generates labels, the labels train the next version of the system. Predicted crime produces more policing, which produces more recorded crime, which trains the system to predict more crime in that area. The loop is not a bug; it is what happens when a prediction is used as a target.\u003c/p>\n\u003ch2 id=\"why-fairness-is-technically-hard\">Why fairness is technically hard\u003c/h2>\n\u003cp>The uncomfortable fact is that the intuitive definitions of fairness are mathematically incompatible. One widely cited result shows that you generally cannot simultaneously achieve:\u003c/p>\n\u003cul>\u003cli>\u003cstrong>Equal error rates\u003c/strong> — the false-positive rate is the same for every group.\u003c/li>\u003cli>\u003cstrong>Equal false-negative rates\u003c/strong> — the false-negative rate is the same for every group.\u003c/li>\u003cli>\u003cstrong>Equal predictive values\u003c/strong> — the base rate of the condition is the same for every group.\u003c/li>\u003c/ul>\n\u003cp>They are incompatible whenever the underlying base rates differ — which is to say, whenever the world is unequal. If a condition is genuinely more common in one group, matching overall accuracy across groups necessarily means different error rates for each.\u003c/p>\n\u003cp>There is no technical resolution here, because the conflict is not technical. It is a question about which kind of error is more harmful in a given context, and that is a moral and legal judgement. A health screening programme and a fraud investigation have different appropriate answers, and no amount of modelling will tell you which one you are building.\u003c/p>\n\u003cp>\u003cstrong>The honest position:\u003c/strong> fairness is a set of choices, not an objective function. The technical work is to make the choices visible, quantify each one, and let the decision be made explicitly by the people accountable for it.\u003c/p>\n\u003ch2 id=\"what-actually-works\">What actually works\u003c/h2>\n\u003cp>The interventions that have demonstrably reduced harm share a shape: they operate on the decision process, not only on the model.\u003c/p>\n\u003cul>\u003cli>\u003cstrong>Fix the objective, not the model.\u003c/strong> If the training target is a biased historical decision, the model is doing its job. Changing what &quot;success&quot; means is a policy act, and it is the highest-leverage change available.\u003c/li>\u003cli>\u003cstrong>Use a better outcome variable.\u003c/strong> Predicting what actually happened to a patient is different from predicting which patients got flagged. Where a causal question can be identified — what would have happened without intervention — it beats a correlation, even with a worse apparent fit.\u003c/li>\u003cli>\u003cstrong>Measure every slice, always.\u003c/strong> Accuracy, false-positive rate and false-negative rate by group, by site, by time, and published internally. An unmeasured disparity is an unmanaged one.\u003c/li>\u003cli>\u003cstrong>Use the model as a decision aid, not a decision.\u003c/strong> Human review reduces harm, at a known cost in time and at a well-documented risk: automation bias, where people defer too readily. Aid-plus-review is a compromise with a specific failure mode, and it has to be monitored for that failure mode.\u003c/li>\u003cli>\u003cstrong>Involve the affected groups in the decision.\u003c/strong> Not as a courtesy and not as a checkbox, but because the groups being scored know which outputs are absurd, and that knowledge is data. Community oversight bodies have surfaced harms no audit found.\u003c/li>\u003cli>\u003cstrong>Test after deployment, on real traffic.\u003c/strong> Pre-deployment tests will not find the distribution shift that matters. The first weeks of production are where the real failures appear.\u003c/li>\u003cli>\u003cstrong>Design for refusal.\u003c/strong> A system that can say &quot;this case is outside what I can assess&quot; is safer than one that always produces a number.\u003c/li>\u003cli>\u003cstrong>Give people a route to contest.\u003c/strong> An automated decision a person cannot challenge is a different institution, whatever its accuracy.\u003c/li>\u003c/ul>\n\u003ch2 id=\"where-it-goes-wrong-in-practice\">Where it goes wrong in practice\u003c/h2>\n\u003cp>\u003cstrong>Proxies recede.\u003c/strong> Organizations that remove an explicit protected attribute rarely remove the disparity, because the information is present in postcode, name, education history, purchase patterns and device type. This is well documented across sectors. It is why a fairness review that asks only about the model card&#39;s feature list is not a fairness review.\u003c/p>\n\u003cp>\u003cstrong>The most oppressed group is the loudest proxy.\u003c/strong> There is a documented pattern where a system&#39;s protected-attribute handling effectively elevates one marginalised group over another. Any fairness intervention must ask which groups it is prioritising, not only whether it is prioritising anyone.\u003c/p>\n\u003cp>\u003cstrong>Benchmarks reward demographic parity over impact.\u003c/strong> A system that is equally inaccurate for everyone is arguably fair by the standard metric and useless in practice. Equal failure is not a good outcome; it is a symmetric one.\u003c/p>\n\u003cp>\u003cstrong>Deployed and forgotten.\u003c/strong> Many governance failures are not failures of design but of maintenance. A model that passed review three years ago, whose data distribution has since shifted, is still in production and nobody is watching it.\u003c/p>\n\u003cp>\u003cstrong>The model was never the problem.\u003c/strong> Sometimes the discriminating process was fully manual and the model simply codified it, making the discrimination faster and harder to see. This is not a reason to avoid automation. It is a reason to be clear about what automation is for.\u003c/p>\n\u003ch2 id=\"the-responsibility-question\">The responsibility question\u003c/h2>\n\u003cp>The most consequential thing about deploying an AI decision system in a domain that affects people&#39;s lives is that responsibility can diffuse. The developer wrote the model. The data team prepared the inputs. The vendor supplies the software. The manager approved deployment. The frontline staff follow the output. Everyone did their job and no one is accountable for the outcome.\u003c/p>\n\u003cp>That is a governance failure, not a technical one, and it is why the most useful requirements are procedural: name the accountable person, require a documented reason for every decision that affects an individual, keep the decision log, and give the affected person the information and the appeal.\u003c/p>\n\u003ch2 id=\"the-summary\">The summary\u003c/h2>\n\u003cp>Algorithmic bias is not a mysterious property of models. It is the expected output of optimising a chosen objective on data that records an unequal world, deployed in a context that may not resemble the training data, inside a process with diffused responsibility.\u003c/p>\n\u003cp>The interventions that work are mostly not technical. They are: choosing better objectives, measuring every subgroup, keeping humans accountable for decisions, involving affected communities, and monitoring after deployment. None of these is expensive compared to the harm they prevent, and all of them are harder than training a model.\u003c/p>"}</script>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h5>AI Article Hub</h5>
+        <p>Twenty-seven original, in-depth articles on artificial intelligence — from neural networks and transformers to AI safety, law and public policy. Free to read, download and reuse: everything here is released into the public domain under CC0 1.0.</p>
+        <p>Written to be read, translated, remixed and taught from without permission or payment.</p>
+      </div>
+      <div>
+        <h5>Read</h5>
+        <ul>
+          <li><a href="index.html#articles">All 27 articles</a></li>
+          <li><a href="downloads.html">Download everything</a></li>
+          <li><a href="feed.xml">RSS feed</a></li>
+          <li><a href="sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Reuse</h5>
+        <ul>
+          <li><a href="license.html">CC0 license terms</a></li>
+          <li><a href="publish.html">Publish this site</a></li>
+          <li><a href="publish.html#attribution">Do I need credit?</a></li>
+          <li><a href="about.html">About the project</a></li>
+          <li><a href="security.html">Security</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="license-line">
+      <span>© 2026 The AI Article Hub Editorial Collective. Text released under CC0 1.0 — dedicated to the public domain, no rights reserved.</span>
+      <a class="badge-cc" href="license.html">CC0 1.0 · Public Domain Dedication</a>
+    </div>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

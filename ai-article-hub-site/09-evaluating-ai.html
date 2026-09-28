@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evaluating AI — Benchmarks, Hallucinations and How to Measure Quality · AI Article Hub</title>
+<meta name="description" content="Accuracy is easy to compute and easy to game. A practical guide to what actually goes wrong in AI measurement, and what to measure instead.">
+<link rel="canonical" href="https://example.org/ai-article-hub/index.html">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#2f5bd7">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AI Article Hub">
+<meta property="og:title" content="Evaluating AI — Benchmarks, Hallucinations and How to Measure Quality · AI Article Hub">
+<meta property="og:description" content="Accuracy is easy to compute and easy to game. A practical guide to what actually goes wrong in AI measurement, and what to measure instead.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="license" content="CC0 1.0">
+<meta name="dcterms.license" content="https://creativecommons.org/publicdomain/zero/1.0/">
+<link rel="alternate" type="application/rss+xml" title="AI Article Hub" href="feed.xml">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/styles.css">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Evaluating AI — Benchmarks, Hallucinations and How to Measure Quality">
+<meta property="og:description" content="Accuracy is easy to compute and easy to game. A practical guide to what actually goes wrong in AI measurement, and what to measure instead.">
+<meta property="og:url" content="https://example.org/ai-article-hub/09-evaluating-ai.html">
+<meta property="article:section" content="Machine Learning">
+<meta property="article:tag" content="evaluation">
+<meta property="article:tag" content="benchmarks">
+<meta property="article:tag" content="metrics">
+<meta property="article:tag" content="hallucination">
+<meta property="article:tag" content="llm-as-judge">
+<meta name="author" content="The AI Article Hub Editorial Collective">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Evaluating AI — Benchmarks, Hallucinations and How to Measure Quality","description":"Accuracy is easy to compute and easy to game. A practical guide to what actually goes wrong in AI measurement, and what to measure instead.","datePublished":"2024-03-11","dateModified":"2024-03-11","inLanguage":"en","articleSection":"Machine Learning","keywords":"evaluation, benchmarks, metrics, hallucination, llm-as-judge","wordCount":1174,"isAccessibleForFree":true,"license":"https://creativecommons.org/publicdomain/zero/1.0/","creativeWorkStatus":"Public Domain","author":{"@type":"Organization","name":"The AI Article Hub Editorial Collective"},"publisher":{"@type":"Organization","name":"AI Article Hub"},"mainEntityOfPage":"https://example.org/ai-article-hub/09-evaluating-ai.html"}</script>
+</head>
+<body class="">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="index.html">
+      <span class="logo" aria-hidden="true">AI</span>
+      <span>AI Article Hub<small>CC0 1.0 · Public Domain</small></span>
+    </a>
+    <button class="icon-btn menu-btn" data-menu-toggle aria-label="Toggle navigation" aria-controls="site-nav">☰</button>
+    <nav class="nav" id="site-nav" aria-label="Main">
+          <a href="index.html">Home</a>
+          <a href="index.html#articles">Articles</a>
+          <a href="downloads.html">Downloads</a>
+          <a href="publish.html">Publish</a>
+          <a href="license.html">License</a>
+          <a href="about.html">About</a>
+          <a href="security.html">Security</a>
+      <button class="icon-btn theme-toggle" data-theme-toggle type="button" aria-label="Toggle theme">☾</button>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<div class="wrap">
+  <div class="article-shell">
+    <div>
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a> › <a href="index.html#articles">Articles</a> › <span>09 of 27</span>
+      </nav>
+
+      <header class="article-head">
+        <div class="kicker">
+          <span class="tag accent">Part 09 of 27</span>
+          <span class="tag">Machine Learning</span>
+          <span class="tag">5 min read</span>
+        </div>
+        <h1>Evaluating AI — Benchmarks, Hallucinations and How to Measure Quality</h1>
+        <p class="standfirst">Accuracy is easy to compute and easy to game. A practical guide to what actually goes wrong in AI measurement, and what to measure instead.</p>
+        <div class="byline">
+          <span>2024-03-11</span><span class="dot">•</span>
+          <span>Machine Learning</span><span class="dot">•</span>
+          <span>1,174 words</span><span class="dot">•</span>
+          <span>CC0 1.0 public domain</span>
+        </div>
+      </header>
+
+      <div class="prose">
+<p>Every AI project eventually faces the same disappointment. The prototype works. The demo impresses. Then somebody asks how well it works, and the honest answer turns out to be a number with an enormous and mostly invisible error bar.</p>
+<p>Measurement is where AI maturity shows. Here is what actually goes wrong, and what to do instead.</p>
+<h2 id="the-metric-trap">The metric trap</h2>
+<p>A benchmark is a proxy. The moment it is used for comparison, it becomes a target, and the moment it becomes a target it stops measuring the thing you care about. This is Goodhart&#39;s law, and it is not a theoretical concern in AI — it is a repeating historical pattern.</p>
+<p>The canonical example, described in <a href="04-how-machines-see.html">How Machines See </a>, is image classification. For years the headline number climbed from roughly 74% to above 90%, then it turned out that a large fraction of the test images were mislabelled, and that a well-tuned conventional method trained on clean labels could already match the best deep networks. The field had spent a decade optimising a test set.</p>
+<p>Other ways measurement goes wrong:</p>
+<ul><li><strong>Contamination.</strong> Test questions that leaked into training data, so the model has effectively memorised the answer. For a benchmark that was public years before a model&#39;s release, this is the default assumption, not a suspicion.</li><li><strong>Narrow slices.</strong> A single average hides a model that is excellent in English and poor in most other languages, accurate on common code and unreliable on the code your users actually write. Both facts can be true, and only one is quoted.</li><li><strong>Format sensitivity.</strong> A model&#39;s score on a multiple-choice benchmark can move by several points because the prompts were reformatted, the options reordered, or a &quot;think step by step&quot; hint added. That variance is larger than the year-on-year improvements being reported.</li><li><strong>Judging by another model.</strong> Using a large language model to grade outputs is convenient and has become standard practice, but it introduces its own biases: preference for verbosity, for confident phrasing, for answers resembling its own style. Agreement between a judge and humans is a measurement that itself needs validating.</li><li><strong>Human ratings that drift.</strong> Small panels, few examples, unclear criteria, and no inter-rater agreement check. A rising score can mean the rubric became lenient.</li></ul>
+<h2 id="metrics-that-are-worth-trusting-more">Metrics that are worth trusting more</h2>
+<p><strong>Task completion against a real reference, not a real person.</strong> For summarisation, translation or code, score against multiple acceptable answers rather than one. Single-reference scores punish correct outputs that differ from the reference.</p>
+<p><strong>Calibration.</strong> Ask a model how confident it is and check whether its confidence predicts its accuracy. A system that says it is 40% sure and is right 40% of the time is usable; one that is confidently wrong is a liability. Confidence that is meaningless is worse than absent, because people trust it.</p>
+<p><strong>Robustness and variance.</strong> Run the same evaluation several times with different seeds, prompts and orderings. Report a range. If a result does not survive re-running, it was noise.</p>
+<p><strong>Slice reporting.</strong> Mandatory, not optional: accuracy by language, by demographic group where people are affected, by document type, by input length, by source system. Averages are for dashboards; decisions should be made on the worst slice you are responsible for.</p>
+<p><strong>Human evaluation done properly.</strong> Enough items to matter — dozens to hundreds, not ten — explicit criteria, multiple raters, and reported agreement between them. It is expensive and it remains the only way to evaluate qualities that have no formula: helpfulness, tone, appropriateness, whether a refusal was correct.</p>
+<p><strong>End-to-end task metrics.</strong> &quot;The model is 92% accurate&quot; is not a business result. &quot;Median handle time fell 34% and the escalation rate is unchanged&quot; is. Systems should be measured where they sit in a process, including the work created downstream by their mistakes.</p>
+<h2 id="evaluating-generation-specifically">Evaluating generation, specifically</h2>
+<p>Open-ended output is where the interesting problems are. The most useful decomposition separates several different things that all get called &quot;quality&quot;:</p>
+<ul><li><strong>Correctness.</strong> Is the claim true? Measured against sources, not against style.</li><li><strong>Completeness.</strong> Does it cover what was asked?</li><li><strong>Grounding.</strong> Is every claim supported by the provided material, and does it avoid importing outside facts that were not asked for?</li><li><strong>Instruction adherence.</strong> Did it do what was actually requested — format, length, audience, constraints?</li><li><strong>Harmfulness.</strong> Does it produce content that causes foreseeable harm, given the context and audience?</li><li><strong>Style.</strong> Is it readable and consistent? Important, and the last thing to optimise.</li></ul>
+<p>A system can score beautifully on the last three and fail catastrophically on the first, and the fixes for the first are entirely different from the fixes for the rest.</p>
+<h2 id="when-the-model-grades-itself">When the model grades itself</h2>
+<p>Using a model to evaluate a model is here to stay, so it is worth knowing how to use it responsibly.</p>
+<p>Do: use it for cheap, high-volume screening of clearly-scored dimensions; use several judges and average; calibrate the judge against human labels on a sample you actually read yourself; rotate which model judges which; and always disclose that a model was the grader.</p>
+<p>Do not: treat its verdict as ground truth; let it grade its own outputs; use it to score open-ended quality with no human anchor; or assume improvements in judge scores mean improvements in quality.</p>
+<blockquote><p>A judge is a measurement instrument, and instruments need calibration before they are trusted. This one is cheaper than a lab technician and it will still lie to you with a straight face.</p></blockquote>
+<h2 id="the-evaluation-that-actually-matters">The evaluation that actually matters</h2>
+<p>The last and most important test is a real deployment with a real user, because almost every serious failure mode only appears there:</p>
+<ul><li>The system works on the cases in the demo and fails on the tenth-percentile case that generates a third of the complaints.</li><li>Users learn to work around it, and the workaround is worse than the original problem.</li><li>Output quality degrades because the input distribution drifted and nothing in the pipeline noticed.</li><li>Nobody downstream knows that an error was machine-made, and trust in the whole system collapses when the first one becomes public.</li></ul>
+<p>The defensible practice is a small, permanent, human-reviewed sample of real traffic, reviewed by people who can change things when they see a problem. Dashboards tell you about the average. Reading the errors tells you what to build next.</p>
+<h2 id="a-minimum-viable-evaluation-plan">A minimum viable evaluation plan</h2>
+<p>If you are starting from nothing, this is enough to begin and cheap enough to sustain:</p>
+<ol><li><strong>A held-out set</strong> built from real data, deduplicated, never used for tuning.</li><li><strong>Three metrics</strong> — one task metric, one calibration metric, one human-rated quality metric.</li><li><strong>Slice reporting</strong> on the two or three dimensions that matter to your users.</li><li><strong>A fixed set of adversarial probes</strong>: edge cases, known failure modes, and inputs designed to break it.</li><li><strong>An error log</strong> that is read weekly by someone with authority to change the system.</li><li><strong>A pre-registered decision rule</strong>: what result would make you ship, and what would make you stop. Written before you see the numbers.</li></ol>
+      </div>
+
+      <nav class="pager" aria-label="Article navigation">
+        <a class="prev" href="08-data-the-raw-material-of-ai.html"><span class="dir">← Previous</span><span class="t">Data — The Raw Material of AI</span></a>
+        <a class="next" href="10-making-models-smaller-and-faster.html"><span class="dir">Next →</span><span class="t">Making Models Smaller and Faster — Quantisation, Distillation and Pruning</span></a>
+      </nav>
+    </div>
+
+    <aside class="side">
+      <div class="side-box">
+        <h4>Reading progress</h4>
+        <progress class="progress" data-progress max="100" value="0" aria-label="Reading progress">0%</progress>
+      </div>
+
+      <div class="side-box">
+        <h4>Download this article</h4>
+        <div class="actions">
+          <button class="btn" data-dl="md" type="button">Markdown (.md)</button>
+          <button class="btn" data-dl="html" type="button">Web page (.html)</button>
+          <button class="btn" data-dl="pdf" type="button">Print / Save as PDF</button>
+          <button class="btn" data-dl="txt" type="button">Plain text (.txt)</button>
+          <button class="btn" data-dl="json" type="button">Data (.json)</button>
+          <button class="btn" data-dl="copy" type="button">Copy full text</button>
+        </div>
+      </div>
+
+      <div class="side-box">
+        <h4>On this page</h4>
+        <ol><li><a href="#the-metric-trap">The metric trap</a></li><li><a href="#metrics-that-are-worth-trusting-more">Metrics that are worth trusting more</a></li><li><a href="#evaluating-generation-specifically">Evaluating generation, specifically</a></li><li><a href="#when-the-model-grades-itself">When the model grades itself</a></li><li><a href="#the-evaluation-that-actually-matters">The evaluation that actually matters</a></li><li><a href="#a-minimum-viable-evaluation-plan">A minimum viable evaluation plan</a></li></ol>
+      </div>
+
+      <div class="side-box">
+        <h4>Reuse this text</h4>
+        <p class="license-note"><b>Public domain.</b> Copy, translate, adapt, teach from, or republish it anywhere — commercially or not — with no permission and no obligation to credit. <a href="license.html">Read the CC0 terms</a>.</p>
+      </div>
+
+      <div class="side-box">
+        <h4>Related reading</h4>
+        <div class="related"><a href="07-what-happens-during-training.html"><span>07 · Machine Learning</span>What Actually Happens During Training</a><a href="08-data-the-raw-material-of-ai.html"><span>08 · Machine Learning</span>Data — The Raw Material of AI</a><a href="22-hallucination-deepfakes-and-trust.html"><span>22 · Society</span>Hallucination, Deepfakes and Trust</a><a href="10-making-models-smaller-and-faster.html"><span>10 · Applied AI</span>Making Models Smaller and Faster — Quantisation, Distillation and Pruning</a></div>
+      </div>
+    </aside>
+  </div>
+</div>
+<script type="application/json" id="article-source">{"number":9,"title":"Evaluating AI — Benchmarks, Hallucinations and How to Measure Quality","description":"Accuracy is easy to compute and easy to game. A practical guide to what actually goes wrong in AI measurement, and what to measure instead.","category":"Machine Learning","tags":["evaluation","benchmarks","metrics","hallucination","llm-as-judge"],"date":"2024-03-11","author":"The AI Article Hub Editorial Collective","readingTime":"5 min read","markdown":"Every AI project eventually faces the same disappointment. The prototype works. The demo impresses. Then somebody asks how well it works, and the honest answer turns out to be a number with an enormous and mostly invisible error bar.\n\nMeasurement is where AI maturity shows. Here is what actually goes wrong, and what to do instead.\n\n## The metric trap\n\nA benchmark is a proxy. The moment it is used for comparison, it becomes a target, and the moment it becomes a target it stops measuring the thing you care about. This is Goodhart's law, and it is not a theoretical concern in AI — it is a repeating historical pattern.\n\nThe canonical example, described in [How Machines See ](04-how-machines-see.html), is image classification. For years the headline number climbed from roughly 74% to above 90%, then it turned out that a large fraction of the test images were mislabelled, and that a well-tuned conventional method trained on clean labels could already match the best deep networks. The field had spent a decade optimising a test set.\n\nOther ways measurement goes wrong:\n\n- **Contamination.** Test questions that leaked into training data, so the model has effectively memorised the answer. For a benchmark that was public years before a model's release, this is the default assumption, not a suspicion.\n- **Narrow slices.** A single average hides a model that is excellent in English and poor in most other languages, accurate on common code and unreliable on the code your users actually write. Both facts can be true, and only one is quoted.\n- **Format sensitivity.** A model's score on a multiple-choice benchmark can move by several points because the prompts were reformatted, the options reordered, or a \"think step by step\" hint added. That variance is larger than the year-on-year improvements being reported.\n- **Judging by another model.** Using a large language model to grade outputs is convenient and has become standard practice, but it introduces its own biases: preference for verbosity, for confident phrasing, for answers resembling its own style. Agreement between a judge and humans is a measurement that itself needs validating.\n- **Human ratings that drift.** Small panels, few examples, unclear criteria, and no inter-rater agreement check. A rising score can mean the rubric became lenient.\n\n## Metrics that are worth trusting more\n\n**Task completion against a real reference, not a real person.** For summarisation, translation or code, score against multiple acceptable answers rather than one. Single-reference scores punish correct outputs that differ from the reference.\n\n**Calibration.** Ask a model how confident it is and check whether its confidence predicts its accuracy. A system that says it is 40% sure and is right 40% of the time is usable; one that is confidently wrong is a liability. Confidence that is meaningless is worse than absent, because people trust it.\n\n**Robustness and variance.** Run the same evaluation several times with different seeds, prompts and orderings. Report a range. If a result does not survive re-running, it was noise.\n\n**Slice reporting.** Mandatory, not optional: accuracy by language, by demographic group where people are affected, by document type, by input length, by source system. Averages are for dashboards; decisions should be made on the worst slice you are responsible for.\n\n**Human evaluation done properly.** Enough items to matter — dozens to hundreds, not ten — explicit criteria, multiple raters, and reported agreement between them. It is expensive and it remains the only way to evaluate qualities that have no formula: helpfulness, tone, appropriateness, whether a refusal was correct.\n\n**End-to-end task metrics.** \"The model is 92% accurate\" is not a business result. \"Median handle time fell 34% and the escalation rate is unchanged\" is. Systems should be measured where they sit in a process, including the work created downstream by their mistakes.\n\n## Evaluating generation, specifically\n\nOpen-ended output is where the interesting problems are. The most useful decomposition separates several different things that all get called \"quality\":\n\n- **Correctness.** Is the claim true? Measured against sources, not against style.\n- **Completeness.** Does it cover what was asked?\n- **Grounding.** Is every claim supported by the provided material, and does it avoid importing outside facts that were not asked for?\n- **Instruction adherence.** Did it do what was actually requested — format, length, audience, constraints?\n- **Harmfulness.** Does it produce content that causes foreseeable harm, given the context and audience?\n- **Style.** Is it readable and consistent? Important, and the last thing to optimise.\n\nA system can score beautifully on the last three and fail catastrophically on the first, and the fixes for the first are entirely different from the fixes for the rest.\n\n## When the model grades itself\n\nUsing a model to evaluate a model is here to stay, so it is worth knowing how to use it responsibly.\n\nDo: use it for cheap, high-volume screening of clearly-scored dimensions; use several judges and average; calibrate the judge against human labels on a sample you actually read yourself; rotate which model judges which; and always disclose that a model was the grader.\n\nDo not: treat its verdict as ground truth; let it grade its own outputs; use it to score open-ended quality with no human anchor; or assume improvements in judge scores mean improvements in quality.\n\n> A judge is a measurement instrument, and instruments need calibration before they are trusted. This one is cheaper than a lab technician and it will still lie to you with a straight face.\n\n## The evaluation that actually matters\n\nThe last and most important test is a real deployment with a real user, because almost every serious failure mode only appears there:\n\n- The system works on the cases in the demo and fails on the tenth-percentile case that generates a third of the complaints.\n- Users learn to work around it, and the workaround is worse than the original problem.\n- Output quality degrades because the input distribution drifted and nothing in the pipeline noticed.\n- Nobody downstream knows that an error was machine-made, and trust in the whole system collapses when the first one becomes public.\n\nThe defensible practice is a small, permanent, human-reviewed sample of real traffic, reviewed by people who can change things when they see a problem. Dashboards tell you about the average. Reading the errors tells you what to build next.\n\n## A minimum viable evaluation plan\n\nIf you are starting from nothing, this is enough to begin and cheap enough to sustain:\n\n1. **A held-out set** built from real data, deduplicated, never used for tuning.\n2. **Three metrics** — one task metric, one calibration metric, one human-rated quality metric.\n3. **Slice reporting** on the two or three dimensions that matter to your users.\n4. **A fixed set of adversarial probes**: edge cases, known failure modes, and inputs designed to break it.\n5. **An error log** that is read weekly by someone with authority to change the system.\n6. **A pre-registered decision rule**: what result would make you ship, and what would make you stop. Written before you see the numbers.","html":"\u003cp>Every AI project eventually faces the same disappointment. The prototype works. The demo impresses. Then somebody asks how well it works, and the honest answer turns out to be a number with an enormous and mostly invisible error bar.\u003c/p>\n\u003cp>Measurement is where AI maturity shows. Here is what actually goes wrong, and what to do instead.\u003c/p>\n\u003ch2 id=\"the-metric-trap\">The metric trap\u003c/h2>\n\u003cp>A benchmark is a proxy. The moment it is used for comparison, it becomes a target, and the moment it becomes a target it stops measuring the thing you care about. This is Goodhart&#39;s law, and it is not a theoretical concern in AI — it is a repeating historical pattern.\u003c/p>\n\u003cp>The canonical example, described in \u003ca href=\"04-how-machines-see.html\">How Machines See \u003c/a>, is image classification. For years the headline number climbed from roughly 74% to above 90%, then it turned out that a large fraction of the test images were mislabelled, and that a well-tuned conventional method trained on clean labels could already match the best deep networks. The field had spent a decade optimising a test set.\u003c/p>\n\u003cp>Other ways measurement goes wrong:\u003c/p>\n\u003cul>\u003cli>\u003cstrong>Contamination.\u003c/strong> Test questions that leaked into training data, so the model has effectively memorised the answer. For a benchmark that was public years before a model&#39;s release, this is the default assumption, not a suspicion.\u003c/li>\u003cli>\u003cstrong>Narrow slices.\u003c/strong> A single average hides a model that is excellent in English and poor in most other languages, accurate on common code and unreliable on the code your users actually write. Both facts can be true, and only one is quoted.\u003c/li>\u003cli>\u003cstrong>Format sensitivity.\u003c/strong> A model&#39;s score on a multiple-choice benchmark can move by several points because the prompts were reformatted, the options reordered, or a &quot;think step by step&quot; hint added. That variance is larger than the year-on-year improvements being reported.\u003c/li>\u003cli>\u003cstrong>Judging by another model.\u003c/strong> Using a large language model to grade outputs is convenient and has become standard practice, but it introduces its own biases: preference for verbosity, for confident phrasing, for answers resembling its own style. Agreement between a judge and humans is a measurement that itself needs validating.\u003c/li>\u003cli>\u003cstrong>Human ratings that drift.\u003c/strong> Small panels, few examples, unclear criteria, and no inter-rater agreement check. A rising score can mean the rubric became lenient.\u003c/li>\u003c/ul>\n\u003ch2 id=\"metrics-that-are-worth-trusting-more\">Metrics that are worth trusting more\u003c/h2>\n\u003cp>\u003cstrong>Task completion against a real reference, not a real person.\u003c/strong> For summarisation, translation or code, score against multiple acceptable answers rather than one. Single-reference scores punish correct outputs that differ from the reference.\u003c/p>\n\u003cp>\u003cstrong>Calibration.\u003c/strong> Ask a model how confident it is and check whether its confidence predicts its accuracy. A system that says it is 40% sure and is right 40% of the time is usable; one that is confidently wrong is a liability. Confidence that is meaningless is worse than absent, because people trust it.\u003c/p>\n\u003cp>\u003cstrong>Robustness and variance.\u003c/strong> Run the same evaluation several times with different seeds, prompts and orderings. Report a range. If a result does not survive re-running, it was noise.\u003c/p>\n\u003cp>\u003cstrong>Slice reporting.\u003c/strong> Mandatory, not optional: accuracy by language, by demographic group where people are affected, by document type, by input length, by source system. Averages are for dashboards; decisions should be made on the worst slice you are responsible for.\u003c/p>\n\u003cp>\u003cstrong>Human evaluation done properly.\u003c/strong> Enough items to matter — dozens to hundreds, not ten — explicit criteria, multiple raters, and reported agreement between them. It is expensive and it remains the only way to evaluate qualities that have no formula: helpfulness, tone, appropriateness, whether a refusal was correct.\u003c/p>\n\u003cp>\u003cstrong>End-to-end task metrics.\u003c/strong> &quot;The model is 92% accurate&quot; is not a business result. &quot;Median handle time fell 34% and the escalation rate is unchanged&quot; is. Systems should be measured where they sit in a process, including the work created downstream by their mistakes.\u003c/p>\n\u003ch2 id=\"evaluating-generation-specifically\">Evaluating generation, specifically\u003c/h2>\n\u003cp>Open-ended output is where the interesting problems are. The most useful decomposition separates several different things that all get called &quot;quality&quot;:\u003c/p>\n\u003cul>\u003cli>\u003cstrong>Correctness.\u003c/strong> Is the claim true? Measured against sources, not against style.\u003c/li>\u003cli>\u003cstrong>Completeness.\u003c/strong> Does it cover what was asked?\u003c/li>\u003cli>\u003cstrong>Grounding.\u003c/strong> Is every claim supported by the provided material, and does it avoid importing outside facts that were not asked for?\u003c/li>\u003cli>\u003cstrong>Instruction adherence.\u003c/strong> Did it do what was actually requested — format, length, audience, constraints?\u003c/li>\u003cli>\u003cstrong>Harmfulness.\u003c/strong> Does it produce content that causes foreseeable harm, given the context and audience?\u003c/li>\u003cli>\u003cstrong>Style.\u003c/strong> Is it readable and consistent? Important, and the last thing to optimise.\u003c/li>\u003c/ul>\n\u003cp>A system can score beautifully on the last three and fail catastrophically on the first, and the fixes for the first are entirely different from the fixes for the rest.\u003c/p>\n\u003ch2 id=\"when-the-model-grades-itself\">When the model grades itself\u003c/h2>\n\u003cp>Using a model to evaluate a model is here to stay, so it is worth knowing how to use it responsibly.\u003c/p>\n\u003cp>Do: use it for cheap, high-volume screening of clearly-scored dimensions; use several judges and average; calibrate the judge against human labels on a sample you actually read yourself; rotate which model judges which; and always disclose that a model was the grader.\u003c/p>\n\u003cp>Do not: treat its verdict as ground truth; let it grade its own outputs; use it to score open-ended quality with no human anchor; or assume improvements in judge scores mean improvements in quality.\u003c/p>\n\u003cblockquote>\u003cp>A judge is a measurement instrument, and instruments need calibration before they are trusted. This one is cheaper than a lab technician and it will still lie to you with a straight face.\u003c/p>\u003c/blockquote>\n\u003ch2 id=\"the-evaluation-that-actually-matters\">The evaluation that actually matters\u003c/h2>\n\u003cp>The last and most important test is a real deployment with a real user, because almost every serious failure mode only appears there:\u003c/p>\n\u003cul>\u003cli>The system works on the cases in the demo and fails on the tenth-percentile case that generates a third of the complaints.\u003c/li>\u003cli>Users learn to work around it, and the workaround is worse than the original problem.\u003c/li>\u003cli>Output quality degrades because the input distribution drifted and nothing in the pipeline noticed.\u003c/li>\u003cli>Nobody downstream knows that an error was machine-made, and trust in the whole system collapses when the first one becomes public.\u003c/li>\u003c/ul>\n\u003cp>The defensible practice is a small, permanent, human-reviewed sample of real traffic, reviewed by people who can change things when they see a problem. Dashboards tell you about the average. Reading the errors tells you what to build next.\u003c/p>\n\u003ch2 id=\"a-minimum-viable-evaluation-plan\">A minimum viable evaluation plan\u003c/h2>\n\u003cp>If you are starting from nothing, this is enough to begin and cheap enough to sustain:\u003c/p>\n\u003col>\u003cli>\u003cstrong>A held-out set\u003c/strong> built from real data, deduplicated, never used for tuning.\u003c/li>\u003cli>\u003cstrong>Three metrics\u003c/strong> — one task metric, one calibration metric, one human-rated quality metric.\u003c/li>\u003cli>\u003cstrong>Slice reporting\u003c/strong> on the two or three dimensions that matter to your users.\u003c/li>\u003cli>\u003cstrong>A fixed set of adversarial probes\u003c/strong>: edge cases, known failure modes, and inputs designed to break it.\u003c/li>\u003cli>\u003cstrong>An error log\u003c/strong> that is read weekly by someone with authority to change the system.\u003c/li>\u003cli>\u003cstrong>A pre-registered decision rule\u003c/strong>: what result would make you ship, and what would make you stop. Written before you see the numbers.\u003c/li>\u003c/ol>"}</script>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h5>AI Article Hub</h5>
+        <p>Twenty-seven original, in-depth articles on artificial intelligence — from neural networks and transformers to AI safety, law and public policy. Free to read, download and reuse: everything here is released into the public domain under CC0 1.0.</p>
+        <p>Written to be read, translated, remixed and taught from without permission or payment.</p>
+      </div>
+      <div>
+        <h5>Read</h5>
+        <ul>
+          <li><a href="index.html#articles">All 27 articles</a></li>
+          <li><a href="downloads.html">Download everything</a></li>
+          <li><a href="feed.xml">RSS feed</a></li>
+          <li><a href="sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Reuse</h5>
+        <ul>
+          <li><a href="license.html">CC0 license terms</a></li>
+          <li><a href="publish.html">Publish this site</a></li>
+          <li><a href="publish.html#attribution">Do I need credit?</a></li>
+          <li><a href="about.html">About the project</a></li>
+          <li><a href="security.html">Security</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="license-line">
+      <span>© 2026 The AI Article Hub Editorial Collective. Text released under CC0 1.0 — dedicated to the public domain, no rights reserved.</span>
+      <a class="badge-cc" href="license.html">CC0 1.0 · Public Domain Dedication</a>
+    </div>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

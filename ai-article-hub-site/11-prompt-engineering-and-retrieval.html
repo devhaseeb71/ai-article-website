@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prompt Engineering and Retrieval — Practical Patterns · AI Article Hub</title>
+<meta name="description" content="Prompting is not magic and retrieval is not an excuse for a bad prompt. The patterns that actually work in production, the ones that only appear to, and how to combine them.">
+<link rel="canonical" href="https://example.org/ai-article-hub/index.html">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#2f5bd7">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AI Article Hub">
+<meta property="og:title" content="Prompt Engineering and Retrieval — Practical Patterns · AI Article Hub">
+<meta property="og:description" content="Prompting is not magic and retrieval is not an excuse for a bad prompt. The patterns that actually work in production, the ones that only appear to, and how to combine them.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="license" content="CC0 1.0">
+<meta name="dcterms.license" content="https://creativecommons.org/publicdomain/zero/1.0/">
+<link rel="alternate" type="application/rss+xml" title="AI Article Hub" href="feed.xml">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/styles.css">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Prompt Engineering and Retrieval — Practical Patterns">
+<meta property="og:description" content="Prompting is not magic and retrieval is not an excuse for a bad prompt. The patterns that actually work in production, the ones that only appear to, and how to combine them.">
+<meta property="og:url" content="https://example.org/ai-article-hub/11-prompt-engineering-and-retrieval.html">
+<meta property="article:section" content="Applied AI">
+<meta property="article:tag" content="prompting">
+<meta property="article:tag" content="retrieval">
+<meta property="article:tag" content="rag">
+<meta property="article:tag" content="context">
+<meta property="article:tag" content="engineering">
+<meta property="article:tag" content="patterns">
+<meta name="author" content="The AI Article Hub Editorial Collective">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Prompt Engineering and Retrieval — Practical Patterns","description":"Prompting is not magic and retrieval is not an excuse for a bad prompt. The patterns that actually work in production, the ones that only appear to, and how to combine them.","datePublished":"2024-03-25","dateModified":"2024-03-25","inLanguage":"en","articleSection":"Applied AI","keywords":"prompting, retrieval, rag, context, engineering, patterns","wordCount":1130,"isAccessibleForFree":true,"license":"https://creativecommons.org/publicdomain/zero/1.0/","creativeWorkStatus":"Public Domain","author":{"@type":"Organization","name":"The AI Article Hub Editorial Collective"},"publisher":{"@type":"Organization","name":"AI Article Hub"},"mainEntityOfPage":"https://example.org/ai-article-hub/11-prompt-engineering-and-retrieval.html"}</script>
+</head>
+<body class="">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="index.html">
+      <span class="logo" aria-hidden="true">AI</span>
+      <span>AI Article Hub<small>CC0 1.0 · Public Domain</small></span>
+    </a>
+    <button class="icon-btn menu-btn" data-menu-toggle aria-label="Toggle navigation" aria-controls="site-nav">☰</button>
+    <nav class="nav" id="site-nav" aria-label="Main">
+          <a href="index.html">Home</a>
+          <a href="index.html#articles">Articles</a>
+          <a href="downloads.html">Downloads</a>
+          <a href="publish.html">Publish</a>
+          <a href="license.html">License</a>
+          <a href="about.html">About</a>
+          <a href="security.html">Security</a>
+      <button class="icon-btn theme-toggle" data-theme-toggle type="button" aria-label="Toggle theme">☾</button>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<div class="wrap">
+  <div class="article-shell">
+    <div>
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a> › <a href="index.html#articles">Articles</a> › <span>11 of 27</span>
+      </nav>
+
+      <header class="article-head">
+        <div class="kicker">
+          <span class="tag accent">Part 11 of 27</span>
+          <span class="tag">Applied AI</span>
+          <span class="tag">5 min read</span>
+        </div>
+        <h1>Prompt Engineering and Retrieval — Practical Patterns</h1>
+        <p class="standfirst">Prompting is not magic and retrieval is not an excuse for a bad prompt. The patterns that actually work in production, the ones that only appear to, and how to combine them.</p>
+        <div class="byline">
+          <span>2024-03-25</span><span class="dot">•</span>
+          <span>Applied AI</span><span class="dot">•</span>
+          <span>1,130 words</span><span class="dot">•</span>
+          <span>CC0 1.0 public domain</span>
+        </div>
+      </header>
+
+      <div class="prose">
+<p>Prompting advice ranges from &quot;ask nicely&quot; to pages of incantations. Most of it is folklore. This article covers the small number of techniques that reliably change behaviour, the failure modes that survive all of them, and how to structure a system so that the prompt is the least interesting part.</p>
+<h2 id="the-one-thing-that-matters-context">The one thing that matters: context</h2>
+<p>A language model knows only what is in its context window at the moment of generating, plus whatever was compressed into its weights during training. Everything else is inaccessible. This single fact explains most prompting outcomes.</p>
+<p>So the practical hierarchy is not &quot;clever wording first&quot;. It is:</p>
+<ol><li><strong>Put the right information in the context.</strong> This dominates everything else.</li><li><strong>Remove the wrong information.</strong> Irrelevant text actively hurts.</li><li><strong>Then shape the behaviour</strong> with instructions, format and examples.</li></ol>
+<p>Most disappointing prompting results are retrieval problems wearing a prompting costume. If the model cannot answer a question about your data, check first whether the relevant passage was in the prompt at all.</p>
+<h2 id="patterns-that-work">Patterns that work</h2>
+<p><strong>Specify the output contract.</strong> Say exactly what the output should look like: sections, fields, length, whether to include reasoning, what to do when information is missing. Vague requests produce varied formats, and varied formats are expensive to parse and impossible to evaluate.</p>
+<pre><code>Return JSON with keys: &quot;answer&quot; (string), &quot;confidence&quot; (one of low/medium/high),
+&quot;sources&quot; (array of quoted spans copied verbatim from the provided documents).
+If the documents do not contain the answer, set &quot;answer&quot; to null and explain in &quot;confidence&quot;.</code></pre>
+<p><strong>Give examples.</strong> Two or three well-chosen examples beat a paragraph of description. They are also the only reliable way to convey style, tone and edge-case behaviour, because examples demonstrate the boundary cases that rules miss. The cost is tokens per request, which matters at volume.</p>
+<p><strong>Ask for the evidence.</strong> Instructing a model to quote the span it is relying on — and to return nothing if there is no such span — reduces confident invention more effectively than any amount of asking it to be careful. Grounding the output in retrieved text is the mechanism; politeness is not.</p>
+<p><strong>Let it think when thinking helps.</strong> Asking for reasoning before an answer improves accuracy on multi-step problems, at the cost of latency and tokens. It is worth it for analysis and not worth it for classification or extraction, where it adds variability rather than accuracy.</p>
+<p><strong>Make refusal a first-class option.</strong> Any system answering from documents must be able to say &quot;the documents do not say&quot;. Prompting for it explicitly is worth more than any post-hoc filter, because a filter sees the confident answer while the model can see the missing evidence.</p>
+<p><strong>Put the instruction where it will be read.</strong> Instructions buried in the middle of a long document are followed less reliably than the same instruction at the start and repeated at the end. This is well documented and routinely ignored.</p>
+<p><strong>Give it a way out.</strong> A prompt that says &quot;if the request is ambiguous, ask a clarifying question instead of guessing&quot; produces better outcomes on real traffic, where ambiguity is the norm.</p>
+<h2 id="retrieval-augmented-generation">Retrieval-augmented generation</h2>
+<p><strong>Retrieval-augmented generation</strong>, usually shortened to RAG, is the standard answer to &quot;the model needs to know things it was not trained on&quot;. The pipeline is: embed the question, search a document store for the most relevant passages, put them in the context, generate an answer grounded in them.</p>
+<p>It works well, and the reason is worth stating plainly: it moves the answer from the model&#39;s weights — where it cannot be checked, updated or deleted — into the prompt, where you can.</p>
+<p>The parts that determine whether it works are almost all in the retrieval half:</p>
+<ul><li><strong>Chunking.</strong> Documents are split into passages. Too small and the answer loses its context; too large and the passage fills the window with noise. This is the single most consequential and most neglected decision in the pipeline.</li><li><strong>Embedding choice.</strong> Different embedding models behave very differently by domain and by language. This is benchmarkable in an afternoon and routinely guessed at.</li><li><strong>Hybrid search.</strong> Combining keyword matching with vector search usually beats either alone, because keyword search is good at exact identifiers — error codes, part numbers, names — and vector search is good at paraphrase.</li><li><strong>Reranking.</strong> Retrieving a hundred candidates and reranking to the best ten with a specialised model consistently improves answer quality, at a cost in latency.</li><li><strong>Metadata filters.</strong> Restricting retrieval by date, product, region or permission is how you get both accuracy and access control in the same step.</li><li><strong>Citations in the output.</strong> Insisting that every claim carries a reference to a retrieved passage makes the system&#39;s grounding auditable, and exposes retrieval failures directly.</li></ul>
+<blockquote><p>RAG is not a database. It is a search problem with a generator attached, and the search is where the quality is won or lost.</p></blockquote>
+<h2 id="what-prompting-cannot-fix">What prompting cannot fix</h2>
+<p>Some limits are architectural, and no amount of phrasing gets past them:</p>
+<ul><li><strong>Knowledge the system does not have and was not given.</strong> Retrieve it or accept the failure.</li><li><strong>Arithmetic and exact lookup.</strong> Models approximate these. Use a tool.</li><li><strong>Long, precise structure.</strong> Exact JSON schemas, exact counts, exact IDs. Constrain with a grammar or a schema rather than hoping.</li><li><strong>Consistency across runs at high stakes.</strong> A prompt can reduce variance; it cannot eliminate sampling. Use lower temperature, fixed seeds, or deterministic decoding where the stakes justify it.</li><li><strong>Tasks requiring information the system cannot see.</strong> A model cannot check what it was not given, which is the whole reason retrieval exists.</li></ul>
+<h2 id="production-hygiene">Production hygiene</h2>
+<ul><li><strong>Version your prompts.</strong> They are code. Store them, diff them, test them, roll them back. Most teams version everything else and edit prompts directly in a console, which is a slow-motion outage waiting to be noticed.</li><li><strong>Test them.</strong> A small suite of real cases with expected properties catches most regressions. The suite does not need to be large to be useful.</li><li><strong>Log inputs, outputs and metadata.</strong> You cannot debug a system you cannot see. Log enough to reconstruct a bad answer.</li><li><strong>Separate system instruction from user data.</strong> Anything that came from a user should be delimited and treated as data, not as instructions. This is the practical defence against prompt injection.</li><li><strong>Do not put secrets in the prompt.</strong> Anything in the context can be echoed back. Credentials belong in a tool call, never in instructions.</li><li><strong>Watch the token bill.</strong> Long contexts cost money and latency on every single request, forever.</li></ul>
+<h2 id="the-honest-summary">The honest summary</h2>
+<p>Prompting is a specification problem. You are writing a contract for a capable, fast, literal-minded contractor who has never met your organisation and will not ask for clarification. The strongest prompts specify the output, supply the facts, show two examples, and define what to do when the request cannot be answered.</p>
+<p>That is a genuinely useful skill, and it is not the interesting part. The interesting parts are retrieval quality, tool design, evaluation and review — everything around the prompt that determines whether a system is dependable once traffic arrives.</p>
+      </div>
+
+      <nav class="pager" aria-label="Article navigation">
+        <a class="prev" href="10-making-models-smaller-and-faster.html"><span class="dir">← Previous</span><span class="t">Making Models Smaller and Faster — Quantisation, Distillation and Pruning</span></a>
+        <a class="next" href="12-agents-and-tool-use.html"><span class="dir">Next →</span><span class="t">Agents and Tool Use — When AI Takes Action</span></a>
+      </nav>
+    </div>
+
+    <aside class="side">
+      <div class="side-box">
+        <h4>Reading progress</h4>
+        <progress class="progress" data-progress max="100" value="0" aria-label="Reading progress">0%</progress>
+      </div>
+
+      <div class="side-box">
+        <h4>Download this article</h4>
+        <div class="actions">
+          <button class="btn" data-dl="md" type="button">Markdown (.md)</button>
+          <button class="btn" data-dl="html" type="button">Web page (.html)</button>
+          <button class="btn" data-dl="pdf" type="button">Print / Save as PDF</button>
+          <button class="btn" data-dl="txt" type="button">Plain text (.txt)</button>
+          <button class="btn" data-dl="json" type="button">Data (.json)</button>
+          <button class="btn" data-dl="copy" type="button">Copy full text</button>
+        </div>
+      </div>
+
+      <div class="side-box">
+        <h4>On this page</h4>
+        <ol><li><a href="#the-one-thing-that-matters-context">The one thing that matters: context</a></li><li><a href="#patterns-that-work">Patterns that work</a></li><li><a href="#retrieval-augmented-generation">Retrieval-augmented generation</a></li><li><a href="#what-prompting-cannot-fix">What prompting cannot fix</a></li><li><a href="#production-hygiene">Production hygiene</a></li><li><a href="#the-honest-summary">The honest summary</a></li></ol>
+      </div>
+
+      <div class="side-box">
+        <h4>Reuse this text</h4>
+        <p class="license-note"><b>Public domain.</b> Copy, translate, adapt, teach from, or republish it anywhere — commercially or not — with no permission and no obligation to credit. <a href="license.html">Read the CC0 terms</a>.</p>
+      </div>
+
+      <div class="side-box">
+        <h4>Related reading</h4>
+        <div class="related"><a href="10-making-models-smaller-and-faster.html"><span>10 · Applied AI</span>Making Models Smaller and Faster — Quantisation, Distillation and Pruning</a><a href="12-agents-and-tool-use.html"><span>12 · Applied AI</span>Agents and Tool Use — When AI Takes Action</a><a href="13-fine-tuning-rlhf-and-alignment.html"><span>13 · Applied AI</span>Fine-Tuning, RLHF and Alignment — Teaching Models to Be Helpful</a><a href="14-ai-in-software-development.html"><span>14 · Applications</span>AI in Software Development — Copilots, Code Agents and the Craft</a></div>
+      </div>
+    </aside>
+  </div>
+</div>
+<script type="application/json" id="article-source">{"number":11,"title":"Prompt Engineering and Retrieval — Practical Patterns","description":"Prompting is not magic and retrieval is not an excuse for a bad prompt. The patterns that actually work in production, the ones that only appear to, and how to combine them.","category":"Applied AI","tags":["prompting","retrieval","rag","context","engineering","patterns"],"date":"2024-03-25","author":"The AI Article Hub Editorial Collective","readingTime":"5 min read","markdown":"Prompting advice ranges from \"ask nicely\" to pages of incantations. Most of it is folklore. This article covers the small number of techniques that reliably change behaviour, the failure modes that survive all of them, and how to structure a system so that the prompt is the least interesting part.\n\n## The one thing that matters: context\n\nA language model knows only what is in its context window at the moment of generating, plus whatever was compressed into its weights during training. Everything else is inaccessible. This single fact explains most prompting outcomes.\n\nSo the practical hierarchy is not \"clever wording first\". It is:\n\n1. **Put the right information in the context.** This dominates everything else.\n2. **Remove the wrong information.** Irrelevant text actively hurts.\n3. **Then shape the behaviour** with instructions, format and examples.\n\nMost disappointing prompting results are retrieval problems wearing a prompting costume. If the model cannot answer a question about your data, check first whether the relevant passage was in the prompt at all.\n\n## Patterns that work\n\n**Specify the output contract.** Say exactly what the output should look like: sections, fields, length, whether to include reasoning, what to do when information is missing. Vague requests produce varied formats, and varied formats are expensive to parse and impossible to evaluate.\n\n```\nReturn JSON with keys: \"answer\" (string), \"confidence\" (one of low/medium/high),\n\"sources\" (array of quoted spans copied verbatim from the provided documents).\nIf the documents do not contain the answer, set \"answer\" to null and explain in \"confidence\".\n```\n\n**Give examples.** Two or three well-chosen examples beat a paragraph of description. They are also the only reliable way to convey style, tone and edge-case behaviour, because examples demonstrate the boundary cases that rules miss. The cost is tokens per request, which matters at volume.\n\n**Ask for the evidence.** Instructing a model to quote the span it is relying on — and to return nothing if there is no such span — reduces confident invention more effectively than any amount of asking it to be careful. Grounding the output in retrieved text is the mechanism; politeness is not.\n\n**Let it think when thinking helps.** Asking for reasoning before an answer improves accuracy on multi-step problems, at the cost of latency and tokens. It is worth it for analysis and not worth it for classification or extraction, where it adds variability rather than accuracy.\n\n**Make refusal a first-class option.** Any system answering from documents must be able to say \"the documents do not say\". Prompting for it explicitly is worth more than any post-hoc filter, because a filter sees the confident answer while the model can see the missing evidence.\n\n**Put the instruction where it will be read.** Instructions buried in the middle of a long document are followed less reliably than the same instruction at the start and repeated at the end. This is well documented and routinely ignored.\n\n**Give it a way out.** A prompt that says \"if the request is ambiguous, ask a clarifying question instead of guessing\" produces better outcomes on real traffic, where ambiguity is the norm.\n\n## Retrieval-augmented generation\n\n**Retrieval-augmented generation**, usually shortened to RAG, is the standard answer to \"the model needs to know things it was not trained on\". The pipeline is: embed the question, search a document store for the most relevant passages, put them in the context, generate an answer grounded in them.\n\nIt works well, and the reason is worth stating plainly: it moves the answer from the model's weights — where it cannot be checked, updated or deleted — into the prompt, where you can.\n\nThe parts that determine whether it works are almost all in the retrieval half:\n\n- **Chunking.** Documents are split into passages. Too small and the answer loses its context; too large and the passage fills the window with noise. This is the single most consequential and most neglected decision in the pipeline.\n- **Embedding choice.** Different embedding models behave very differently by domain and by language. This is benchmarkable in an afternoon and routinely guessed at.\n- **Hybrid search.** Combining keyword matching with vector search usually beats either alone, because keyword search is good at exact identifiers — error codes, part numbers, names — and vector search is good at paraphrase.\n- **Reranking.** Retrieving a hundred candidates and reranking to the best ten with a specialised model consistently improves answer quality, at a cost in latency.\n- **Metadata filters.** Restricting retrieval by date, product, region or permission is how you get both accuracy and access control in the same step.\n- **Citations in the output.** Insisting that every claim carries a reference to a retrieved passage makes the system's grounding auditable, and exposes retrieval failures directly.\n\n> RAG is not a database. It is a search problem with a generator attached, and the search is where the quality is won or lost.\n\n## What prompting cannot fix\n\nSome limits are architectural, and no amount of phrasing gets past them:\n\n- **Knowledge the system does not have and was not given.** Retrieve it or accept the failure.\n- **Arithmetic and exact lookup.** Models approximate these. Use a tool.\n- **Long, precise structure.** Exact JSON schemas, exact counts, exact IDs. Constrain with a grammar or a schema rather than hoping.\n- **Consistency across runs at high stakes.** A prompt can reduce variance; it cannot eliminate sampling. Use lower temperature, fixed seeds, or deterministic decoding where the stakes justify it.\n- **Tasks requiring information the system cannot see.** A model cannot check what it was not given, which is the whole reason retrieval exists.\n\n## Production hygiene\n\n- **Version your prompts.** They are code. Store them, diff them, test them, roll them back. Most teams version everything else and edit prompts directly in a console, which is a slow-motion outage waiting to be noticed.\n- **Test them.** A small suite of real cases with expected properties catches most regressions. The suite does not need to be large to be useful.\n- **Log inputs, outputs and metadata.** You cannot debug a system you cannot see. Log enough to reconstruct a bad answer.\n- **Separate system instruction from user data.** Anything that came from a user should be delimited and treated as data, not as instructions. This is the practical defence against prompt injection.\n- **Do not put secrets in the prompt.** Anything in the context can be echoed back. Credentials belong in a tool call, never in instructions.\n- **Watch the token bill.** Long contexts cost money and latency on every single request, forever.\n\n## The honest summary\n\nPrompting is a specification problem. You are writing a contract for a capable, fast, literal-minded contractor who has never met your organisation and will not ask for clarification. The strongest prompts specify the output, supply the facts, show two examples, and define what to do when the request cannot be answered.\n\nThat is a genuinely useful skill, and it is not the interesting part. The interesting parts are retrieval quality, tool design, evaluation and review — everything around the prompt that determines whether a system is dependable once traffic arrives.","html":"\u003cp>Prompting advice ranges from &quot;ask nicely&quot; to pages of incantations. Most of it is folklore. This article covers the small number of techniques that reliably change behaviour, the failure modes that survive all of them, and how to structure a system so that the prompt is the least interesting part.\u003c/p>\n\u003ch2 id=\"the-one-thing-that-matters-context\">The one thing that matters: context\u003c/h2>\n\u003cp>A language model knows only what is in its context window at the moment of generating, plus whatever was compressed into its weights during training. Everything else is inaccessible. This single fact explains most prompting outcomes.\u003c/p>\n\u003cp>So the practical hierarchy is not &quot;clever wording first&quot;. It is:\u003c/p>\n\u003col>\u003cli>\u003cstrong>Put the right information in the context.\u003c/strong> This dominates everything else.\u003c/li>\u003cli>\u003cstrong>Remove the wrong information.\u003c/strong> Irrelevant text actively hurts.\u003c/li>\u003cli>\u003cstrong>Then shape the behaviour\u003c/strong> with instructions, format and examples.\u003c/li>\u003c/ol>\n\u003cp>Most disappointing prompting results are retrieval problems wearing a prompting costume. If the model cannot answer a question about your data, check first whether the relevant passage was in the prompt at all.\u003c/p>\n\u003ch2 id=\"patterns-that-work\">Patterns that work\u003c/h2>\n\u003cp>\u003cstrong>Specify the output contract.\u003c/strong> Say exactly what the output should look like: sections, fields, length, whether to include reasoning, what to do when information is missing. Vague requests produce varied formats, and varied formats are expensive to parse and impossible to evaluate.\u003c/p>\n\u003cpre>\u003ccode>Return JSON with keys: &quot;answer&quot; (string), &quot;confidence&quot; (one of low/medium/high),\n&quot;sources&quot; (array of quoted spans copied verbatim from the provided documents).\nIf the documents do not contain the answer, set &quot;answer&quot; to null and explain in &quot;confidence&quot;.\u003c/code>\u003c/pre>\n\u003cp>\u003cstrong>Give examples.\u003c/strong> Two or three well-chosen examples beat a paragraph of description. They are also the only reliable way to convey style, tone and edge-case behaviour, because examples demonstrate the boundary cases that rules miss. The cost is tokens per request, which matters at volume.\u003c/p>\n\u003cp>\u003cstrong>Ask for the evidence.\u003c/strong> Instructing a model to quote the span it is relying on — and to return nothing if there is no such span — reduces confident invention more effectively than any amount of asking it to be careful. Grounding the output in retrieved text is the mechanism; politeness is not.\u003c/p>\n\u003cp>\u003cstrong>Let it think when thinking helps.\u003c/strong> Asking for reasoning before an answer improves accuracy on multi-step problems, at the cost of latency and tokens. It is worth it for analysis and not worth it for classification or extraction, where it adds variability rather than accuracy.\u003c/p>\n\u003cp>\u003cstrong>Make refusal a first-class option.\u003c/strong> Any system answering from documents must be able to say &quot;the documents do not say&quot;. Prompting for it explicitly is worth more than any post-hoc filter, because a filter sees the confident answer while the model can see the missing evidence.\u003c/p>\n\u003cp>\u003cstrong>Put the instruction where it will be read.\u003c/strong> Instructions buried in the middle of a long document are followed less reliably than the same instruction at the start and repeated at the end. This is well documented and routinely ignored.\u003c/p>\n\u003cp>\u003cstrong>Give it a way out.\u003c/strong> A prompt that says &quot;if the request is ambiguous, ask a clarifying question instead of guessing&quot; produces better outcomes on real traffic, where ambiguity is the norm.\u003c/p>\n\u003ch2 id=\"retrieval-augmented-generation\">Retrieval-augmented generation\u003c/h2>\n\u003cp>\u003cstrong>Retrieval-augmented generation\u003c/strong>, usually shortened to RAG, is the standard answer to &quot;the model needs to know things it was not trained on&quot;. The pipeline is: embed the question, search a document store for the most relevant passages, put them in the context, generate an answer grounded in them.\u003c/p>\n\u003cp>It works well, and the reason is worth stating plainly: it moves the answer from the model&#39;s weights — where it cannot be checked, updated or deleted — into the prompt, where you can.\u003c/p>\n\u003cp>The parts that determine whether it works are almost all in the retrieval half:\u003c/p>\n\u003cul>\u003cli>\u003cstrong>Chunking.\u003c/strong> Documents are split into passages. Too small and the answer loses its context; too large and the passage fills the window with noise. This is the single most consequential and most neglected decision in the pipeline.\u003c/li>\u003cli>\u003cstrong>Embedding choice.\u003c/strong> Different embedding models behave very differently by domain and by language. This is benchmarkable in an afternoon and routinely guessed at.\u003c/li>\u003cli>\u003cstrong>Hybrid search.\u003c/strong> Combining keyword matching with vector search usually beats either alone, because keyword search is good at exact identifiers — error codes, part numbers, names — and vector search is good at paraphrase.\u003c/li>\u003cli>\u003cstrong>Reranking.\u003c/strong> Retrieving a hundred candidates and reranking to the best ten with a specialised model consistently improves answer quality, at a cost in latency.\u003c/li>\u003cli>\u003cstrong>Metadata filters.\u003c/strong> Restricting retrieval by date, product, region or permission is how you get both accuracy and access control in the same step.\u003c/li>\u003cli>\u003cstrong>Citations in the output.\u003c/strong> Insisting that every claim carries a reference to a retrieved passage makes the system&#39;s grounding auditable, and exposes retrieval failures directly.\u003c/li>\u003c/ul>\n\u003cblockquote>\u003cp>RAG is not a database. It is a search problem with a generator attached, and the search is where the quality is won or lost.\u003c/p>\u003c/blockquote>\n\u003ch2 id=\"what-prompting-cannot-fix\">What prompting cannot fix\u003c/h2>\n\u003cp>Some limits are architectural, and no amount of phrasing gets past them:\u003c/p>\n\u003cul>\u003cli>\u003cstrong>Knowledge the system does not have and was not given.\u003c/strong> Retrieve it or accept the failure.\u003c/li>\u003cli>\u003cstrong>Arithmetic and exact lookup.\u003c/strong> Models approximate these. Use a tool.\u003c/li>\u003cli>\u003cstrong>Long, precise structure.\u003c/strong> Exact JSON schemas, exact counts, exact IDs. Constrain with a grammar or a schema rather than hoping.\u003c/li>\u003cli>\u003cstrong>Consistency across runs at high stakes.\u003c/strong> A prompt can reduce variance; it cannot eliminate sampling. Use lower temperature, fixed seeds, or deterministic decoding where the stakes justify it.\u003c/li>\u003cli>\u003cstrong>Tasks requiring information the system cannot see.\u003c/strong> A model cannot check what it was not given, which is the whole reason retrieval exists.\u003c/li>\u003c/ul>\n\u003ch2 id=\"production-hygiene\">Production hygiene\u003c/h2>\n\u003cul>\u003cli>\u003cstrong>Version your prompts.\u003c/strong> They are code. Store them, diff them, test them, roll them back. Most teams version everything else and edit prompts directly in a console, which is a slow-motion outage waiting to be noticed.\u003c/li>\u003cli>\u003cstrong>Test them.\u003c/strong> A small suite of real cases with expected properties catches most regressions. The suite does not need to be large to be useful.\u003c/li>\u003cli>\u003cstrong>Log inputs, outputs and metadata.\u003c/strong> You cannot debug a system you cannot see. Log enough to reconstruct a bad answer.\u003c/li>\u003cli>\u003cstrong>Separate system instruction from user data.\u003c/strong> Anything that came from a user should be delimited and treated as data, not as instructions. This is the practical defence against prompt injection.\u003c/li>\u003cli>\u003cstrong>Do not put secrets in the prompt.\u003c/strong> Anything in the context can be echoed back. Credentials belong in a tool call, never in instructions.\u003c/li>\u003cli>\u003cstrong>Watch the token bill.\u003c/strong> Long contexts cost money and latency on every single request, forever.\u003c/li>\u003c/ul>\n\u003ch2 id=\"the-honest-summary\">The honest summary\u003c/h2>\n\u003cp>Prompting is a specification problem. You are writing a contract for a capable, fast, literal-minded contractor who has never met your organisation and will not ask for clarification. The strongest prompts specify the output, supply the facts, show two examples, and define what to do when the request cannot be answered.\u003c/p>\n\u003cp>That is a genuinely useful skill, and it is not the interesting part. The interesting parts are retrieval quality, tool design, evaluation and review — everything around the prompt that determines whether a system is dependable once traffic arrives.\u003c/p>"}</script>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h5>AI Article Hub</h5>
+        <p>Twenty-seven original, in-depth articles on artificial intelligence — from neural networks and transformers to AI safety, law and public policy. Free to read, download and reuse: everything here is released into the public domain under CC0 1.0.</p>
+        <p>Written to be read, translated, remixed and taught from without permission or payment.</p>
+      </div>
+      <div>
+        <h5>Read</h5>
+        <ul>
+          <li><a href="index.html#articles">All 27 articles</a></li>
+          <li><a href="downloads.html">Download everything</a></li>
+          <li><a href="feed.xml">RSS feed</a></li>
+          <li><a href="sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Reuse</h5>
+        <ul>
+          <li><a href="license.html">CC0 license terms</a></li>
+          <li><a href="publish.html">Publish this site</a></li>
+          <li><a href="publish.html#attribution">Do I need credit?</a></li>
+          <li><a href="about.html">About the project</a></li>
+          <li><a href="security.html">Security</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="license-line">
+      <span>© 2026 The AI Article Hub Editorial Collective. Text released under CC0 1.0 — dedicated to the public domain, no rights reserved.</span>
+      <a class="badge-cc" href="license.html">CC0 1.0 · Public Domain Dedication</a>
+    </div>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

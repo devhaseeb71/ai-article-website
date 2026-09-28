@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Economics of AI Inference — Costs, Latency and What Actually Drives Them · AI Article Hub</title>
+<meta name="description" content="Training gets the headlines and the enormous cheques. Inference is where every business actually lives, and its cost structure determines which applications are viable and who can afford them.">
+<link rel="canonical" href="https://example.org/ai-article-hub/index.html">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#2f5bd7">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AI Article Hub">
+<meta property="og:title" content="The Economics of AI Inference — Costs, Latency and What Actually Drives Them · AI Article Hub">
+<meta property="og:description" content="Training gets the headlines and the enormous cheques. Inference is where every business actually lives, and its cost structure determines which applications are viable and who can afford them.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="license" content="CC0 1.0">
+<meta name="dcterms.license" content="https://creativecommons.org/publicdomain/zero/1.0/">
+<link rel="alternate" type="application/rss+xml" title="AI Article Hub" href="feed.xml">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/styles.css">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The Economics of AI Inference — Costs, Latency and What Actually Drives Them">
+<meta property="og:description" content="Training gets the headlines and the enormous cheques. Inference is where every business actually lives, and its cost structure determines which applications are viable and who can afford them.">
+<meta property="og:url" content="https://example.org/ai-article-hub/18-the-economics-of-ai-inference.html">
+<meta property="article:section" content="Engineering">
+<meta property="article:tag" content="inference">
+<meta property="article:tag" content="cost">
+<meta property="article:tag" content="latency">
+<meta property="article:tag" content="serving">
+<meta property="article:tag" content="economics">
+<meta property="article:tag" content="infrastructure">
+<meta name="author" content="The AI Article Hub Editorial Collective">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"The Economics of AI Inference — Costs, Latency and What Actually Drives Them","description":"Training gets the headlines and the enormous cheques. Inference is where every business actually lives, and its cost structure determines which applications are viable and who can afford them.","datePublished":"2024-05-13","dateModified":"2024-05-13","inLanguage":"en","articleSection":"Engineering","keywords":"inference, cost, latency, serving, economics, infrastructure","wordCount":1242,"isAccessibleForFree":true,"license":"https://creativecommons.org/publicdomain/zero/1.0/","creativeWorkStatus":"Public Domain","author":{"@type":"Organization","name":"The AI Article Hub Editorial Collective"},"publisher":{"@type":"Organization","name":"AI Article Hub"},"mainEntityOfPage":"https://example.org/ai-article-hub/18-the-economics-of-ai-inference.html"}</script>
+</head>
+<body class="">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="index.html">
+      <span class="logo" aria-hidden="true">AI</span>
+      <span>AI Article Hub<small>CC0 1.0 · Public Domain</small></span>
+    </a>
+    <button class="icon-btn menu-btn" data-menu-toggle aria-label="Toggle navigation" aria-controls="site-nav">☰</button>
+    <nav class="nav" id="site-nav" aria-label="Main">
+          <a href="index.html">Home</a>
+          <a href="index.html#articles">Articles</a>
+          <a href="downloads.html">Downloads</a>
+          <a href="publish.html">Publish</a>
+          <a href="license.html">License</a>
+          <a href="about.html">About</a>
+          <a href="security.html">Security</a>
+      <button class="icon-btn theme-toggle" data-theme-toggle type="button" aria-label="Toggle theme">☾</button>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<div class="wrap">
+  <div class="article-shell">
+    <div>
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a> › <a href="index.html#articles">Articles</a> › <span>18 of 27</span>
+      </nav>
+
+      <header class="article-head">
+        <div class="kicker">
+          <span class="tag accent">Part 18 of 27</span>
+          <span class="tag">Engineering</span>
+          <span class="tag">6 min read</span>
+        </div>
+        <h1>The Economics of AI Inference — Costs, Latency and What Actually Drives Them</h1>
+        <p class="standfirst">Training gets the headlines and the enormous cheques. Inference is where every business actually lives, and its cost structure determines which applications are viable and who can afford them.</p>
+        <div class="byline">
+          <span>2024-05-13</span><span class="dot">•</span>
+          <span>Engineering</span><span class="dot">•</span>
+          <span>1,242 words</span><span class="dot">•</span>
+          <span>CC0 1.0 public domain</span>
+        </div>
+      </header>
+
+      <div class="prose">
+<p>Training is a one-time capital expenditure measured in hundreds of millions. Inference is the ongoing operating cost, incurred on every request, forever, and it is the number that determines whether a product is viable.</p>
+<p>It is also the number almost nobody outside the industry thinks about. This article is an attempt to make it legible.</p>
+<h2 id="what-you-are-buying">What you are buying</h2>
+<p>When a model generates a response, the cost has two components that behave very differently.</p>
+<p><strong>Prefill</strong> processes your entire input at once — the system prompt, the retrieved documents, the conversation history. It is compute-bound and runs in parallel on the accelerator, so it is fast and scales predictably with input length.</p>
+<p><strong>Decode</strong> generates tokens one at a time, each one requiring the full model to run again. It is memory-bound: the accelerator has to read every weight from memory for every token, and then waits. Time per token is bounded by memory bandwidth, not arithmetic.</p>
+<p>This asymmetry has practical consequences that are frequently misunderstood:</p>
+<ul><li><strong>Output tokens cost roughly an order of magnitude more than input tokens.</strong> A system that writes a long answer is expensive in a way that a system with a huge prompt is not.</li><li><strong>The cost of a request is not proportional to the task.</strong> A 5,000-token document and a 100-token document cost about the same if the answer is the same length.</li><li><strong>Adding a large document to every prompt is a decision with a permanent price</strong>, repeated on every single request.</li></ul>
+<h2 id="the-pricing-logic">The pricing logic</h2>
+<p>Providers price in a simple currency: tokens. In practice the number is a bundle of several components, and it is worth knowing which is which.</p>
+<p><strong>Input tokens</strong> are cheapest. Often a small fraction of the cost of output.</p>
+<p><strong>Cached input</strong> is much cheaper, because a large fraction of a system prompt or a shared document is processed once and reused. This is why prompt design has a cost dimension and why providers publish cached-input pricing prominently.</p>
+<p><strong>Output tokens</strong> dominate. This is the number to model carefully, and the number that determines whether a verbose assistant-style product is viable at scale.</p>
+<p><strong>Reasoning tokens</strong> — models that think before answering — are billed as output tokens and often account for a large share of the bill. If your application does not need them, turn them off. This is the single largest avoidable cost in many deployments.</p>
+<p>Model prices have fallen by large factors, but the effect on bills has been muted, because demand for longer outputs and more reasoning has grown faster than per-token prices have dropped. The Jevons paradox is not a hypothetical in this industry.</p>
+<h2 id="latency-is-a-separate-product">Latency is a separate product</h2>
+<p>Latency and cost are different axes, and products that optimise one often hurt the other. Four numbers matter:</p>
+<ul><li><strong>Time to first token.</strong> What a user actually perceives as responsiveness. This is set by prefill time and system overhead, and it is the number to optimise for chat.</li><li><strong>Inter-token latency.</strong> The gap between tokens as the answer streams. Noticeable if it exceeds roughly 100ms; this is the memory-bandwidth-bound decode phase.</li><li><strong>Total time.</strong> Matters for batch, not for interaction.</li><li><strong>Tail latency.</strong> The 99th percentile, not the average. This is the number that determines whether your service feels reliable, and it is where the real engineering is.</li></ul>
+<p>The techniques for improving all of them are the same ones described in <a href="10-making-models-smaller-and-faster.html">Making Models Smaller and Faster </a>: smaller models, quantisation, speculative decoding, prefix caching, routing by difficulty, and batching. They trade against each other, which is why architecture decisions are business decisions.</p>
+<h2 id="batching-and-the-utilisation-trade">Batching and the utilisation trade</h2>
+<p>Serving many requests concurrently is enormously more efficient than serving them one at a time, because an accelerator sitting at low utilisation is wasting hardware. Batching requests fills it.</p>
+<p>That creates a genuine tension. Batching improves throughput and cost per request, and it worsens the latency of every individual request, because it must wait for a batch to fill. Some products — high-volume, non-interactive, latency-insensitive work such as classification, extraction, moderation and batch document processing — should be batched aggressively. Interactive products should not.</p>
+<p>Getting this wrong is expensive in both directions: a chat system batched too aggressively feels broken, and a batch system run unbatched costs multiples more than it should.</p>
+<h2 id="routing-and-cascade">Routing and cascade</h2>
+<p>The most effective cost strategy is not a smaller model. It is <strong>using the smallest model that can do each job</strong>.</p>
+<p>A <strong>cascade</strong> sends a request to the small model first, checks whether the answer meets a threshold, and escalates to the large model only when it does not. For a large share of real traffic — routine classification, simple extraction, common questions — the small model is sufficient, and the economics improve substantially. The threshold is the engineering problem, and it must be set on calibration, not on optimism.</p>
+<p><strong>Routing by difficulty</strong> generalises this: classify the request, send it to the right tier. It requires knowing which requests are hard, which is a problem in itself, and it fails badly on the requests that are misclassified as easy.</p>
+<h2 id="the-batch-opportunities-nobody-owns">The batch opportunities nobody owns</h2>
+<p>Most of the industry&#39;s attention is on interactive chat, and it is where the least machine-friendly application is. The genuinely large cost savings are in the workloads nobody optimises for:</p>
+<ul><li>Classification and routing at volume — support tickets, content moderation, document triage, fraud screening.</li><li>Bulk data work — enrichment, extraction, translation, indexing, deduplication over millions of records.</li><li>Nightly batch jobs where latency is irrelevant and the accelerator is otherwise idle.</li><li>Evaluation and simulation at scale.</li></ul>
+<p>These have clear unit economics, predictable demand, and enormous leverage, and they are where a competent engineering team gets several times more than they get from making chat slightly better.</p>
+<h2 id="what-this-means-for-who-gets-ai">What this means for who gets AI</h2>
+<p>The cost structure is not neutral with respect to scale. Systems with large, steady, well-defined workloads can be made cheap. Systems with small, irregular, unpredictable workloads cannot, because the fixed costs — engineering, evaluation, integration, review — dominate.</p>
+<p>This produces an uncomfortable pattern: the organisations that benefit most are the ones best able to afford it, and the organisations serving the public good are often the ones with the least predictable volume. The three variables that change this are open weights and commodity hardware, described in <a href="25-the-open-weights-movement.html">The Open Weights Movement </a>; caching and shared infrastructure; and procurement frameworks that let smaller buyers purchase inference at a price based on actual cost rather than on list price.</p>
+<h2 id="the-practical-model-to-build-before-you-build">The practical model to build before you build</h2>
+<p>Before choosing a model, write down a spreadsheet with:</p>
+<ol><li>Expected requests per day, and the growth curve.</li><li>Input tokens and output tokens per request, from real data, not from the demo.</li><li>Reasoning tokens on and off.</li><li>Cache hit rate for your actual prompt pattern.</li><li>The model tiers you will route between, and the fraction of traffic each handles.</li><li>A human-review cost per request, which is often larger than every line above and is the one teams forget.</li><li>The performance metrics you will actually track, which come straight from <a href="09-evaluating-ai.html">Evaluating AI </a>.</li></ol>
+<p>Then measure the real bill for two weeks and compare. Almost every organisation discovers that their model choice is wrong in an obvious direction, and almost none of them discover it from the pricing page.</p>
+      </div>
+
+      <nav class="pager" aria-label="Article navigation">
+        <a class="prev" href="17-ai-and-creativity.html"><span class="dir">← Previous</span><span class="t">AI and Creativity — Image, Audio, Video and Writing</span></a>
+        <a class="next" href="19-ai-safety-and-alignment.html"><span class="dir">Next →</span><span class="t">AI Safety and Alignment — The Hard Problems, Stated Plainly</span></a>
+      </nav>
+    </div>
+
+    <aside class="side">
+      <div class="side-box">
+        <h4>Reading progress</h4>
+        <progress class="progress" data-progress max="100" value="0" aria-label="Reading progress">0%</progress>
+      </div>
+
+      <div class="side-box">
+        <h4>Download this article</h4>
+        <div class="actions">
+          <button class="btn" data-dl="md" type="button">Markdown (.md)</button>
+          <button class="btn" data-dl="html" type="button">Web page (.html)</button>
+          <button class="btn" data-dl="pdf" type="button">Print / Save as PDF</button>
+          <button class="btn" data-dl="txt" type="button">Plain text (.txt)</button>
+          <button class="btn" data-dl="json" type="button">Data (.json)</button>
+          <button class="btn" data-dl="copy" type="button">Copy full text</button>
+        </div>
+      </div>
+
+      <div class="side-box">
+        <h4>On this page</h4>
+        <ol><li><a href="#what-you-are-buying">What you are buying</a></li><li><a href="#the-pricing-logic">The pricing logic</a></li><li><a href="#latency-is-a-separate-product">Latency is a separate product</a></li><li><a href="#batching-and-the-utilisation-trade">Batching and the utilisation trade</a></li><li><a href="#routing-and-cascade">Routing and cascade</a></li><li><a href="#the-batch-opportunities-nobody-owns">The batch opportunities nobody owns</a></li><li><a href="#what-this-means-for-who-gets-ai">What this means for who gets AI</a></li><li><a href="#the-practical-model-to-build-before-you-build">The practical model to build before you build</a></li></ol>
+      </div>
+
+      <div class="side-box">
+        <h4>Reuse this text</h4>
+        <p class="license-note"><b>Public domain.</b> Copy, translate, adapt, teach from, or republish it anywhere — commercially or not — with no permission and no obligation to credit. <a href="license.html">Read the CC0 terms</a>.</p>
+      </div>
+
+      <div class="side-box">
+        <h4>Related reading</h4>
+        <div class="related"><a href="10-making-models-smaller-and-faster.html"><span>10 · Applied AI</span>Making Models Smaller and Faster — Quantisation, Distillation and Pruning</a><a href="16-ai-in-medicine-and-science.html"><span>16 · Applications</span>AI and Discovery — Medicine, Biology, Energy and Materials</a><a href="17-ai-and-creativity.html"><span>17 · Applications</span>AI and Creativity — Image, Audio, Video and Writing</a><a href="19-ai-safety-and-alignment.html"><span>19 · Safety</span>AI Safety and Alignment — The Hard Problems, Stated Plainly</a></div>
+      </div>
+    </aside>
+  </div>
+</div>
+<script type="application/json" id="article-source">{"number":18,"title":"The Economics of AI Inference — Costs, Latency and What Actually Drives Them","description":"Training gets the headlines and the enormous cheques. Inference is where every business actually lives, and its cost structure determines which applications are viable and who can afford them.","category":"Engineering","tags":["inference","cost","latency","serving","economics","infrastructure"],"date":"2024-05-13","author":"The AI Article Hub Editorial Collective","readingTime":"6 min read","markdown":"Training is a one-time capital expenditure measured in hundreds of millions. Inference is the ongoing operating cost, incurred on every request, forever, and it is the number that determines whether a product is viable.\n\nIt is also the number almost nobody outside the industry thinks about. This article is an attempt to make it legible.\n\n## What you are buying\n\nWhen a model generates a response, the cost has two components that behave very differently.\n\n**Prefill** processes your entire input at once — the system prompt, the retrieved documents, the conversation history. It is compute-bound and runs in parallel on the accelerator, so it is fast and scales predictably with input length.\n\n**Decode** generates tokens one at a time, each one requiring the full model to run again. It is memory-bound: the accelerator has to read every weight from memory for every token, and then waits. Time per token is bounded by memory bandwidth, not arithmetic.\n\nThis asymmetry has practical consequences that are frequently misunderstood:\n\n- **Output tokens cost roughly an order of magnitude more than input tokens.** A system that writes a long answer is expensive in a way that a system with a huge prompt is not.\n- **The cost of a request is not proportional to the task.** A 5,000-token document and a 100-token document cost about the same if the answer is the same length.\n- **Adding a large document to every prompt is a decision with a permanent price**, repeated on every single request.\n\n## The pricing logic\n\nProviders price in a simple currency: tokens. In practice the number is a bundle of several components, and it is worth knowing which is which.\n\n**Input tokens** are cheapest. Often a small fraction of the cost of output.\n\n**Cached input** is much cheaper, because a large fraction of a system prompt or a shared document is processed once and reused. This is why prompt design has a cost dimension and why providers publish cached-input pricing prominently.\n\n**Output tokens** dominate. This is the number to model carefully, and the number that determines whether a verbose assistant-style product is viable at scale.\n\n**Reasoning tokens** — models that think before answering — are billed as output tokens and often account for a large share of the bill. If your application does not need them, turn them off. This is the single largest avoidable cost in many deployments.\n\nModel prices have fallen by large factors, but the effect on bills has been muted, because demand for longer outputs and more reasoning has grown faster than per-token prices have dropped. The Jevons paradox is not a hypothetical in this industry.\n\n## Latency is a separate product\n\nLatency and cost are different axes, and products that optimise one often hurt the other. Four numbers matter:\n\n- **Time to first token.** What a user actually perceives as responsiveness. This is set by prefill time and system overhead, and it is the number to optimise for chat.\n- **Inter-token latency.** The gap between tokens as the answer streams. Noticeable if it exceeds roughly 100ms; this is the memory-bandwidth-bound decode phase.\n- **Total time.** Matters for batch, not for interaction.\n- **Tail latency.** The 99th percentile, not the average. This is the number that determines whether your service feels reliable, and it is where the real engineering is.\n\nThe techniques for improving all of them are the same ones described in [Making Models Smaller and Faster ](10-making-models-smaller-and-faster.html): smaller models, quantisation, speculative decoding, prefix caching, routing by difficulty, and batching. They trade against each other, which is why architecture decisions are business decisions.\n\n## Batching and the utilisation trade\n\nServing many requests concurrently is enormously more efficient than serving them one at a time, because an accelerator sitting at low utilisation is wasting hardware. Batching requests fills it.\n\nThat creates a genuine tension. Batching improves throughput and cost per request, and it worsens the latency of every individual request, because it must wait for a batch to fill. Some products — high-volume, non-interactive, latency-insensitive work such as classification, extraction, moderation and batch document processing — should be batched aggressively. Interactive products should not.\n\nGetting this wrong is expensive in both directions: a chat system batched too aggressively feels broken, and a batch system run unbatched costs multiples more than it should.\n\n## Routing and cascade\n\nThe most effective cost strategy is not a smaller model. It is **using the smallest model that can do each job**.\n\nA **cascade** sends a request to the small model first, checks whether the answer meets a threshold, and escalates to the large model only when it does not. For a large share of real traffic — routine classification, simple extraction, common questions — the small model is sufficient, and the economics improve substantially. The threshold is the engineering problem, and it must be set on calibration, not on optimism.\n\n**Routing by difficulty** generalises this: classify the request, send it to the right tier. It requires knowing which requests are hard, which is a problem in itself, and it fails badly on the requests that are misclassified as easy.\n\n## The batch opportunities nobody owns\n\nMost of the industry's attention is on interactive chat, and it is where the least machine-friendly application is. The genuinely large cost savings are in the workloads nobody optimises for:\n\n- Classification and routing at volume — support tickets, content moderation, document triage, fraud screening.\n- Bulk data work — enrichment, extraction, translation, indexing, deduplication over millions of records.\n- Nightly batch jobs where latency is irrelevant and the accelerator is otherwise idle.\n- Evaluation and simulation at scale.\n\nThese have clear unit economics, predictable demand, and enormous leverage, and they are where a competent engineering team gets several times more than they get from making chat slightly better.\n\n## What this means for who gets AI\n\nThe cost structure is not neutral with respect to scale. Systems with large, steady, well-defined workloads can be made cheap. Systems with small, irregular, unpredictable workloads cannot, because the fixed costs — engineering, evaluation, integration, review — dominate.\n\nThis produces an uncomfortable pattern: the organisations that benefit most are the ones best able to afford it, and the organisations serving the public good are often the ones with the least predictable volume. The three variables that change this are open weights and commodity hardware, described in [The Open Weights Movement ](25-the-open-weights-movement.html); caching and shared infrastructure; and procurement frameworks that let smaller buyers purchase inference at a price based on actual cost rather than on list price.\n\n## The practical model to build before you build\n\nBefore choosing a model, write down a spreadsheet with:\n\n1. Expected requests per day, and the growth curve.\n2. Input tokens and output tokens per request, from real data, not from the demo.\n3. Reasoning tokens on and off.\n4. Cache hit rate for your actual prompt pattern.\n5. The model tiers you will route between, and the fraction of traffic each handles.\n6. A human-review cost per request, which is often larger than every line above and is the one teams forget.\n7. The performance metrics you will actually track, which come straight from [Evaluating AI ](09-evaluating-ai.html).\n\nThen measure the real bill for two weeks and compare. Almost every organisation discovers that their model choice is wrong in an obvious direction, and almost none of them discover it from the pricing page.","html":"\u003cp>Training is a one-time capital expenditure measured in hundreds of millions. Inference is the ongoing operating cost, incurred on every request, forever, and it is the number that determines whether a product is viable.\u003c/p>\n\u003cp>It is also the number almost nobody outside the industry thinks about. This article is an attempt to make it legible.\u003c/p>\n\u003ch2 id=\"what-you-are-buying\">What you are buying\u003c/h2>\n\u003cp>When a model generates a response, the cost has two components that behave very differently.\u003c/p>\n\u003cp>\u003cstrong>Prefill\u003c/strong> processes your entire input at once — the system prompt, the retrieved documents, the conversation history. It is compute-bound and runs in parallel on the accelerator, so it is fast and scales predictably with input length.\u003c/p>\n\u003cp>\u003cstrong>Decode\u003c/strong> generates tokens one at a time, each one requiring the full model to run again. It is memory-bound: the accelerator has to read every weight from memory for every token, and then waits. Time per token is bounded by memory bandwidth, not arithmetic.\u003c/p>\n\u003cp>This asymmetry has practical consequences that are frequently misunderstood:\u003c/p>\n\u003cul>\u003cli>\u003cstrong>Output tokens cost roughly an order of magnitude more than input tokens.\u003c/strong> A system that writes a long answer is expensive in a way that a system with a huge prompt is not.\u003c/li>\u003cli>\u003cstrong>The cost of a request is not proportional to the task.\u003c/strong> A 5,000-token document and a 100-token document cost about the same if the answer is the same length.\u003c/li>\u003cli>\u003cstrong>Adding a large document to every prompt is a decision with a permanent price\u003c/strong>, repeated on every single request.\u003c/li>\u003c/ul>\n\u003ch2 id=\"the-pricing-logic\">The pricing logic\u003c/h2>\n\u003cp>Providers price in a simple currency: tokens. In practice the number is a bundle of several components, and it is worth knowing which is which.\u003c/p>\n\u003cp>\u003cstrong>Input tokens\u003c/strong> are cheapest. Often a small fraction of the cost of output.\u003c/p>\n\u003cp>\u003cstrong>Cached input\u003c/strong> is much cheaper, because a large fraction of a system prompt or a shared document is processed once and reused. This is why prompt design has a cost dimension and why providers publish cached-input pricing prominently.\u003c/p>\n\u003cp>\u003cstrong>Output tokens\u003c/strong> dominate. This is the number to model carefully, and the number that determines whether a verbose assistant-style product is viable at scale.\u003c/p>\n\u003cp>\u003cstrong>Reasoning tokens\u003c/strong> — models that think before answering — are billed as output tokens and often account for a large share of the bill. If your application does not need them, turn them off. This is the single largest avoidable cost in many deployments.\u003c/p>\n\u003cp>Model prices have fallen by large factors, but the effect on bills has been muted, because demand for longer outputs and more reasoning has grown faster than per-token prices have dropped. The Jevons paradox is not a hypothetical in this industry.\u003c/p>\n\u003ch2 id=\"latency-is-a-separate-product\">Latency is a separate product\u003c/h2>\n\u003cp>Latency and cost are different axes, and products that optimise one often hurt the other. Four numbers matter:\u003c/p>\n\u003cul>\u003cli>\u003cstrong>Time to first token.\u003c/strong> What a user actually perceives as responsiveness. This is set by prefill time and system overhead, and it is the number to optimise for chat.\u003c/li>\u003cli>\u003cstrong>Inter-token latency.\u003c/strong> The gap between tokens as the answer streams. Noticeable if it exceeds roughly 100ms; this is the memory-bandwidth-bound decode phase.\u003c/li>\u003cli>\u003cstrong>Total time.\u003c/strong> Matters for batch, not for interaction.\u003c/li>\u003cli>\u003cstrong>Tail latency.\u003c/strong> The 99th percentile, not the average. This is the number that determines whether your service feels reliable, and it is where the real engineering is.\u003c/li>\u003c/ul>\n\u003cp>The techniques for improving all of them are the same ones described in \u003ca href=\"10-making-models-smaller-and-faster.html\">Making Models Smaller and Faster \u003c/a>: smaller models, quantisation, speculative decoding, prefix caching, routing by difficulty, and batching. They trade against each other, which is why architecture decisions are business decisions.\u003c/p>\n\u003ch2 id=\"batching-and-the-utilisation-trade\">Batching and the utilisation trade\u003c/h2>\n\u003cp>Serving many requests concurrently is enormously more efficient than serving them one at a time, because an accelerator sitting at low utilisation is wasting hardware. Batching requests fills it.\u003c/p>\n\u003cp>That creates a genuine tension. Batching improves throughput and cost per request, and it worsens the latency of every individual request, because it must wait for a batch to fill. Some products — high-volume, non-interactive, latency-insensitive work such as classification, extraction, moderation and batch document processing — should be batched aggressively. Interactive products should not.\u003c/p>\n\u003cp>Getting this wrong is expensive in both directions: a chat system batched too aggressively feels broken, and a batch system run unbatched costs multiples more than it should.\u003c/p>\n\u003ch2 id=\"routing-and-cascade\">Routing and cascade\u003c/h2>\n\u003cp>The most effective cost strategy is not a smaller model. It is \u003cstrong>using the smallest model that can do each job\u003c/strong>.\u003c/p>\n\u003cp>A \u003cstrong>cascade\u003c/strong> sends a request to the small model first, checks whether the answer meets a threshold, and escalates to the large model only when it does not. For a large share of real traffic — routine classification, simple extraction, common questions — the small model is sufficient, and the economics improve substantially. The threshold is the engineering problem, and it must be set on calibration, not on optimism.\u003c/p>\n\u003cp>\u003cstrong>Routing by difficulty\u003c/strong> generalises this: classify the request, send it to the right tier. It requires knowing which requests are hard, which is a problem in itself, and it fails badly on the requests that are misclassified as easy.\u003c/p>\n\u003ch2 id=\"the-batch-opportunities-nobody-owns\">The batch opportunities nobody owns\u003c/h2>\n\u003cp>Most of the industry&#39;s attention is on interactive chat, and it is where the least machine-friendly application is. The genuinely large cost savings are in the workloads nobody optimises for:\u003c/p>\n\u003cul>\u003cli>Classification and routing at volume — support tickets, content moderation, document triage, fraud screening.\u003c/li>\u003cli>Bulk data work — enrichment, extraction, translation, indexing, deduplication over millions of records.\u003c/li>\u003cli>Nightly batch jobs where latency is irrelevant and the accelerator is otherwise idle.\u003c/li>\u003cli>Evaluation and simulation at scale.\u003c/li>\u003c/ul>\n\u003cp>These have clear unit economics, predictable demand, and enormous leverage, and they are where a competent engineering team gets several times more than they get from making chat slightly better.\u003c/p>\n\u003ch2 id=\"what-this-means-for-who-gets-ai\">What this means for who gets AI\u003c/h2>\n\u003cp>The cost structure is not neutral with respect to scale. Systems with large, steady, well-defined workloads can be made cheap. Systems with small, irregular, unpredictable workloads cannot, because the fixed costs — engineering, evaluation, integration, review — dominate.\u003c/p>\n\u003cp>This produces an uncomfortable pattern: the organisations that benefit most are the ones best able to afford it, and the organisations serving the public good are often the ones with the least predictable volume. The three variables that change this are open weights and commodity hardware, described in \u003ca href=\"25-the-open-weights-movement.html\">The Open Weights Movement \u003c/a>; caching and shared infrastructure; and procurement frameworks that let smaller buyers purchase inference at a price based on actual cost rather than on list price.\u003c/p>\n\u003ch2 id=\"the-practical-model-to-build-before-you-build\">The practical model to build before you build\u003c/h2>\n\u003cp>Before choosing a model, write down a spreadsheet with:\u003c/p>\n\u003col>\u003cli>Expected requests per day, and the growth curve.\u003c/li>\u003cli>Input tokens and output tokens per request, from real data, not from the demo.\u003c/li>\u003cli>Reasoning tokens on and off.\u003c/li>\u003cli>Cache hit rate for your actual prompt pattern.\u003c/li>\u003cli>The model tiers you will route between, and the fraction of traffic each handles.\u003c/li>\u003cli>A human-review cost per request, which is often larger than every line above and is the one teams forget.\u003c/li>\u003cli>The performance metrics you will actually track, which come straight from \u003ca href=\"09-evaluating-ai.html\">Evaluating AI \u003c/a>.\u003c/li>\u003c/ol>\n\u003cp>Then measure the real bill for two weeks and compare. Almost every organisation discovers that their model choice is wrong in an obvious direction, and almost none of them discover it from the pricing page.\u003c/p>"}</script>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h5>AI Article Hub</h5>
+        <p>Twenty-seven original, in-depth articles on artificial intelligence — from neural networks and transformers to AI safety, law and public policy. Free to read, download and reuse: everything here is released into the public domain under CC0 1.0.</p>
+        <p>Written to be read, translated, remixed and taught from without permission or payment.</p>
+      </div>
+      <div>
+        <h5>Read</h5>
+        <ul>
+          <li><a href="index.html#articles">All 27 articles</a></li>
+          <li><a href="downloads.html">Download everything</a></li>
+          <li><a href="feed.xml">RSS feed</a></li>
+          <li><a href="sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Reuse</h5>
+        <ul>
+          <li><a href="license.html">CC0 license terms</a></li>
+          <li><a href="publish.html">Publish this site</a></li>
+          <li><a href="publish.html#attribution">Do I need credit?</a></li>
+          <li><a href="about.html">About the project</a></li>
+          <li><a href="security.html">Security</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="license-line">
+      <span>© 2026 The AI Article Hub Editorial Collective. Text released under CC0 1.0 — dedicated to the public domain, no rights reserved.</span>
+      <a class="badge-cc" href="license.html">CC0 1.0 · Public Domain Dedication</a>
+    </div>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

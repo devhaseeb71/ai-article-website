@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How Machines See — Computer Vision and the Rise of Deep Features · AI Article Hub</title>
+<meta name="description" content="A camera produces a grid of numbers. Turning that grid into &quot;a cat&quot; took seventy years of hand-written rules, then about eight years of learning. This is the story of how computer vision crossed that line, and where it still fails.">
+<link rel="canonical" href="https://example.org/ai-article-hub/index.html">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#2f5bd7">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AI Article Hub">
+<meta property="og:title" content="How Machines See — Computer Vision and the Rise of Deep Features · AI Article Hub">
+<meta property="og:description" content="A camera produces a grid of numbers. Turning that grid into &quot;a cat&quot; took seventy years of hand-written rules, then about eight years of learning. This is the story of how computer vision crossed that line, and where it still fails.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="license" content="CC0 1.0">
+<meta name="dcterms.license" content="https://creativecommons.org/publicdomain/zero/1.0/">
+<link rel="alternate" type="application/rss+xml" title="AI Article Hub" href="feed.xml">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/styles.css">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How Machines See — Computer Vision and the Rise of Deep Features">
+<meta property="og:description" content="A camera produces a grid of numbers. Turning that grid into &quot;a cat&quot; took seventy years of hand-written rules, then about eight years of learning. This is the story of how computer vision crossed that line, and where it still fails.">
+<meta property="og:url" content="https://example.org/ai-article-hub/04-how-machines-see.html">
+<meta property="article:section" content="Foundations">
+<meta property="article:tag" content="computer vision">
+<meta property="article:tag" content="image recognition">
+<meta property="article:tag" content="convolutional networks">
+<meta property="article:tag" content="object detection">
+<meta property="article:tag" content="transformers">
+<meta name="author" content="The AI Article Hub Editorial Collective">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How Machines See — Computer Vision and the Rise of Deep Features","description":"A camera produces a grid of numbers. Turning that grid into \"a cat\" took seventy years of hand-written rules, then about eight years of learning. This is the story of how computer vision crossed that line, and where it still fails.","datePublished":"2024-02-05","dateModified":"2024-02-05","inLanguage":"en","articleSection":"Foundations","keywords":"computer vision, image recognition, convolutional networks, object detection, transformers","wordCount":1260,"isAccessibleForFree":true,"license":"https://creativecommons.org/publicdomain/zero/1.0/","creativeWorkStatus":"Public Domain","author":{"@type":"Organization","name":"The AI Article Hub Editorial Collective"},"publisher":{"@type":"Organization","name":"AI Article Hub"},"mainEntityOfPage":"https://example.org/ai-article-hub/04-how-machines-see.html"}</script>
+</head>
+<body class="">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="index.html">
+      <span class="logo" aria-hidden="true">AI</span>
+      <span>AI Article Hub<small>CC0 1.0 · Public Domain</small></span>
+    </a>
+    <button class="icon-btn menu-btn" data-menu-toggle aria-label="Toggle navigation" aria-controls="site-nav">☰</button>
+    <nav class="nav" id="site-nav" aria-label="Main">
+          <a href="index.html">Home</a>
+          <a href="index.html#articles">Articles</a>
+          <a href="downloads.html">Downloads</a>
+          <a href="publish.html">Publish</a>
+          <a href="license.html">License</a>
+          <a href="about.html">About</a>
+          <a href="security.html">Security</a>
+      <button class="icon-btn theme-toggle" data-theme-toggle type="button" aria-label="Toggle theme">☾</button>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<div class="wrap">
+  <div class="article-shell">
+    <div>
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a> › <a href="index.html#articles">Articles</a> › <span>04 of 27</span>
+      </nav>
+
+      <header class="article-head">
+        <div class="kicker">
+          <span class="tag accent">Part 04 of 27</span>
+          <span class="tag">Foundations</span>
+          <span class="tag">6 min read</span>
+        </div>
+        <h1>How Machines See — Computer Vision and the Rise of Deep Features</h1>
+        <p class="standfirst">A camera produces a grid of numbers. Turning that grid into &quot;a cat&quot; took seventy years of hand-written rules, then about eight years of learning. This is the story of how computer vision crossed that line, and where it still fails.</p>
+        <div class="byline">
+          <span>2024-02-05</span><span class="dot">•</span>
+          <span>Foundations</span><span class="dot">•</span>
+          <span>1,260 words</span><span class="dot">•</span>
+          <span>CC0 1.0 public domain</span>
+        </div>
+      </header>
+
+      <div class="prose">
+<p>A modern phone takes a photograph and, within a few milliseconds, knows there are three faces, that one of them is smiling, that a bicycle is behind them, and roughly where each object is in space. None of that comes from a camera. It comes from a stack of statistical ideas that arrived surprisingly recently.</p>
+<h2 id="the-long-rule-based-failure">The long, rule-based failure</h2>
+<p>For decades, computer vision worked the way software always works: a programmer specifies what to look for. The recipe for finding an edge was written down by hand — compute brightness gradients across the image, threshold them, connect neighbouring edge pixels into contours, and look for shapes with eight sides and a certain ratio of corner to edge.</p>
+<p>This worked impressively for a narrow world of clean, frontal, well-lit objects. It failed on the messy parts of the real world: a cat in shadow, a car seen from behind, a face at an angle. Each new case needed a new rule, and the rules interacted in ways nobody could predict. By the late 2000s, hand-written vision systems were widely regarded as a dead end for anything but controlled environments.</p>
+<p>The insight that broke the deadlock came from an unexpected direction: instead of specifying <em>what</em> an edge is, learn <em>what is useful</em>, and let the useful things emerge.</p>
+<h2 id="feature-learning">Feature learning</h2>
+<p>A <strong>feature</strong> is a small pattern a system can detect. Early systems used features like &quot;has an edge here&quot; and &quot;has a corner there&quot;. Deep learning replaced the designer&#39;s guesswork with a search: train a network on labelled images and let it discover which features reduce error. The result is that useful features appear in a consistent order, and the order turns out to be close to universal across vision problems:</p>
+<ul><li>Early layers respond to edges and colour blobs.</li><li>Middle layers respond to textures, corners, simple curves.</li><li>Deeper layers respond to combinations: eyes, wheels, windows, letters.</li><li>The final layers respond to whole objects and to categories.</li></ul>
+<p>Because those middle features are learned rather than designed, they transfer. A network trained to classify photographs on a large public dataset can be reused almost directly for detecting objects, estimating depth, or generating captions, even though it was never told to do any of those things.</p>
+<blockquote><p>The core trick of deep learning is not that the network is deep. It is that nobody had to say what to look for.</p></blockquote>
+<h2 id="convolution-and-why-it-works">Convolution and why it works</h2>
+<p>Image networks use an operation called <strong>convolution</strong>: a small window slides across the image, and at each position the same few numbers are multiplied and summed. Then a squashing function is applied, exactly as in <a href="03-neural-networks-from-scratch.html">Neural Networks from Scratch </a>.</p>
+<p>Two properties of convolution explain why it works so well on images:</p>
+<ul><li><strong>Parameter sharing.</strong> The same filter is reused at every position, so detecting a horizontal edge costs one set of numbers regardless of image size, and a layer has very few parameters.</li><li><strong>Translation structure.</strong> Because the filter slides, a feature detected on the left of the image is detected on the right too. The network starts out with a built-in assumption that the world does not change meaning when you move the camera slightly.</li></ul>
+<p>Stacking convolutions composes these local operations into a receptive field that can span the whole image, which is how a network ends up recognising a face from pixels.</p>
+<h2 id="what-modern-vision-systems-actually-do">What modern vision systems actually do</h2>
+<p>Convolutional networks made the field work, but they have largely been joined or replaced by the transformer, described in <a href="06-the-transformer-architecture.html">The Transformer Architecture </a>. The change is about what a layer attends to. A convolution looks at a fixed small neighbourhood. An attention layer can look anywhere in the image at once, and weighs how much each position matters for the position being decided. That is a much better fit for images, where the relationship between two pixels can be global and semantic: the part of the image that is a dog&#39;s nose matters because of what is near it, and &quot;near&quot; can be anywhere in the frame.</p>
+<p>Modern vision systems fall into recognisable categories:</p>
+<ul><li><strong>Classification</strong> assigns one label to an image. Still used, less often than it was.</li><li><strong>Object detection</strong> finds and boxes multiple objects. This is what runs on your phone.</li><li><strong>Segmentation</strong> labels every pixel — the shape of a road, a tumour boundary, a field boundary on a satellite image.</li><li><strong>Depth and 3D</strong> infer geometry from one or more images.</li><li><strong>Generation</strong> synthesises images from text or from other images, which is where the last few years of visible progress have happened.</li><li><strong>Video</strong> extends every one of the above across time, adding motion and continuity as new sources of evidence.</li></ul>
+<h2 id="the-benchmark-trap">The benchmark trap</h2>
+<p>Image classification research ran on a famous dataset of labelled photographs, and for years the headline number improved steadily, inching from roughly 74% to above 90%. Then someone looked more carefully and found a substantial fraction of the images were mislabelled, and that a well-tuned conventional method trained on the corrected labels could already beat the best deep networks.</p>
+<p>The lesson generalises well beyond vision: as a benchmark saturates, the measurement becomes the thing being optimised rather than the thing being measured. Progress continues to be real, but reported progress becomes unreliable first, and the community&#39;s best defence is building better tests rather than better models. <a href="09-evaluating-ai.html">Evaluating AI </a> takes this apart in detail.</p>
+<h2 id="where-it-still-goes-wrong">Where it still goes wrong</h2>
+<p>Vision systems are unusually confident and unusually wrong, and the reasons are structural rather than accidental.</p>
+<p><strong>Lighting and material.</strong> Cameras struggle with reflective surfaces, transparent objects, fine repeating patterns such as chain-link fences and grass, and extremes of brightness. Depth sensors struggle with dark textures and sunlit surfaces in the same scene.</p>
+<p><strong>Unusual viewpoints.</strong> Systems trained on photographs generalise poorly to drawings, paintings, thermal images, or an object seen from below.</p>
+<p><strong>Rare classes.</strong> Detection improves steadily for common objects and barely moves for the long tail — a traffic cone for cyclists, a specific aircraft model, a rare bird species. Under-represented categories stay under-represented because there was never enough data.</p>
+<p><strong>Weak supervision.</strong> Videos of people sorting objects into boxes are treated as free labels, and they are subtly wrong: the person moves the object most they handle last, but the label may be applied to everything they touched. Small systematic label errors, trained at scale, produce systems that are confidently and consistently slightly wrong.</p>
+<p><strong>Physical and social context.</strong> A medical imaging model trained on one hospital&#39;s scanner will often not transfer to another. A pedestrian detector trained on daytime street footage often misses night-time footage, and a system used for surveillance that performs badly on a demographic group is a fairness problem, not a curiosity. See <a href="20-bias-fairness-and-harm.html">Bias, Fairness and Harm </a>.</p>
+<h2 id="what-to-take-away">What to take away</h2>
+<p>Computer vision progressed when the field stopped specifying features and started learning them. That change is general — it happened in speech, in text, in protein structure and in code — and it is the single most important structural fact about modern AI.</p>
+<p>It is also the reason to distrust a confidence score. A vision system that is 95% accurate on average can be 40% accurate on the slice of inputs that matters to you, and no part of the system knows which slice that is. That is not a bug awaiting a fix; it is a property of a system that learned from a distribution of examples rather than from an understanding of the thing.</p>
+      </div>
+
+      <nav class="pager" aria-label="Article navigation">
+        <a class="prev" href="03-neural-networks-from-scratch.html"><span class="dir">← Previous</span><span class="t">Neural Networks from Scratch — Weights, Biases and Activation</span></a>
+        <a class="next" href="05-how-machines-read-and-write.html"><span class="dir">Next →</span><span class="t">How Machines Read and Write — Language, Tokens and Meaning</span></a>
+      </nav>
+    </div>
+
+    <aside class="side">
+      <div class="side-box">
+        <h4>Reading progress</h4>
+        <progress class="progress" data-progress max="100" value="0" aria-label="Reading progress">0%</progress>
+      </div>
+
+      <div class="side-box">
+        <h4>Download this article</h4>
+        <div class="actions">
+          <button class="btn" data-dl="md" type="button">Markdown (.md)</button>
+          <button class="btn" data-dl="html" type="button">Web page (.html)</button>
+          <button class="btn" data-dl="pdf" type="button">Print / Save as PDF</button>
+          <button class="btn" data-dl="txt" type="button">Plain text (.txt)</button>
+          <button class="btn" data-dl="json" type="button">Data (.json)</button>
+          <button class="btn" data-dl="copy" type="button">Copy full text</button>
+        </div>
+      </div>
+
+      <div class="side-box">
+        <h4>On this page</h4>
+        <ol><li><a href="#the-long-rule-based-failure">The long, rule-based failure</a></li><li><a href="#feature-learning">Feature learning</a></li><li><a href="#convolution-and-why-it-works">Convolution and why it works</a></li><li><a href="#what-modern-vision-systems-actually-do">What modern vision systems actually do</a></li><li><a href="#the-benchmark-trap">The benchmark trap</a></li><li><a href="#where-it-still-goes-wrong">Where it still goes wrong</a></li><li><a href="#what-to-take-away">What to take away</a></li></ol>
+      </div>
+
+      <div class="side-box">
+        <h4>Reuse this text</h4>
+        <p class="license-note"><b>Public domain.</b> Copy, translate, adapt, teach from, or republish it anywhere — commercially or not — with no permission and no obligation to credit. <a href="license.html">Read the CC0 terms</a>.</p>
+      </div>
+
+      <div class="side-box">
+        <h4>Related reading</h4>
+        <div class="related"><a href="02-how-machines-learn-the-three-families-of-machine-learning.html"><span>02 · Foundations</span>How Machines Learn — The Three Families of Machine Learning</a><a href="03-neural-networks-from-scratch.html"><span>03 · Foundations</span>Neural Networks from Scratch — Weights, Biases and Activation</a><a href="05-how-machines-read-and-write.html"><span>05 · Foundations</span>How Machines Read and Write — Language, Tokens and Meaning</a><a href="06-the-transformer-architecture.html"><span>06 · Foundations</span>The Transformer — The Architecture Behind Modern AI</a></div>
+      </div>
+    </aside>
+  </div>
+</div>
+<script type="application/json" id="article-source">{"number":4,"title":"How Machines See — Computer Vision and the Rise of Deep Features","description":"A camera produces a grid of numbers. Turning that grid into \"a cat\" took seventy years of hand-written rules, then about eight years of learning. This is the story of how computer vision crossed that line, and where it still fails.","category":"Foundations","tags":["computer vision","image recognition","convolutional networks","object detection","transformers"],"date":"2024-02-05","author":"The AI Article Hub Editorial Collective","readingTime":"6 min read","markdown":"A modern phone takes a photograph and, within a few milliseconds, knows there are three faces, that one of them is smiling, that a bicycle is behind them, and roughly where each object is in space. None of that comes from a camera. It comes from a stack of statistical ideas that arrived surprisingly recently.\n\n## The long, rule-based failure\n\nFor decades, computer vision worked the way software always works: a programmer specifies what to look for. The recipe for finding an edge was written down by hand — compute brightness gradients across the image, threshold them, connect neighbouring edge pixels into contours, and look for shapes with eight sides and a certain ratio of corner to edge.\n\nThis worked impressively for a narrow world of clean, frontal, well-lit objects. It failed on the messy parts of the real world: a cat in shadow, a car seen from behind, a face at an angle. Each new case needed a new rule, and the rules interacted in ways nobody could predict. By the late 2000s, hand-written vision systems were widely regarded as a dead end for anything but controlled environments.\n\nThe insight that broke the deadlock came from an unexpected direction: instead of specifying *what* an edge is, learn *what is useful*, and let the useful things emerge.\n\n## Feature learning\n\nA **feature** is a small pattern a system can detect. Early systems used features like \"has an edge here\" and \"has a corner there\". Deep learning replaced the designer's guesswork with a search: train a network on labelled images and let it discover which features reduce error. The result is that useful features appear in a consistent order, and the order turns out to be close to universal across vision problems:\n\n- Early layers respond to edges and colour blobs.\n- Middle layers respond to textures, corners, simple curves.\n- Deeper layers respond to combinations: eyes, wheels, windows, letters.\n- The final layers respond to whole objects and to categories.\n\nBecause those middle features are learned rather than designed, they transfer. A network trained to classify photographs on a large public dataset can be reused almost directly for detecting objects, estimating depth, or generating captions, even though it was never told to do any of those things.\n\n> The core trick of deep learning is not that the network is deep. It is that nobody had to say what to look for.\n\n## Convolution and why it works\n\nImage networks use an operation called **convolution**: a small window slides across the image, and at each position the same few numbers are multiplied and summed. Then a squashing function is applied, exactly as in [Neural Networks from Scratch ](03-neural-networks-from-scratch.html).\n\nTwo properties of convolution explain why it works so well on images:\n\n- **Parameter sharing.** The same filter is reused at every position, so detecting a horizontal edge costs one set of numbers regardless of image size, and a layer has very few parameters.\n- **Translation structure.** Because the filter slides, a feature detected on the left of the image is detected on the right too. The network starts out with a built-in assumption that the world does not change meaning when you move the camera slightly.\n\nStacking convolutions composes these local operations into a receptive field that can span the whole image, which is how a network ends up recognising a face from pixels.\n\n## What modern vision systems actually do\n\nConvolutional networks made the field work, but they have largely been joined or replaced by the transformer, described in [The Transformer Architecture ](06-the-transformer-architecture.html). The change is about what a layer attends to. A convolution looks at a fixed small neighbourhood. An attention layer can look anywhere in the image at once, and weighs how much each position matters for the position being decided. That is a much better fit for images, where the relationship between two pixels can be global and semantic: the part of the image that is a dog's nose matters because of what is near it, and \"near\" can be anywhere in the frame.\n\nModern vision systems fall into recognisable categories:\n\n- **Classification** assigns one label to an image. Still used, less often than it was.\n- **Object detection** finds and boxes multiple objects. This is what runs on your phone.\n- **Segmentation** labels every pixel — the shape of a road, a tumour boundary, a field boundary on a satellite image.\n- **Depth and 3D** infer geometry from one or more images.\n- **Generation** synthesises images from text or from other images, which is where the last few years of visible progress have happened.\n- **Video** extends every one of the above across time, adding motion and continuity as new sources of evidence.\n\n## The benchmark trap\n\nImage classification research ran on a famous dataset of labelled photographs, and for years the headline number improved steadily, inching from roughly 74% to above 90%. Then someone looked more carefully and found a substantial fraction of the images were mislabelled, and that a well-tuned conventional method trained on the corrected labels could already beat the best deep networks.\n\nThe lesson generalises well beyond vision: as a benchmark saturates, the measurement becomes the thing being optimised rather than the thing being measured. Progress continues to be real, but reported progress becomes unreliable first, and the community's best defence is building better tests rather than better models. [Evaluating AI ](09-evaluating-ai.html) takes this apart in detail.\n\n## Where it still goes wrong\n\nVision systems are unusually confident and unusually wrong, and the reasons are structural rather than accidental.\n\n**Lighting and material.** Cameras struggle with reflective surfaces, transparent objects, fine repeating patterns such as chain-link fences and grass, and extremes of brightness. Depth sensors struggle with dark textures and sunlit surfaces in the same scene.\n\n**Unusual viewpoints.** Systems trained on photographs generalise poorly to drawings, paintings, thermal images, or an object seen from below.\n\n**Rare classes.** Detection improves steadily for common objects and barely moves for the long tail — a traffic cone for cyclists, a specific aircraft model, a rare bird species. Under-represented categories stay under-represented because there was never enough data.\n\n**Weak supervision.** Videos of people sorting objects into boxes are treated as free labels, and they are subtly wrong: the person moves the object most they handle last, but the label may be applied to everything they touched. Small systematic label errors, trained at scale, produce systems that are confidently and consistently slightly wrong.\n\n**Physical and social context.** A medical imaging model trained on one hospital's scanner will often not transfer to another. A pedestrian detector trained on daytime street footage often misses night-time footage, and a system used for surveillance that performs badly on a demographic group is a fairness problem, not a curiosity. See [Bias, Fairness and Harm ](20-bias-fairness-and-harm.html).\n\n## What to take away\n\nComputer vision progressed when the field stopped specifying features and started learning them. That change is general — it happened in speech, in text, in protein structure and in code — and it is the single most important structural fact about modern AI.\n\nIt is also the reason to distrust a confidence score. A vision system that is 95% accurate on average can be 40% accurate on the slice of inputs that matters to you, and no part of the system knows which slice that is. That is not a bug awaiting a fix; it is a property of a system that learned from a distribution of examples rather than from an understanding of the thing.","html":"\u003cp>A modern phone takes a photograph and, within a few milliseconds, knows there are three faces, that one of them is smiling, that a bicycle is behind them, and roughly where each object is in space. None of that comes from a camera. It comes from a stack of statistical ideas that arrived surprisingly recently.\u003c/p>\n\u003ch2 id=\"the-long-rule-based-failure\">The long, rule-based failure\u003c/h2>\n\u003cp>For decades, computer vision worked the way software always works: a programmer specifies what to look for. The recipe for finding an edge was written down by hand — compute brightness gradients across the image, threshold them, connect neighbouring edge pixels into contours, and look for shapes with eight sides and a certain ratio of corner to edge.\u003c/p>\n\u003cp>This worked impressively for a narrow world of clean, frontal, well-lit objects. It failed on the messy parts of the real world: a cat in shadow, a car seen from behind, a face at an angle. Each new case needed a new rule, and the rules interacted in ways nobody could predict. By the late 2000s, hand-written vision systems were widely regarded as a dead end for anything but controlled environments.\u003c/p>\n\u003cp>The insight that broke the deadlock came from an unexpected direction: instead of specifying \u003cem>what\u003c/em> an edge is, learn \u003cem>what is useful\u003c/em>, and let the useful things emerge.\u003c/p>\n\u003ch2 id=\"feature-learning\">Feature learning\u003c/h2>\n\u003cp>A \u003cstrong>feature\u003c/strong> is a small pattern a system can detect. Early systems used features like &quot;has an edge here&quot; and &quot;has a corner there&quot;. Deep learning replaced the designer&#39;s guesswork with a search: train a network on labelled images and let it discover which features reduce error. The result is that useful features appear in a consistent order, and the order turns out to be close to universal across vision problems:\u003c/p>\n\u003cul>\u003cli>Early layers respond to edges and colour blobs.\u003c/li>\u003cli>Middle layers respond to textures, corners, simple curves.\u003c/li>\u003cli>Deeper layers respond to combinations: eyes, wheels, windows, letters.\u003c/li>\u003cli>The final layers respond to whole objects and to categories.\u003c/li>\u003c/ul>\n\u003cp>Because those middle features are learned rather than designed, they transfer. A network trained to classify photographs on a large public dataset can be reused almost directly for detecting objects, estimating depth, or generating captions, even though it was never told to do any of those things.\u003c/p>\n\u003cblockquote>\u003cp>The core trick of deep learning is not that the network is deep. It is that nobody had to say what to look for.\u003c/p>\u003c/blockquote>\n\u003ch2 id=\"convolution-and-why-it-works\">Convolution and why it works\u003c/h2>\n\u003cp>Image networks use an operation called \u003cstrong>convolution\u003c/strong>: a small window slides across the image, and at each position the same few numbers are multiplied and summed. Then a squashing function is applied, exactly as in \u003ca href=\"03-neural-networks-from-scratch.html\">Neural Networks from Scratch \u003c/a>.\u003c/p>\n\u003cp>Two properties of convolution explain why it works so well on images:\u003c/p>\n\u003cul>\u003cli>\u003cstrong>Parameter sharing.\u003c/strong> The same filter is reused at every position, so detecting a horizontal edge costs one set of numbers regardless of image size, and a layer has very few parameters.\u003c/li>\u003cli>\u003cstrong>Translation structure.\u003c/strong> Because the filter slides, a feature detected on the left of the image is detected on the right too. The network starts out with a built-in assumption that the world does not change meaning when you move the camera slightly.\u003c/li>\u003c/ul>\n\u003cp>Stacking convolutions composes these local operations into a receptive field that can span the whole image, which is how a network ends up recognising a face from pixels.\u003c/p>\n\u003ch2 id=\"what-modern-vision-systems-actually-do\">What modern vision systems actually do\u003c/h2>\n\u003cp>Convolutional networks made the field work, but they have largely been joined or replaced by the transformer, described in \u003ca href=\"06-the-transformer-architecture.html\">The Transformer Architecture \u003c/a>. The change is about what a layer attends to. A convolution looks at a fixed small neighbourhood. An attention layer can look anywhere in the image at once, and weighs how much each position matters for the position being decided. That is a much better fit for images, where the relationship between two pixels can be global and semantic: the part of the image that is a dog&#39;s nose matters because of what is near it, and &quot;near&quot; can be anywhere in the frame.\u003c/p>\n\u003cp>Modern vision systems fall into recognisable categories:\u003c/p>\n\u003cul>\u003cli>\u003cstrong>Classification\u003c/strong> assigns one label to an image. Still used, less often than it was.\u003c/li>\u003cli>\u003cstrong>Object detection\u003c/strong> finds and boxes multiple objects. This is what runs on your phone.\u003c/li>\u003cli>\u003cstrong>Segmentation\u003c/strong> labels every pixel — the shape of a road, a tumour boundary, a field boundary on a satellite image.\u003c/li>\u003cli>\u003cstrong>Depth and 3D\u003c/strong> infer geometry from one or more images.\u003c/li>\u003cli>\u003cstrong>Generation\u003c/strong> synthesises images from text or from other images, which is where the last few years of visible progress have happened.\u003c/li>\u003cli>\u003cstrong>Video\u003c/strong> extends every one of the above across time, adding motion and continuity as new sources of evidence.\u003c/li>\u003c/ul>\n\u003ch2 id=\"the-benchmark-trap\">The benchmark trap\u003c/h2>\n\u003cp>Image classification research ran on a famous dataset of labelled photographs, and for years the headline number improved steadily, inching from roughly 74% to above 90%. Then someone looked more carefully and found a substantial fraction of the images were mislabelled, and that a well-tuned conventional method trained on the corrected labels could already beat the best deep networks.\u003c/p>\n\u003cp>The lesson generalises well beyond vision: as a benchmark saturates, the measurement becomes the thing being optimised rather than the thing being measured. Progress continues to be real, but reported progress becomes unreliable first, and the community&#39;s best defence is building better tests rather than better models. \u003ca href=\"09-evaluating-ai.html\">Evaluating AI \u003c/a> takes this apart in detail.\u003c/p>\n\u003ch2 id=\"where-it-still-goes-wrong\">Where it still goes wrong\u003c/h2>\n\u003cp>Vision systems are unusually confident and unusually wrong, and the reasons are structural rather than accidental.\u003c/p>\n\u003cp>\u003cstrong>Lighting and material.\u003c/strong> Cameras struggle with reflective surfaces, transparent objects, fine repeating patterns such as chain-link fences and grass, and extremes of brightness. Depth sensors struggle with dark textures and sunlit surfaces in the same scene.\u003c/p>\n\u003cp>\u003cstrong>Unusual viewpoints.\u003c/strong> Systems trained on photographs generalise poorly to drawings, paintings, thermal images, or an object seen from below.\u003c/p>\n\u003cp>\u003cstrong>Rare classes.\u003c/strong> Detection improves steadily for common objects and barely moves for the long tail — a traffic cone for cyclists, a specific aircraft model, a rare bird species. Under-represented categories stay under-represented because there was never enough data.\u003c/p>\n\u003cp>\u003cstrong>Weak supervision.\u003c/strong> Videos of people sorting objects into boxes are treated as free labels, and they are subtly wrong: the person moves the object most they handle last, but the label may be applied to everything they touched. Small systematic label errors, trained at scale, produce systems that are confidently and consistently slightly wrong.\u003c/p>\n\u003cp>\u003cstrong>Physical and social context.\u003c/strong> A medical imaging model trained on one hospital&#39;s scanner will often not transfer to another. A pedestrian detector trained on daytime street footage often misses night-time footage, and a system used for surveillance that performs badly on a demographic group is a fairness problem, not a curiosity. See \u003ca href=\"20-bias-fairness-and-harm.html\">Bias, Fairness and Harm \u003c/a>.\u003c/p>\n\u003ch2 id=\"what-to-take-away\">What to take away\u003c/h2>\n\u003cp>Computer vision progressed when the field stopped specifying features and started learning them. That change is general — it happened in speech, in text, in protein structure and in code — and it is the single most important structural fact about modern AI.\u003c/p>\n\u003cp>It is also the reason to distrust a confidence score. A vision system that is 95% accurate on average can be 40% accurate on the slice of inputs that matters to you, and no part of the system knows which slice that is. That is not a bug awaiting a fix; it is a property of a system that learned from a distribution of examples rather than from an understanding of the thing.\u003c/p>"}</script>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h5>AI Article Hub</h5>
+        <p>Twenty-seven original, in-depth articles on artificial intelligence — from neural networks and transformers to AI safety, law and public policy. Free to read, download and reuse: everything here is released into the public domain under CC0 1.0.</p>
+        <p>Written to be read, translated, remixed and taught from without permission or payment.</p>
+      </div>
+      <div>
+        <h5>Read</h5>
+        <ul>
+          <li><a href="index.html#articles">All 27 articles</a></li>
+          <li><a href="downloads.html">Download everything</a></li>
+          <li><a href="feed.xml">RSS feed</a></li>
+          <li><a href="sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Reuse</h5>
+        <ul>
+          <li><a href="license.html">CC0 license terms</a></li>
+          <li><a href="publish.html">Publish this site</a></li>
+          <li><a href="publish.html#attribution">Do I need credit?</a></li>
+          <li><a href="about.html">About the project</a></li>
+          <li><a href="security.html">Security</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="license-line">
+      <span>© 2026 The AI Article Hub Editorial Collective. Text released under CC0 1.0 — dedicated to the public domain, no rights reserved.</span>
+      <a class="badge-cc" href="license.html">CC0 1.0 · Public Domain Dedication</a>
+    </div>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

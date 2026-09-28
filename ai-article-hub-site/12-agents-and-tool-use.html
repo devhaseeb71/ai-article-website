@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agents and Tool Use — When AI Takes Action · AI Article Hub</title>
+<meta name="description" content="A model that can call functions, read files, run code and browse the web can change things in the world. That capability changes the engineering, the economics and the risk profile at once.">
+<link rel="canonical" href="https://example.org/ai-article-hub/index.html">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#2f5bd7">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AI Article Hub">
+<meta property="og:title" content="Agents and Tool Use — When AI Takes Action · AI Article Hub">
+<meta property="og:description" content="A model that can call functions, read files, run code and browse the web can change things in the world. That capability changes the engineering, the economics and the risk profile at once.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="license" content="CC0 1.0">
+<meta name="dcterms.license" content="https://creativecommons.org/publicdomain/zero/1.0/">
+<link rel="alternate" type="application/rss+xml" title="AI Article Hub" href="feed.xml">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/styles.css">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Agents and Tool Use — When AI Takes Action">
+<meta property="og:description" content="A model that can call functions, read files, run code and browse the web can change things in the world. That capability changes the engineering, the economics and the risk profile at once.">
+<meta property="og:url" content="https://example.org/ai-article-hub/12-agents-and-tool-use.html">
+<meta property="article:section" content="Applied AI">
+<meta property="article:tag" content="agents">
+<meta property="article:tag" content="tool use">
+<meta property="article:tag" content="function calling">
+<meta property="article:tag" content="autonomy">
+<meta property="article:tag" content="code execution">
+<meta name="author" content="The AI Article Hub Editorial Collective">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Agents and Tool Use — When AI Takes Action","description":"A model that can call functions, read files, run code and browse the web can change things in the world. That capability changes the engineering, the economics and the risk profile at once.","datePublished":"2024-04-01","dateModified":"2024-04-01","inLanguage":"en","articleSection":"Applied AI","keywords":"agents, tool use, function calling, autonomy, code execution","wordCount":1222,"isAccessibleForFree":true,"license":"https://creativecommons.org/publicdomain/zero/1.0/","creativeWorkStatus":"Public Domain","author":{"@type":"Organization","name":"The AI Article Hub Editorial Collective"},"publisher":{"@type":"Organization","name":"AI Article Hub"},"mainEntityOfPage":"https://example.org/ai-article-hub/12-agents-and-tool-use.html"}</script>
+</head>
+<body class="">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="index.html">
+      <span class="logo" aria-hidden="true">AI</span>
+      <span>AI Article Hub<small>CC0 1.0 · Public Domain</small></span>
+    </a>
+    <button class="icon-btn menu-btn" data-menu-toggle aria-label="Toggle navigation" aria-controls="site-nav">☰</button>
+    <nav class="nav" id="site-nav" aria-label="Main">
+          <a href="index.html">Home</a>
+          <a href="index.html#articles">Articles</a>
+          <a href="downloads.html">Downloads</a>
+          <a href="publish.html">Publish</a>
+          <a href="license.html">License</a>
+          <a href="about.html">About</a>
+          <a href="security.html">Security</a>
+      <button class="icon-btn theme-toggle" data-theme-toggle type="button" aria-label="Toggle theme">☾</button>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<div class="wrap">
+  <div class="article-shell">
+    <div>
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a> › <a href="index.html#articles">Articles</a> › <span>12 of 27</span>
+      </nav>
+
+      <header class="article-head">
+        <div class="kicker">
+          <span class="tag accent">Part 12 of 27</span>
+          <span class="tag">Applied AI</span>
+          <span class="tag">6 min read</span>
+        </div>
+        <h1>Agents and Tool Use — When AI Takes Action</h1>
+        <p class="standfirst">A model that can call functions, read files, run code and browse the web can change things in the world. That capability changes the engineering, the economics and the risk profile at once.</p>
+        <div class="byline">
+          <span>2024-04-01</span><span class="dot">•</span>
+          <span>Applied AI</span><span class="dot">•</span>
+          <span>1,222 words</span><span class="dot">•</span>
+          <span>CC0 1.0 public domain</span>
+        </div>
+      </header>
+
+      <div class="prose">
+<p>The jump from &quot;answers questions&quot; to &quot;does things&quot; is the most consequential change in applied AI since the model itself. A chat assistant produces text. An agent decides on a sequence of actions, executes them against real systems, observes the results and decides what to do next. One produces information. The other produces effects.</p>
+<p>That is a categorically different thing to be responsible for.</p>
+<h2 id="what-an-agent-is">What an agent is</h2>
+<p>An agent is a loop. It is worth drawing explicitly, because most of the difficulty is visible in the diagram:</p>
+<pre><code>goal -&gt; model decides next action -&gt; system executes action
+     -&gt; result returned to model -&gt; model decides next action
+     -&gt; ... repeat until done, stuck, or out of budget</code></pre>
+<p>The model is the decision-maker. The surrounding system is responsible for everything else: which tools exist, what they are allowed to do, what they cost, what they see, when the loop stops, and who can stop it first.</p>
+<p><strong>The crucial architectural point is that the loop is engineered, not emergent.</strong> A dependable agent is not a clever prompt plus a loop. It is a harness with a decision-maker inside it, and almost all of the reliability comes from the harness.</p>
+<h2 id="the-tool-layer">The tool layer</h2>
+<p>Tools are the agent&#39;s hands. Modern systems expose them as structured function definitions — a name, a description, and a parameter schema — that the model can choose to call.</p>
+<p>Design decisions here dominate everything:</p>
+<ul><li><strong>Few, coarse tools beat many, fine ones.</strong> Twenty overlapping tools produce inconsistent selection. Ten well-separated ones do not.</li><li><strong>Names and descriptions are documentation, and they are read by a model.</strong> &quot;search_orders(customer_id, status, since)&quot; is a better tool than &quot;query&quot; with a paragraph of instructions inside it. This is documented, consistent across model families, and routinely ignored.</li><li><strong>Return structured data, not prose.</strong> An agent that gets a JSON object can branch on it. An agent that gets a sentence has to parse it.</li><li><strong>Errors should be informative.</strong> &quot;Permission denied&quot; is useless. &quot;Permission denied — this account can read orders but not refunds; request access from the refunds team&quot; lets the model recover or ask a human. A well-designed error is a recovery mechanism.</li><li><strong>Every tool needs a blast radius.</strong> A read-only tool and a tool that sends an email should not have the same approval level, and the difference should be enforced in code rather than in instructions.</li></ul>
+<h2 id="where-the-reliability-comes-from">Where the reliability comes from</h2>
+<p>Agent demonstrations are impressive and hard to reproduce, because the same setup that works on a scripted path fails on a real one. The techniques that make agents dependable are mostly unglamorous:</p>
+<ul><li><strong>Verify each step&#39;s output against its input expectation.</strong> Not &quot;did the tool return something&quot; but &quot;did it return the shape and the record count we needed&quot;.</li><li><strong>Make state visible.</strong> Agents fail by losing track. Explicitly pass a summary of what has been done, what is pending, and what the goal is, and update it every iteration.</li><li><strong>Budget every resource.</strong> Max steps, max tool calls, max tokens, max wall-clock time, maximum spend. An unbounded agent is an unbounded bill, and an agent that cannot stop is an incident.</li><li><strong>Escalate early and cheaply.</strong> When two attempts produce the same error, stop and ask a person. Continuing to retry a failing path burns money and produces confident nonsense.</li><li><strong>Sandbox execution.</strong> Code should run in a container or a locked-down environment with no credentials, a read-only filesystem by default, and no network unless the task needs one.</li><li><strong>Require approval for irreversible actions.</strong> Sending, publishing, deleting, spending, committing to an external system. The threshold should be about reversibility, not about confidence in the model.</li></ul>
+<blockquote><p>The most dangerous property of an agent is not that it is often wrong. It is that it is often wrong <em>and</em> that the wrongness is expressed as a series of individually reasonable steps.</p></blockquote>
+<h2 id="coding-agents-are-the-strongest-case">Coding agents are the strongest case</h2>
+<p>The reason agents have gone mainstream is that software development has an unusually good property: <strong>it has a verifier</strong>.</p>
+<p>Code either compiles, passes its tests, or does not. The feedback arrives in seconds, is unambiguous, and is available without a human. An agent that writes a function, runs the test suite, reads the error and tries again is doing something close to a tight learning loop against ground truth.</p>
+<p>This is why agents work well in development and less well in, say, customer support. In customer support, the correct action is a judgement about a person&#39;s situation, and there is no test suite for that. Wherever a domain has cheap, fast, objective feedback, agents improve. Wherever verification is slow, expensive or subjective, they stall.</p>
+<p>The lesson generalises further than software: <strong>the quality of an agent is bounded by the quality of the verification available in its environment.</strong></p>
+<h2 id="cost-and-latency">Cost and latency</h2>
+<p>An agent multiplies cost by iteration count. A task that takes five model calls becomes fifty, and a failure that burns fifty calls burns them again on the retry. Three practical responses:</p>
+<ul><li><strong>Cache aggressively.</strong> Identical or near-identical steps are common, and caching turns a repeated failure into a fast failure.</li><li><strong>Use the smallest model that works per step.</strong> Routing simple decisions to a small model and reserving the frontier model for hard steps is the single biggest cost lever, and it changes the economics of long-horizon tasks by an order of magnitude.</li><li><strong>Make the task smaller.</strong> Many successful agent systems are not agents at all. If a prompt plus one tool call solves the problem, build that.</li></ul>
+<h2 id="multi-agent-systems">Multi-agent systems</h2>
+<p>Letting several agents coordinate — a researcher, an implementer, a reviewer — is appealing and reliably harder than it sounds. The coordination protocol becomes the system, and it introduces new failure modes: duplicated work, contradictory conclusions, agents that agree because they share a model and a blind spot, and context loss at every hand-off.</p>
+<p>The honest summary is that multi-agent architectures help when the sub-tasks are genuinely independent and the merge is mechanical. When the sub-tasks require shared context or judgement, one agent with good tools is usually better, and much easier to debug.</p>
+<h2 id="a-responsible-deployment-checklist">A responsible deployment checklist</h2>
+<ul class="task-list"><li class="task"><input type="checkbox" disabled> <span>Every action the system can take is enumerated, and the irreversible ones require human approval.</span></li><li class="task"><input type="checkbox" disabled> <span>Credentials are scoped to the minimum and held in a tool, never in a prompt.</span></li><li class="task"><input type="checkbox" disabled> <span>There is a hard kill switch that works without the model&#39;s cooperation.</span></li><li class="task"><input type="checkbox" disabled> <span>Loops are bounded in steps, time and money.</span></li><li class="task"><input type="checkbox" disabled> <span>Every action is logged with its inputs, outputs and the model state that caused it.</span></li><li class="task"><input type="checkbox" disabled> <span>The system has been tested against the ways it will be misused, by people who did not build it.</span></li><li class="task"><input type="checkbox" disabled> <span>The failure message to a human says what the system was trying to do, not just that it failed.</span></li></ul>
+<h2 id="the-deeper-shift">The deeper shift</h2>
+<p>Tools and agents are what convert a language model from a <em>generating</em> system into a <em>acting</em> one. The safety consequences follow directly, and are covered in detail in <a href="19-ai-safety-and-alignment.html">AI Safety and Alignment </a> and <a href="21-privacy-security-and-adversarial-attacks.html">Privacy, Security and Adversarial Attacks </a>. The governance consequences — liability for autonomous actions, disclosure duties, and who answers for a bad outcome — are covered in <a href="23-ai-and-the-law.html">AI and the Law </a>.</p>
+<p>The technical question of how to make agents reliable is being solved steadily. The harder question is what a society wants to delegate to systems that can act, and on what terms. That one is not technical at all.</p>
+      </div>
+
+      <nav class="pager" aria-label="Article navigation">
+        <a class="prev" href="11-prompt-engineering-and-retrieval.html"><span class="dir">← Previous</span><span class="t">Prompt Engineering and Retrieval — Practical Patterns</span></a>
+        <a class="next" href="13-fine-tuning-rlhf-and-alignment.html"><span class="dir">Next →</span><span class="t">Fine-Tuning, RLHF and Alignment — Teaching Models to Be Helpful</span></a>
+      </nav>
+    </div>
+
+    <aside class="side">
+      <div class="side-box">
+        <h4>Reading progress</h4>
+        <progress class="progress" data-progress max="100" value="0" aria-label="Reading progress">0%</progress>
+      </div>
+
+      <div class="side-box">
+        <h4>Download this article</h4>
+        <div class="actions">
+          <button class="btn" data-dl="md" type="button">Markdown (.md)</button>
+          <button class="btn" data-dl="html" type="button">Web page (.html)</button>
+          <button class="btn" data-dl="pdf" type="button">Print / Save as PDF</button>
+          <button class="btn" data-dl="txt" type="button">Plain text (.txt)</button>
+          <button class="btn" data-dl="json" type="button">Data (.json)</button>
+          <button class="btn" data-dl="copy" type="button">Copy full text</button>
+        </div>
+      </div>
+
+      <div class="side-box">
+        <h4>On this page</h4>
+        <ol><li><a href="#what-an-agent-is">What an agent is</a></li><li><a href="#the-tool-layer">The tool layer</a></li><li><a href="#where-the-reliability-comes-from">Where the reliability comes from</a></li><li><a href="#coding-agents-are-the-strongest-case">Coding agents are the strongest case</a></li><li><a href="#cost-and-latency">Cost and latency</a></li><li><a href="#multi-agent-systems">Multi-agent systems</a></li><li><a href="#a-responsible-deployment-checklist">A responsible deployment checklist</a></li><li><a href="#the-deeper-shift">The deeper shift</a></li></ol>
+      </div>
+
+      <div class="side-box">
+        <h4>Reuse this text</h4>
+        <p class="license-note"><b>Public domain.</b> Copy, translate, adapt, teach from, or republish it anywhere — commercially or not — with no permission and no obligation to credit. <a href="license.html">Read the CC0 terms</a>.</p>
+      </div>
+
+      <div class="side-box">
+        <h4>Related reading</h4>
+        <div class="related"><a href="10-making-models-smaller-and-faster.html"><span>10 · Applied AI</span>Making Models Smaller and Faster — Quantisation, Distillation and Pruning</a><a href="11-prompt-engineering-and-retrieval.html"><span>11 · Applied AI</span>Prompt Engineering and Retrieval — Practical Patterns</a><a href="13-fine-tuning-rlhf-and-alignment.html"><span>13 · Applied AI</span>Fine-Tuning, RLHF and Alignment — Teaching Models to Be Helpful</a><a href="14-ai-in-software-development.html"><span>14 · Applications</span>AI in Software Development — Copilots, Code Agents and the Craft</a></div>
+      </div>
+    </aside>
+  </div>
+</div>
+<script type="application/json" id="article-source">{"number":12,"title":"Agents and Tool Use — When AI Takes Action","description":"A model that can call functions, read files, run code and browse the web can change things in the world. That capability changes the engineering, the economics and the risk profile at once.","category":"Applied AI","tags":["agents","tool use","function calling","autonomy","code execution"],"date":"2024-04-01","author":"The AI Article Hub Editorial Collective","readingTime":"6 min read","markdown":"The jump from \"answers questions\" to \"does things\" is the most consequential change in applied AI since the model itself. A chat assistant produces text. An agent decides on a sequence of actions, executes them against real systems, observes the results and decides what to do next. One produces information. The other produces effects.\n\nThat is a categorically different thing to be responsible for.\n\n## What an agent is\n\nAn agent is a loop. It is worth drawing explicitly, because most of the difficulty is visible in the diagram:\n\n```\ngoal -> model decides next action -> system executes action\n     -> result returned to model -> model decides next action\n     -> ... repeat until done, stuck, or out of budget\n```\n\nThe model is the decision-maker. The surrounding system is responsible for everything else: which tools exist, what they are allowed to do, what they cost, what they see, when the loop stops, and who can stop it first.\n\n**The crucial architectural point is that the loop is engineered, not emergent.** A dependable agent is not a clever prompt plus a loop. It is a harness with a decision-maker inside it, and almost all of the reliability comes from the harness.\n\n## The tool layer\n\nTools are the agent's hands. Modern systems expose them as structured function definitions — a name, a description, and a parameter schema — that the model can choose to call.\n\nDesign decisions here dominate everything:\n\n- **Few, coarse tools beat many, fine ones.** Twenty overlapping tools produce inconsistent selection. Ten well-separated ones do not.\n- **Names and descriptions are documentation, and they are read by a model.** \"search_orders(customer_id, status, since)\" is a better tool than \"query\" with a paragraph of instructions inside it. This is documented, consistent across model families, and routinely ignored.\n- **Return structured data, not prose.** An agent that gets a JSON object can branch on it. An agent that gets a sentence has to parse it.\n- **Errors should be informative.** \"Permission denied\" is useless. \"Permission denied — this account can read orders but not refunds; request access from the refunds team\" lets the model recover or ask a human. A well-designed error is a recovery mechanism.\n- **Every tool needs a blast radius.** A read-only tool and a tool that sends an email should not have the same approval level, and the difference should be enforced in code rather than in instructions.\n\n## Where the reliability comes from\n\nAgent demonstrations are impressive and hard to reproduce, because the same setup that works on a scripted path fails on a real one. The techniques that make agents dependable are mostly unglamorous:\n\n- **Verify each step's output against its input expectation.** Not \"did the tool return something\" but \"did it return the shape and the record count we needed\".\n- **Make state visible.** Agents fail by losing track. Explicitly pass a summary of what has been done, what is pending, and what the goal is, and update it every iteration.\n- **Budget every resource.** Max steps, max tool calls, max tokens, max wall-clock time, maximum spend. An unbounded agent is an unbounded bill, and an agent that cannot stop is an incident.\n- **Escalate early and cheaply.** When two attempts produce the same error, stop and ask a person. Continuing to retry a failing path burns money and produces confident nonsense.\n- **Sandbox execution.** Code should run in a container or a locked-down environment with no credentials, a read-only filesystem by default, and no network unless the task needs one.\n- **Require approval for irreversible actions.** Sending, publishing, deleting, spending, committing to an external system. The threshold should be about reversibility, not about confidence in the model.\n\n> The most dangerous property of an agent is not that it is often wrong. It is that it is often wrong *and* that the wrongness is expressed as a series of individually reasonable steps.\n\n## Coding agents are the strongest case\n\nThe reason agents have gone mainstream is that software development has an unusually good property: **it has a verifier**.\n\nCode either compiles, passes its tests, or does not. The feedback arrives in seconds, is unambiguous, and is available without a human. An agent that writes a function, runs the test suite, reads the error and tries again is doing something close to a tight learning loop against ground truth.\n\nThis is why agents work well in development and less well in, say, customer support. In customer support, the correct action is a judgement about a person's situation, and there is no test suite for that. Wherever a domain has cheap, fast, objective feedback, agents improve. Wherever verification is slow, expensive or subjective, they stall.\n\nThe lesson generalises further than software: **the quality of an agent is bounded by the quality of the verification available in its environment.**\n\n## Cost and latency\n\nAn agent multiplies cost by iteration count. A task that takes five model calls becomes fifty, and a failure that burns fifty calls burns them again on the retry. Three practical responses:\n\n- **Cache aggressively.** Identical or near-identical steps are common, and caching turns a repeated failure into a fast failure.\n- **Use the smallest model that works per step.** Routing simple decisions to a small model and reserving the frontier model for hard steps is the single biggest cost lever, and it changes the economics of long-horizon tasks by an order of magnitude.\n- **Make the task smaller.** Many successful agent systems are not agents at all. If a prompt plus one tool call solves the problem, build that.\n\n## Multi-agent systems\n\nLetting several agents coordinate — a researcher, an implementer, a reviewer — is appealing and reliably harder than it sounds. The coordination protocol becomes the system, and it introduces new failure modes: duplicated work, contradictory conclusions, agents that agree because they share a model and a blind spot, and context loss at every hand-off.\n\nThe honest summary is that multi-agent architectures help when the sub-tasks are genuinely independent and the merge is mechanical. When the sub-tasks require shared context or judgement, one agent with good tools is usually better, and much easier to debug.\n\n## A responsible deployment checklist\n\n- [ ] Every action the system can take is enumerated, and the irreversible ones require human approval.\n- [ ] Credentials are scoped to the minimum and held in a tool, never in a prompt.\n- [ ] There is a hard kill switch that works without the model's cooperation.\n- [ ] Loops are bounded in steps, time and money.\n- [ ] Every action is logged with its inputs, outputs and the model state that caused it.\n- [ ] The system has been tested against the ways it will be misused, by people who did not build it.\n- [ ] The failure message to a human says what the system was trying to do, not just that it failed.\n\n## The deeper shift\n\nTools and agents are what convert a language model from a *generating* system into a *acting* one. The safety consequences follow directly, and are covered in detail in [AI Safety and Alignment ](19-ai-safety-and-alignment.html) and [Privacy, Security and Adversarial Attacks ](21-privacy-security-and-adversarial-attacks.html). The governance consequences — liability for autonomous actions, disclosure duties, and who answers for a bad outcome — are covered in [AI and the Law ](23-ai-and-the-law.html).\n\nThe technical question of how to make agents reliable is being solved steadily. The harder question is what a society wants to delegate to systems that can act, and on what terms. That one is not technical at all.","html":"\u003cp>The jump from &quot;answers questions&quot; to &quot;does things&quot; is the most consequential change in applied AI since the model itself. A chat assistant produces text. An agent decides on a sequence of actions, executes them against real systems, observes the results and decides what to do next. One produces information. The other produces effects.\u003c/p>\n\u003cp>That is a categorically different thing to be responsible for.\u003c/p>\n\u003ch2 id=\"what-an-agent-is\">What an agent is\u003c/h2>\n\u003cp>An agent is a loop. It is worth drawing explicitly, because most of the difficulty is visible in the diagram:\u003c/p>\n\u003cpre>\u003ccode>goal -&gt; model decides next action -&gt; system executes action\n     -&gt; result returned to model -&gt; model decides next action\n     -&gt; ... repeat until done, stuck, or out of budget\u003c/code>\u003c/pre>\n\u003cp>The model is the decision-maker. The surrounding system is responsible for everything else: which tools exist, what they are allowed to do, what they cost, what they see, when the loop stops, and who can stop it first.\u003c/p>\n\u003cp>\u003cstrong>The crucial architectural point is that the loop is engineered, not emergent.\u003c/strong> A dependable agent is not a clever prompt plus a loop. It is a harness with a decision-maker inside it, and almost all of the reliability comes from the harness.\u003c/p>\n\u003ch2 id=\"the-tool-layer\">The tool layer\u003c/h2>\n\u003cp>Tools are the agent&#39;s hands. Modern systems expose them as structured function definitions — a name, a description, and a parameter schema — that the model can choose to call.\u003c/p>\n\u003cp>Design decisions here dominate everything:\u003c/p>\n\u003cul>\u003cli>\u003cstrong>Few, coarse tools beat many, fine ones.\u003c/strong> Twenty overlapping tools produce inconsistent selection. Ten well-separated ones do not.\u003c/li>\u003cli>\u003cstrong>Names and descriptions are documentation, and they are read by a model.\u003c/strong> &quot;search_orders(customer_id, status, since)&quot; is a better tool than &quot;query&quot; with a paragraph of instructions inside it. This is documented, consistent across model families, and routinely ignored.\u003c/li>\u003cli>\u003cstrong>Return structured data, not prose.\u003c/strong> An agent that gets a JSON object can branch on it. An agent that gets a sentence has to parse it.\u003c/li>\u003cli>\u003cstrong>Errors should be informative.\u003c/strong> &quot;Permission denied&quot; is useless. &quot;Permission denied — this account can read orders but not refunds; request access from the refunds team&quot; lets the model recover or ask a human. A well-designed error is a recovery mechanism.\u003c/li>\u003cli>\u003cstrong>Every tool needs a blast radius.\u003c/strong> A read-only tool and a tool that sends an email should not have the same approval level, and the difference should be enforced in code rather than in instructions.\u003c/li>\u003c/ul>\n\u003ch2 id=\"where-the-reliability-comes-from\">Where the reliability comes from\u003c/h2>\n\u003cp>Agent demonstrations are impressive and hard to reproduce, because the same setup that works on a scripted path fails on a real one. The techniques that make agents dependable are mostly unglamorous:\u003c/p>\n\u003cul>\u003cli>\u003cstrong>Verify each step&#39;s output against its input expectation.\u003c/strong> Not &quot;did the tool return something&quot; but &quot;did it return the shape and the record count we needed&quot;.\u003c/li>\u003cli>\u003cstrong>Make state visible.\u003c/strong> Agents fail by losing track. Explicitly pass a summary of what has been done, what is pending, and what the goal is, and update it every iteration.\u003c/li>\u003cli>\u003cstrong>Budget every resource.\u003c/strong> Max steps, max tool calls, max tokens, max wall-clock time, maximum spend. An unbounded agent is an unbounded bill, and an agent that cannot stop is an incident.\u003c/li>\u003cli>\u003cstrong>Escalate early and cheaply.\u003c/strong> When two attempts produce the same error, stop and ask a person. Continuing to retry a failing path burns money and produces confident nonsense.\u003c/li>\u003cli>\u003cstrong>Sandbox execution.\u003c/strong> Code should run in a container or a locked-down environment with no credentials, a read-only filesystem by default, and no network unless the task needs one.\u003c/li>\u003cli>\u003cstrong>Require approval for irreversible actions.\u003c/strong> Sending, publishing, deleting, spending, committing to an external system. The threshold should be about reversibility, not about confidence in the model.\u003c/li>\u003c/ul>\n\u003cblockquote>\u003cp>The most dangerous property of an agent is not that it is often wrong. It is that it is often wrong \u003cem>and\u003c/em> that the wrongness is expressed as a series of individually reasonable steps.\u003c/p>\u003c/blockquote>\n\u003ch2 id=\"coding-agents-are-the-strongest-case\">Coding agents are the strongest case\u003c/h2>\n\u003cp>The reason agents have gone mainstream is that software development has an unusually good property: \u003cstrong>it has a verifier\u003c/strong>.\u003c/p>\n\u003cp>Code either compiles, passes its tests, or does not. The feedback arrives in seconds, is unambiguous, and is available without a human. An agent that writes a function, runs the test suite, reads the error and tries again is doing something close to a tight learning loop against ground truth.\u003c/p>\n\u003cp>This is why agents work well in development and less well in, say, customer support. In customer support, the correct action is a judgement about a person&#39;s situation, and there is no test suite for that. Wherever a domain has cheap, fast, objective feedback, agents improve. Wherever verification is slow, expensive or subjective, they stall.\u003c/p>\n\u003cp>The lesson generalises further than software: \u003cstrong>the quality of an agent is bounded by the quality of the verification available in its environment.\u003c/strong>\u003c/p>\n\u003ch2 id=\"cost-and-latency\">Cost and latency\u003c/h2>\n\u003cp>An agent multiplies cost by iteration count. A task that takes five model calls becomes fifty, and a failure that burns fifty calls burns them again on the retry. Three practical responses:\u003c/p>\n\u003cul>\u003cli>\u003cstrong>Cache aggressively.\u003c/strong> Identical or near-identical steps are common, and caching turns a repeated failure into a fast failure.\u003c/li>\u003cli>\u003cstrong>Use the smallest model that works per step.\u003c/strong> Routing simple decisions to a small model and reserving the frontier model for hard steps is the single biggest cost lever, and it changes the economics of long-horizon tasks by an order of magnitude.\u003c/li>\u003cli>\u003cstrong>Make the task smaller.\u003c/strong> Many successful agent systems are not agents at all. If a prompt plus one tool call solves the problem, build that.\u003c/li>\u003c/ul>\n\u003ch2 id=\"multi-agent-systems\">Multi-agent systems\u003c/h2>\n\u003cp>Letting several agents coordinate — a researcher, an implementer, a reviewer — is appealing and reliably harder than it sounds. The coordination protocol becomes the system, and it introduces new failure modes: duplicated work, contradictory conclusions, agents that agree because they share a model and a blind spot, and context loss at every hand-off.\u003c/p>\n\u003cp>The honest summary is that multi-agent architectures help when the sub-tasks are genuinely independent and the merge is mechanical. When the sub-tasks require shared context or judgement, one agent with good tools is usually better, and much easier to debug.\u003c/p>\n\u003ch2 id=\"a-responsible-deployment-checklist\">A responsible deployment checklist\u003c/h2>\n\u003cul class=\"task-list\">\u003cli class=\"task\">\u003cinput type=\"checkbox\" disabled> \u003cspan>Every action the system can take is enumerated, and the irreversible ones require human approval.\u003c/span>\u003c/li>\u003cli class=\"task\">\u003cinput type=\"checkbox\" disabled> \u003cspan>Credentials are scoped to the minimum and held in a tool, never in a prompt.\u003c/span>\u003c/li>\u003cli class=\"task\">\u003cinput type=\"checkbox\" disabled> \u003cspan>There is a hard kill switch that works without the model&#39;s cooperation.\u003c/span>\u003c/li>\u003cli class=\"task\">\u003cinput type=\"checkbox\" disabled> \u003cspan>Loops are bounded in steps, time and money.\u003c/span>\u003c/li>\u003cli class=\"task\">\u003cinput type=\"checkbox\" disabled> \u003cspan>Every action is logged with its inputs, outputs and the model state that caused it.\u003c/span>\u003c/li>\u003cli class=\"task\">\u003cinput type=\"checkbox\" disabled> \u003cspan>The system has been tested against the ways it will be misused, by people who did not build it.\u003c/span>\u003c/li>\u003cli class=\"task\">\u003cinput type=\"checkbox\" disabled> \u003cspan>The failure message to a human says what the system was trying to do, not just that it failed.\u003c/span>\u003c/li>\u003c/ul>\n\u003ch2 id=\"the-deeper-shift\">The deeper shift\u003c/h2>\n\u003cp>Tools and agents are what convert a language model from a \u003cem>generating\u003c/em> system into a \u003cem>acting\u003c/em> one. The safety consequences follow directly, and are covered in detail in \u003ca href=\"19-ai-safety-and-alignment.html\">AI Safety and Alignment \u003c/a> and \u003ca href=\"21-privacy-security-and-adversarial-attacks.html\">Privacy, Security and Adversarial Attacks \u003c/a>. The governance consequences — liability for autonomous actions, disclosure duties, and who answers for a bad outcome — are covered in \u003ca href=\"23-ai-and-the-law.html\">AI and the Law \u003c/a>.\u003c/p>\n\u003cp>The technical question of how to make agents reliable is being solved steadily. The harder question is what a society wants to delegate to systems that can act, and on what terms. That one is not technical at all.\u003c/p>"}</script>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h5>AI Article Hub</h5>
+        <p>Twenty-seven original, in-depth articles on artificial intelligence — from neural networks and transformers to AI safety, law and public policy. Free to read, download and reuse: everything here is released into the public domain under CC0 1.0.</p>
+        <p>Written to be read, translated, remixed and taught from without permission or payment.</p>
+      </div>
+      <div>
+        <h5>Read</h5>
+        <ul>
+          <li><a href="index.html#articles">All 27 articles</a></li>
+          <li><a href="downloads.html">Download everything</a></li>
+          <li><a href="feed.xml">RSS feed</a></li>
+          <li><a href="sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Reuse</h5>
+        <ul>
+          <li><a href="license.html">CC0 license terms</a></li>
+          <li><a href="publish.html">Publish this site</a></li>
+          <li><a href="publish.html#attribution">Do I need credit?</a></li>
+          <li><a href="about.html">About the project</a></li>
+          <li><a href="security.html">Security</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="license-line">
+      <span>© 2026 The AI Article Hub Editorial Collective. Text released under CC0 1.0 — dedicated to the public domain, no rights reserved.</span>
+      <a class="badge-cc" href="license.html">CC0 1.0 · Public Domain Dedication</a>
+    </div>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

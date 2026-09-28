@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What Actually Happens During Training · AI Article Hub</title>
+<meta name="description" content="A training run has a shape: initialise, predict, measure, adjust, repeat, then do it all again with a bigger batch. A walk through the whole loop, including the parts that are unglamorous and expensive.">
+<link rel="canonical" href="https://example.org/ai-article-hub/index.html">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#2f5bd7">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AI Article Hub">
+<meta property="og:title" content="What Actually Happens During Training · AI Article Hub">
+<meta property="og:description" content="A training run has a shape: initialise, predict, measure, adjust, repeat, then do it all again with a bigger batch. A walk through the whole loop, including the parts that are unglamorous and expensive.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="license" content="CC0 1.0">
+<meta name="dcterms.license" content="https://creativecommons.org/publicdomain/zero/1.0/">
+<link rel="alternate" type="application/rss+xml" title="AI Article Hub" href="feed.xml">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/styles.css">
+<meta property="og:type" content="article">
+<meta property="og:title" content="What Actually Happens During Training">
+<meta property="og:description" content="A training run has a shape: initialise, predict, measure, adjust, repeat, then do it all again with a bigger batch. A walk through the whole loop, including the parts that are unglamorous and expensive.">
+<meta property="og:url" content="https://example.org/ai-article-hub/07-what-happens-during-training.html">
+<meta property="article:section" content="Machine Learning">
+<meta property="article:tag" content="training">
+<meta property="article:tag" content="optimisation">
+<meta property="article:tag" content="gradient descent">
+<meta property="article:tag" content="backpropagation">
+<meta property="article:tag" content="pretraining">
+<meta name="author" content="The AI Article Hub Editorial Collective">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"What Actually Happens During Training","description":"A training run has a shape: initialise, predict, measure, adjust, repeat, then do it all again with a bigger batch. A walk through the whole loop, including the parts that are unglamorous and expensive.","datePublished":"2024-02-26","dateModified":"2024-02-26","inLanguage":"en","articleSection":"Machine Learning","keywords":"training, optimisation, gradient descent, backpropagation, pretraining","wordCount":1103,"isAccessibleForFree":true,"license":"https://creativecommons.org/publicdomain/zero/1.0/","creativeWorkStatus":"Public Domain","author":{"@type":"Organization","name":"The AI Article Hub Editorial Collective"},"publisher":{"@type":"Organization","name":"AI Article Hub"},"mainEntityOfPage":"https://example.org/ai-article-hub/07-what-happens-during-training.html"}</script>
+</head>
+<body class="">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="index.html">
+      <span class="logo" aria-hidden="true">AI</span>
+      <span>AI Article Hub<small>CC0 1.0 · Public Domain</small></span>
+    </a>
+    <button class="icon-btn menu-btn" data-menu-toggle aria-label="Toggle navigation" aria-controls="site-nav">☰</button>
+    <nav class="nav" id="site-nav" aria-label="Main">
+          <a href="index.html">Home</a>
+          <a href="index.html#articles">Articles</a>
+          <a href="downloads.html">Downloads</a>
+          <a href="publish.html">Publish</a>
+          <a href="license.html">License</a>
+          <a href="about.html">About</a>
+          <a href="security.html">Security</a>
+      <button class="icon-btn theme-toggle" data-theme-toggle type="button" aria-label="Toggle theme">☾</button>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<div class="wrap">
+  <div class="article-shell">
+    <div>
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a> › <a href="index.html#articles">Articles</a> › <span>07 of 27</span>
+      </nav>
+
+      <header class="article-head">
+        <div class="kicker">
+          <span class="tag accent">Part 07 of 27</span>
+          <span class="tag">Machine Learning</span>
+          <span class="tag">5 min read</span>
+        </div>
+        <h1>What Actually Happens During Training</h1>
+        <p class="standfirst">A training run has a shape: initialise, predict, measure, adjust, repeat, then do it all again with a bigger batch. A walk through the whole loop, including the parts that are unglamorous and expensive.</p>
+        <div class="byline">
+          <span>2024-02-26</span><span class="dot">•</span>
+          <span>Machine Learning</span><span class="dot">•</span>
+          <span>1,103 words</span><span class="dot">•</span>
+          <span>CC0 1.0 public domain</span>
+        </div>
+      </header>
+
+      <div class="prose">
+<p>The popular image of AI training is a machine absorbing the internet. The real image is less romantic and more interesting: a very large, very ordinary optimisation loop, run for weeks, on hardware that costs a small country&#39;s annual budget, while engineers worry about the loss curve.</p>
+<p>Here is what a large training run actually consists of.</p>
+<h2 id="before-the-first-step-data-curation">Before the first step: data curation</h2>
+<p>A modern project begins months before any compute is used, and most of the quality problems are created here.</p>
+<p>The internet is too large, too noisy and too legally tangled to train on directly. In practice the pipeline is: fetch web text at scale, filter it, deduplicate it, and score it. Deduplication matters more than teams expect — repeated text is effectively up-weighting, and models trained on heavily duplicated data show measurable degradation. Quality filtering usually involves both automated classifiers and human-labelled examples to train those classifiers.</p>
+<p>Then there are the filters that are not about quality at all. Personal information is removed, in quantity large enough to matter. Copyrighted and licensed material is handled according to the project&#39;s legal position, and there is real disagreement about how well that works in practice. Content that is deliberately poisoned — material inserted to change a model&#39;s behaviour — is partly detectable and mostly an arms race.</p>
+<p><strong>The mixing stage</strong> decides the proportions: how much code, how much academic text, how much conversational data, how many languages, and at what level of quality for each. This is a strategic decision with lasting consequences. A model trained heavily on code reasons differently about structured problems. A model trained heavily on one language will be markedly better in it and notably worse in the rest. Adjusting the mixture after the fact is not really possible; it means another run.</p>
+<h2 id="the-loop">The loop</h2>
+<p>Now the optimisation. The model is initialised with random weights. Then, for each batch of text, four things happen:</p>
+<ol><li><strong>Forward pass.</strong> The batch is pushed through the network. Every layer computes its activations, and the final layer produces a probability distribution over the next token for every position.</li><li><strong>Loss.</strong> The loss measures how wrong that distribution was, using cross-entropy against the actual next tokens. Low is good.</li><li><strong>Backward pass.</strong> Backpropagation computes, for every parameter in the network, how much it contributed to the loss. See <a href="03-neural-networks-from-scratch.html">Neural Networks from Scratch </a>.</li><li><strong>Update.</strong> An optimiser — almost always some variant of gradient descent with adaptive step sizes — nudges every parameter against the gradient. Typically by a small fraction of a percent of the parameter&#39;s own magnitude.</li></ol>
+<p>A large model has hundreds of billions of parameters, so one update touches an incomprehensible number of numbers. The learning rate is chosen so that thousands of updates in the same direction are still stable, which is why these numbers are so absurdly small.</p>
+<h2 id="the-awkward-middle-of-training">The awkward middle of training</h2>
+<p>The most important phase is neither the beginning nor the end. For the first portion of a run, the model is learning form: basic statistics, vocabulary, spelling, the shape of the language. Loss falls quickly and steadily.</p>
+<p>The long middle phase is where capability emerges, and it is the least well understood. The loss curve is smooth; the behaviours are not. A model will, at some point during training, start solving problems that it could not solve a thousand steps earlier and will not solve reliably a hundred thousand steps later. Measuring a capability at the wrong point in training gives you a number that is simply wrong, and this is a recurring source of irreproducible results in the literature.</p>
+<p>Near the end, the model begins to sharpen: it becomes more confident, more stylistically consistent, and more prone to repeating patterns present in its data. Post-training work exists to repair the specific things that sharpening tends to break.</p>
+<h2 id="what-it-costs-and-what-that-buys">What it costs, and what that buys</h2>
+<p>The compute for a large run is usually reported in floating-point operations. The bill is the interesting part. Renting a large cluster of accelerators at typical cloud rates puts a frontier run in the tens to low hundreds of millions of dollars, and the energy alone is measured in the tens of gigawatt-hours.</p>
+<p>A rough mental model for the trade-off: performance tends to improve smoothly with compute, so the decision of how much to spend is a business decision, not a scientific threshold. There is usually no cliff where doubling compute doubles capability. Spending is justified by a valuation of the resulting capability, which is why the economics have come to dominate the research agenda more than the methods have. <a href="18-the-economics-of-ai-inference.html">The Economics of AI Inference </a> covers where that money goes once training is finished.</p>
+<h2 id="the-three-stage-recipe">The three-stage recipe</h2>
+<p>A frontier model is almost never trained once. It is trained in phases, each with different data and a different objective:</p>
+<ul><li><strong>Pretraining.</strong> Billions to trillions of tokens, one objective — predict the next token — and the result is a general-purpose system with broad capability and no particular personality or instruction-following behaviour. This is the expensive stage.</li><li><strong>Post-training.</strong> Far smaller in compute, but far more consequential for how the model behaves. This is where the model learns to answer questions rather than continue them, and where human preferences are folded in. <a href="13-fine-tuning-rlhf-and-alignment.html">Fine-Tuning, RLHF and Alignment </a> covers this in full.</li><li><strong>Specialisation.</strong> Optional and increasingly common: domain-specific continued training, long-context extension, or adaptation to a single organisation&#39;s documents and tone.</li></ul>
+<p>The asymmetry is the story worth remembering. Pretraining determines what a model is capable of; post-training determines what it is willing to do. Almost every public argument about modern AI is really an argument about the second stage.</p>
+<h2 id="the-practical-summary">The practical summary</h2>
+<ul><li>Data curation, not compute, is where quality is won and lost.</li><li>The training loop is simple and runs for weeks; the difficulty is in monitoring it and knowing when something has gone subtly wrong.</li><li>Capability appears in the middle of training and is easy to mismeasure.</li><li>The loss curve is smooth; behaviour is not. Anyone quoting a single number from a run is quoting one point on a curve they did not show you.</li><li>Cost is a first-class constraint, and it shapes what gets built far more than elegance does.</li></ul>
+<p>A run that is going well still looks exactly like a run that is going badly if you only watch the loss. That is why evaluation is a discipline of its own, and why the next article in this collection exists.</p>
+      </div>
+
+      <nav class="pager" aria-label="Article navigation">
+        <a class="prev" href="06-the-transformer-architecture.html"><span class="dir">← Previous</span><span class="t">The Transformer — The Architecture Behind Modern AI</span></a>
+        <a class="next" href="08-data-the-raw-material-of-ai.html"><span class="dir">Next →</span><span class="t">Data — The Raw Material of AI</span></a>
+      </nav>
+    </div>
+
+    <aside class="side">
+      <div class="side-box">
+        <h4>Reading progress</h4>
+        <progress class="progress" data-progress max="100" value="0" aria-label="Reading progress">0%</progress>
+      </div>
+
+      <div class="side-box">
+        <h4>Download this article</h4>
+        <div class="actions">
+          <button class="btn" data-dl="md" type="button">Markdown (.md)</button>
+          <button class="btn" data-dl="html" type="button">Web page (.html)</button>
+          <button class="btn" data-dl="pdf" type="button">Print / Save as PDF</button>
+          <button class="btn" data-dl="txt" type="button">Plain text (.txt)</button>
+          <button class="btn" data-dl="json" type="button">Data (.json)</button>
+          <button class="btn" data-dl="copy" type="button">Copy full text</button>
+        </div>
+      </div>
+
+      <div class="side-box">
+        <h4>On this page</h4>
+        <ol><li><a href="#before-the-first-step-data-curation">Before the first step: data curation</a></li><li><a href="#the-loop">The loop</a></li><li><a href="#the-awkward-middle-of-training">The awkward middle of training</a></li><li><a href="#what-it-costs-and-what-that-buys">What it costs, and what that buys</a></li><li><a href="#the-three-stage-recipe">The three-stage recipe</a></li><li><a href="#the-practical-summary">The practical summary</a></li></ol>
+      </div>
+
+      <div class="side-box">
+        <h4>Reuse this text</h4>
+        <p class="license-note"><b>Public domain.</b> Copy, translate, adapt, teach from, or republish it anywhere — commercially or not — with no permission and no obligation to credit. <a href="license.html">Read the CC0 terms</a>.</p>
+      </div>
+
+      <div class="side-box">
+        <h4>Related reading</h4>
+        <div class="related"><a href="08-data-the-raw-material-of-ai.html"><span>08 · Machine Learning</span>Data — The Raw Material of AI</a><a href="09-evaluating-ai.html"><span>09 · Machine Learning</span>Evaluating AI — Benchmarks, Hallucinations and How to Measure Quality</a><a href="02-how-machines-learn-the-three-families-of-machine-learning.html"><span>02 · Foundations</span>How Machines Learn — The Three Families of Machine Learning</a><a href="03-neural-networks-from-scratch.html"><span>03 · Foundations</span>Neural Networks from Scratch — Weights, Biases and Activation</a></div>
+      </div>
+    </aside>
+  </div>
+</div>
+<script type="application/json" id="article-source">{"number":7,"title":"What Actually Happens During Training","description":"A training run has a shape: initialise, predict, measure, adjust, repeat, then do it all again with a bigger batch. A walk through the whole loop, including the parts that are unglamorous and expensive.","category":"Machine Learning","tags":["training","optimisation","gradient descent","backpropagation","pretraining"],"date":"2024-02-26","author":"The AI Article Hub Editorial Collective","readingTime":"5 min read","markdown":"The popular image of AI training is a machine absorbing the internet. The real image is less romantic and more interesting: a very large, very ordinary optimisation loop, run for weeks, on hardware that costs a small country's annual budget, while engineers worry about the loss curve.\n\nHere is what a large training run actually consists of.\n\n## Before the first step: data curation\n\nA modern project begins months before any compute is used, and most of the quality problems are created here.\n\nThe internet is too large, too noisy and too legally tangled to train on directly. In practice the pipeline is: fetch web text at scale, filter it, deduplicate it, and score it. Deduplication matters more than teams expect — repeated text is effectively up-weighting, and models trained on heavily duplicated data show measurable degradation. Quality filtering usually involves both automated classifiers and human-labelled examples to train those classifiers.\n\nThen there are the filters that are not about quality at all. Personal information is removed, in quantity large enough to matter. Copyrighted and licensed material is handled according to the project's legal position, and there is real disagreement about how well that works in practice. Content that is deliberately poisoned — material inserted to change a model's behaviour — is partly detectable and mostly an arms race.\n\n**The mixing stage** decides the proportions: how much code, how much academic text, how much conversational data, how many languages, and at what level of quality for each. This is a strategic decision with lasting consequences. A model trained heavily on code reasons differently about structured problems. A model trained heavily on one language will be markedly better in it and notably worse in the rest. Adjusting the mixture after the fact is not really possible; it means another run.\n\n## The loop\n\nNow the optimisation. The model is initialised with random weights. Then, for each batch of text, four things happen:\n\n1. **Forward pass.** The batch is pushed through the network. Every layer computes its activations, and the final layer produces a probability distribution over the next token for every position.\n2. **Loss.** The loss measures how wrong that distribution was, using cross-entropy against the actual next tokens. Low is good.\n3. **Backward pass.** Backpropagation computes, for every parameter in the network, how much it contributed to the loss. See [Neural Networks from Scratch ](03-neural-networks-from-scratch.html).\n4. **Update.** An optimiser — almost always some variant of gradient descent with adaptive step sizes — nudges every parameter against the gradient. Typically by a small fraction of a percent of the parameter's own magnitude.\n\nA large model has hundreds of billions of parameters, so one update touches an incomprehensible number of numbers. The learning rate is chosen so that thousands of updates in the same direction are still stable, which is why these numbers are so absurdly small.\n\n## The awkward middle of training\n\nThe most important phase is neither the beginning nor the end. For the first portion of a run, the model is learning form: basic statistics, vocabulary, spelling, the shape of the language. Loss falls quickly and steadily.\n\nThe long middle phase is where capability emerges, and it is the least well understood. The loss curve is smooth; the behaviours are not. A model will, at some point during training, start solving problems that it could not solve a thousand steps earlier and will not solve reliably a hundred thousand steps later. Measuring a capability at the wrong point in training gives you a number that is simply wrong, and this is a recurring source of irreproducible results in the literature.\n\nNear the end, the model begins to sharpen: it becomes more confident, more stylistically consistent, and more prone to repeating patterns present in its data. Post-training work exists to repair the specific things that sharpening tends to break.\n\n## What it costs, and what that buys\n\nThe compute for a large run is usually reported in floating-point operations. The bill is the interesting part. Renting a large cluster of accelerators at typical cloud rates puts a frontier run in the tens to low hundreds of millions of dollars, and the energy alone is measured in the tens of gigawatt-hours.\n\nA rough mental model for the trade-off: performance tends to improve smoothly with compute, so the decision of how much to spend is a business decision, not a scientific threshold. There is usually no cliff where doubling compute doubles capability. Spending is justified by a valuation of the resulting capability, which is why the economics have come to dominate the research agenda more than the methods have. [The Economics of AI Inference ](18-the-economics-of-ai-inference.html) covers where that money goes once training is finished.\n\n## The three-stage recipe\n\nA frontier model is almost never trained once. It is trained in phases, each with different data and a different objective:\n\n- **Pretraining.** Billions to trillions of tokens, one objective — predict the next token — and the result is a general-purpose system with broad capability and no particular personality or instruction-following behaviour. This is the expensive stage.\n- **Post-training.** Far smaller in compute, but far more consequential for how the model behaves. This is where the model learns to answer questions rather than continue them, and where human preferences are folded in. [Fine-Tuning, RLHF and Alignment ](13-fine-tuning-rlhf-and-alignment.html) covers this in full.\n- **Specialisation.** Optional and increasingly common: domain-specific continued training, long-context extension, or adaptation to a single organisation's documents and tone.\n\nThe asymmetry is the story worth remembering. Pretraining determines what a model is capable of; post-training determines what it is willing to do. Almost every public argument about modern AI is really an argument about the second stage.\n\n## The practical summary\n\n- Data curation, not compute, is where quality is won and lost.\n- The training loop is simple and runs for weeks; the difficulty is in monitoring it and knowing when something has gone subtly wrong.\n- Capability appears in the middle of training and is easy to mismeasure.\n- The loss curve is smooth; behaviour is not. Anyone quoting a single number from a run is quoting one point on a curve they did not show you.\n- Cost is a first-class constraint, and it shapes what gets built far more than elegance does.\n\nA run that is going well still looks exactly like a run that is going badly if you only watch the loss. That is why evaluation is a discipline of its own, and why the next article in this collection exists.","html":"\u003cp>The popular image of AI training is a machine absorbing the internet. The real image is less romantic and more interesting: a very large, very ordinary optimisation loop, run for weeks, on hardware that costs a small country&#39;s annual budget, while engineers worry about the loss curve.\u003c/p>\n\u003cp>Here is what a large training run actually consists of.\u003c/p>\n\u003ch2 id=\"before-the-first-step-data-curation\">Before the first step: data curation\u003c/h2>\n\u003cp>A modern project begins months before any compute is used, and most of the quality problems are created here.\u003c/p>\n\u003cp>The internet is too large, too noisy and too legally tangled to train on directly. In practice the pipeline is: fetch web text at scale, filter it, deduplicate it, and score it. Deduplication matters more than teams expect — repeated text is effectively up-weighting, and models trained on heavily duplicated data show measurable degradation. Quality filtering usually involves both automated classifiers and human-labelled examples to train those classifiers.\u003c/p>\n\u003cp>Then there are the filters that are not about quality at all. Personal information is removed, in quantity large enough to matter. Copyrighted and licensed material is handled according to the project&#39;s legal position, and there is real disagreement about how well that works in practice. Content that is deliberately poisoned — material inserted to change a model&#39;s behaviour — is partly detectable and mostly an arms race.\u003c/p>\n\u003cp>\u003cstrong>The mixing stage\u003c/strong> decides the proportions: how much code, how much academic text, how much conversational data, how many languages, and at what level of quality for each. This is a strategic decision with lasting consequences. A model trained heavily on code reasons differently about structured problems. A model trained heavily on one language will be markedly better in it and notably worse in the rest. Adjusting the mixture after the fact is not really possible; it means another run.\u003c/p>\n\u003ch2 id=\"the-loop\">The loop\u003c/h2>\n\u003cp>Now the optimisation. The model is initialised with random weights. Then, for each batch of text, four things happen:\u003c/p>\n\u003col>\u003cli>\u003cstrong>Forward pass.\u003c/strong> The batch is pushed through the network. Every layer computes its activations, and the final layer produces a probability distribution over the next token for every position.\u003c/li>\u003cli>\u003cstrong>Loss.\u003c/strong> The loss measures how wrong that distribution was, using cross-entropy against the actual next tokens. Low is good.\u003c/li>\u003cli>\u003cstrong>Backward pass.\u003c/strong> Backpropagation computes, for every parameter in the network, how much it contributed to the loss. See \u003ca href=\"03-neural-networks-from-scratch.html\">Neural Networks from Scratch \u003c/a>.\u003c/li>\u003cli>\u003cstrong>Update.\u003c/strong> An optimiser — almost always some variant of gradient descent with adaptive step sizes — nudges every parameter against the gradient. Typically by a small fraction of a percent of the parameter&#39;s own magnitude.\u003c/li>\u003c/ol>\n\u003cp>A large model has hundreds of billions of parameters, so one update touches an incomprehensible number of numbers. The learning rate is chosen so that thousands of updates in the same direction are still stable, which is why these numbers are so absurdly small.\u003c/p>\n\u003ch2 id=\"the-awkward-middle-of-training\">The awkward middle of training\u003c/h2>\n\u003cp>The most important phase is neither the beginning nor the end. For the first portion of a run, the model is learning form: basic statistics, vocabulary, spelling, the shape of the language. Loss falls quickly and steadily.\u003c/p>\n\u003cp>The long middle phase is where capability emerges, and it is the least well understood. The loss curve is smooth; the behaviours are not. A model will, at some point during training, start solving problems that it could not solve a thousand steps earlier and will not solve reliably a hundred thousand steps later. Measuring a capability at the wrong point in training gives you a number that is simply wrong, and this is a recurring source of irreproducible results in the literature.\u003c/p>\n\u003cp>Near the end, the model begins to sharpen: it becomes more confident, more stylistically consistent, and more prone to repeating patterns present in its data. Post-training work exists to repair the specific things that sharpening tends to break.\u003c/p>\n\u003ch2 id=\"what-it-costs-and-what-that-buys\">What it costs, and what that buys\u003c/h2>\n\u003cp>The compute for a large run is usually reported in floating-point operations. The bill is the interesting part. Renting a large cluster of accelerators at typical cloud rates puts a frontier run in the tens to low hundreds of millions of dollars, and the energy alone is measured in the tens of gigawatt-hours.\u003c/p>\n\u003cp>A rough mental model for the trade-off: performance tends to improve smoothly with compute, so the decision of how much to spend is a business decision, not a scientific threshold. There is usually no cliff where doubling compute doubles capability. Spending is justified by a valuation of the resulting capability, which is why the economics have come to dominate the research agenda more than the methods have. \u003ca href=\"18-the-economics-of-ai-inference.html\">The Economics of AI Inference \u003c/a> covers where that money goes once training is finished.\u003c/p>\n\u003ch2 id=\"the-three-stage-recipe\">The three-stage recipe\u003c/h2>\n\u003cp>A frontier model is almost never trained once. It is trained in phases, each with different data and a different objective:\u003c/p>\n\u003cul>\u003cli>\u003cstrong>Pretraining.\u003c/strong> Billions to trillions of tokens, one objective — predict the next token — and the result is a general-purpose system with broad capability and no particular personality or instruction-following behaviour. This is the expensive stage.\u003c/li>\u003cli>\u003cstrong>Post-training.\u003c/strong> Far smaller in compute, but far more consequential for how the model behaves. This is where the model learns to answer questions rather than continue them, and where human preferences are folded in. \u003ca href=\"13-fine-tuning-rlhf-and-alignment.html\">Fine-Tuning, RLHF and Alignment \u003c/a> covers this in full.\u003c/li>\u003cli>\u003cstrong>Specialisation.\u003c/strong> Optional and increasingly common: domain-specific continued training, long-context extension, or adaptation to a single organisation&#39;s documents and tone.\u003c/li>\u003c/ul>\n\u003cp>The asymmetry is the story worth remembering. Pretraining determines what a model is capable of; post-training determines what it is willing to do. Almost every public argument about modern AI is really an argument about the second stage.\u003c/p>\n\u003ch2 id=\"the-practical-summary\">The practical summary\u003c/h2>\n\u003cul>\u003cli>Data curation, not compute, is where quality is won and lost.\u003c/li>\u003cli>The training loop is simple and runs for weeks; the difficulty is in monitoring it and knowing when something has gone subtly wrong.\u003c/li>\u003cli>Capability appears in the middle of training and is easy to mismeasure.\u003c/li>\u003cli>The loss curve is smooth; behaviour is not. Anyone quoting a single number from a run is quoting one point on a curve they did not show you.\u003c/li>\u003cli>Cost is a first-class constraint, and it shapes what gets built far more than elegance does.\u003c/li>\u003c/ul>\n\u003cp>A run that is going well still looks exactly like a run that is going badly if you only watch the loss. That is why evaluation is a discipline of its own, and why the next article in this collection exists.\u003c/p>"}</script>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h5>AI Article Hub</h5>
+        <p>Twenty-seven original, in-depth articles on artificial intelligence — from neural networks and transformers to AI safety, law and public policy. Free to read, download and reuse: everything here is released into the public domain under CC0 1.0.</p>
+        <p>Written to be read, translated, remixed and taught from without permission or payment.</p>
+      </div>
+      <div>
+        <h5>Read</h5>
+        <ul>
+          <li><a href="index.html#articles">All 27 articles</a></li>
+          <li><a href="downloads.html">Download everything</a></li>
+          <li><a href="feed.xml">RSS feed</a></li>
+          <li><a href="sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Reuse</h5>
+        <ul>
+          <li><a href="license.html">CC0 license terms</a></li>
+          <li><a href="publish.html">Publish this site</a></li>
+          <li><a href="publish.html#attribution">Do I need credit?</a></li>
+          <li><a href="about.html">About the project</a></li>
+          <li><a href="security.html">Security</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="license-line">
+      <span>© 2026 The AI Article Hub Editorial Collective. Text released under CC0 1.0 — dedicated to the public domain, no rights reserved.</span>
+      <a class="badge-cc" href="license.html">CC0 1.0 · Public Domain Dedication</a>
+    </div>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>
